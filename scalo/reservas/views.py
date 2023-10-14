@@ -24,20 +24,20 @@ def login_view(request):
     if request.method == 'POST':
         print("Pag anterior")
         print(request.POST.get('ant'))
-        #print(request.POST.get('ant').split('/')[-2])
-        #user = request.POST.get('username')
-        ant = request.POST.get('ant').split('/')[-2]
+        print(request.POST.get('ant').split('/'))
+        print(request.POST.get('ant').split('/')[-2])
+        ant = request.POST.get('ant').split('/')
         user = request.POST.get('email').split("@")[0]
         pw   = request.POST.get('password')
         us = authenticate(username=user,password=pw)#authenticate solo si existe o no en la bd
         if us:
             login(request,us)
-            messages.success(request, 'Bienvenido {}'.format(us.first_name)+' '+format(us.last_name))
+            messages.success(request, 'Bienvenido {}'.format(us.email))
             print('Bienvenido {}'.format(us.get_username()))
-            if ant is None or ant == 'predios':
-                return redirect('predios')
-            else:
+            if ant[-3] == 'predio':
                 return redirect('predio', pk=(request.POST.get('ant').split('/')[-2]))
+            else:
+                return redirect('predios')
         else:
             messages.error(request, "Usuario o contraseña invalidos")
             return redirect('auth/login')
