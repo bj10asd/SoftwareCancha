@@ -6,6 +6,9 @@ from django.contrib import messages
 from django.contrib.auth.models import User
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
+from django.core.paginator import Paginator #Paginacion.
+from django.views.generic import ListView
+
 import string
 
 
@@ -99,8 +102,14 @@ def recuperar_pw(request):
     return render(request,'auth/recuperacion_pw.html',{})
 
 def predios(request):
-    p = Predios.objects.all()
-    return render(request,'predios.html',{'p':p})
+    predios_lista =Predios.objects.all()
+
+    # Configura la paginación con 10 elementos por página
+    paginator = Paginator(predios_lista, 10)
+    # Obtiene el número de página de la URL o utiliza la página 1 como predeterminada
+    pagina = request.GET.get('page') or 1
+    predios = paginator.get_page(pagina)
+    return render(request, 'predios.html', {'predios': predios })
 
 def predio(request,pk):
     p = Predios.objects.get(id=pk)
