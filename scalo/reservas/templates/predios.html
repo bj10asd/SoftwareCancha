@@ -1,5 +1,4 @@
 {% extends 'base.html' %}
-
 {% block content %}
 {% if messages %}
     {% for message in messages %}
@@ -26,5 +25,8 @@
         {% endif %}
     {% endfor %}
 {% endif %}
-<h1>Cuerpo del index</h1>
+<h1>predios</h1>
+{% for e in p %}
+<a href="{% url 'predio' pk=e.id %}">{{e.id}} {{e.nombre}}</a>
+{% endfor %}
 {% endblock %}

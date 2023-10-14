@@ -22,6 +22,7 @@ class Predios(models.Model):
     user_id   = models.ForeignKey(User, models.PROTECT, db_column='user_id',verbose_name='User ID')
     nombre    = models.CharField (db_column='Nombre',max_length=50,null=False)
     direccion = models.CharField (db_column='Direccion',max_length=250,null=True,blank=True)
+    logo      = models.ImageField(upload_to='upload/',db_column='Foto',null=True,blank=True)#, null=True)#(db_column='Foto',max_length=250)
     lat       = models.FloatField(db_column='lat',blank=True,null=True)
     lng       = models.FloatField(db_column='lng',blank=True,null=True)
 
