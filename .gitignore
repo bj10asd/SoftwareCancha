@@ -1,1 +1,3 @@
 venv/
+scalo/reservas/__pycache__/
+scalo/reservas/migrations/__pycache__/
