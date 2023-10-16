@@ -26,6 +26,23 @@
     {% endfor %}
 {% endif %}
 <h1>Listado de predios</h1>
+<form action="{% url 'predios' %}" method="get">
+    {% csrf_token %}
+    buscar<input type="text" value="{{filtro_txt}}" id="filtro_txt" name="filtro_txt">
+    deportes:
+    <select name="fil_select" id="fil_select">
+        <option value="0"> TODOS</option>
+        {% for e in deportes %}
+            {% if fil_select == e.id %}
+                <option value="{{e.id}}" selected> {{e.descripcion}}</option>
+            {% else %}
+                <option value="{{e.id}}" >         {{e.descripcion}}</option>
+            {% endif %}
+        {% endfor %}
+    </select>
+
+    <button> filtrar</button>
+</form>
 {% if predios %}
     {% for predio in predios %}
     <div class="row">

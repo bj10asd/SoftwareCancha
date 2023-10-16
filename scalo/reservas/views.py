@@ -116,14 +116,25 @@ def predios(request):
     return render(request, 'predios.html', {'predios': predios })
 
 def predios(request):
-    predios_lista =Predios.objects.all()
+    filtro_txt      = request.GET.get('filtro_txt')
+    fil_select      = int(request.GET.get('fil_select') or 0)
+    predios_lista   = Predios.objects.all() 
+    if filtro_txt is not None:
+        predios_lista = predios_lista.filter(nombre__icontains=filtro_txt) 
+    
+    if fil_select != 0:
+        if fil_select is not None:
+            predios_lista = predios_lista.filter(id__in = Canchas.objects.filter(deporte_id = fil_select))
 
     # Configura la paginación con 10 elementos por página
     paginator = Paginator(predios_lista, 10)
     # Obtiene el número de página de la URL o utiliza la página 1 como predeterminada
-    pagina = request.GET.get('page') or 1
+    pagina  = request.GET.get('page') or 1
     predios = paginator.get_page(pagina)
-    return render(request, 'predios.html', {'predios': predios })
+    return render(request, 'predios.html', {'predios':      predios,
+                                            'deportes':     Deportes.objects.all(),
+                                            'filtro_txt':   filtro_txt if filtro_txt is not None else '',
+                                            'fil_select':   int(fil_select)})
 
 def predio(request,pk):#import datetime
     
@@ -144,7 +155,11 @@ def predio(request,pk):#import datetime
         
 
 
-    return render(request,'predio.html',{'predio':predio ,'canchas':canchas ,'deportes':deportes,'horas':horas,'dia_actual':dia_actual})
+    return render(request,'predio.html',{'predio':predio ,
+                                        'canchas':canchas ,
+                                        'deportes':deportes,
+                                        'horas':horas,
+                                        'dia_actual':dia_actual})
         
 
 def predios_deporte(request):
