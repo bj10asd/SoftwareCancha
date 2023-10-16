@@ -1,4 +1,174 @@
 {% extends 'base.html' %}
 {% block content %}
-    <h1>un predio en particular</h1>
+<div class="container">
+    <div cl id="contenedor_perfil" class="row">
+        <h4>Perfil predio</h4>
+        <div class="col-6 ">
+            {% if predio.logo %}
+            <img style="height: 150px; width: 150px;" src="{{ predio.logo.url }}" alt="{{ predio.logo.url }}">
+            {% else %}
+            <img src="media/upload/predio.png" alt="Imagen Predeterminada">
+            {% endif %}
+        </div>
+        <div class="col-6 ">
+            <div>
+                <h4>Datos del predio</h4>
+                Nombre: {{ predio.nombre }}
+                <br>
+                Dirrecion :{{ predio.direccion }}
+                <br>
+                Telefono :{% if predio.telefono %}
+                        {{ predio.telefono }}
+                        {% else %}
+                        No se encuentra cargado
+                        {% endif %}
+                <br>
+                Email ::{% if predio.email %}
+                        {{ predio.email }}
+                        {% else %}
+                        No se encuentra cargado
+                        {% endif %}
+                <input type="hidden" id="predio_id" value="{{ predio.id }}">
+            </div>
+        </div>
+        <div>
+            <h4>Descripcion predio</h4>
+            {% if predio.descripcion %}
+            {{ predio.descripcion }}
+            {% else %}
+            No esta cargada una descripcion
+            {% endif %}
+        </div>
+    </div>
+    <div id="contenedor_canchas" class="row">
+        <h1>Canchas</h1>
+        <input type="hidden" name="cant_colum" id="cant_colum" value="{{ horas|length }}">
+        <p>Dia :{{dia_actual }}</p>
+        <table>
+            <thead>
+                <td style="width: 20%;">
+                    <select class="form-select" name="deporte" aria-label="Default select example">
+                        <option value='all' selected>Selecciona un deporte</option>
+                        {% for deporte in deportes %}
+                        <option value="{{ deporte.id }}">{{ deporte.descripcion }}</option>
+                        {% endfor %}
+                    </select>
+                </td>
+                {% for hora in horas %}
+                <td>{{ hora|date:"H:i" }}</td>
+
+                {% endfor %}
+            </thead>
+            <tbody id="list_canchas">
+                {% if canchas %}
+                {% for cancha in canchas %}
+                <tr>
+                    <th>
+                        <div class="card">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <img style="height: 100px; width: 100px;" src="{{ cancha.foto.url }}" alt="{{ cancha.foto }}">
+                                </div>
+                                <div class="col-md-6 px-3">
+                                    <div class="card-block px-6">
+                                        <h4 class="card-title">{{ cancha.nombre }}</h4>
+                                        <p class="card-text">{{ cancha.deporte_id }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </th>
+                    {% for hora in horas %}
+                    <td>Libre</td>
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+                {% else %}
+                <tr>
+                    <td colspan="{{ horas|length}}">No existen canchas disponibles en este momento.</td>
+                </tr>
+                {% endif %}
+            </tbody>
+            
+
+        </table>
+    </div>
+
+</div>
+
+
+
+
+{% endblock %}
+
+{% block javascript %}
+<script>
+    $('select[name="deporte"]').change(function () {
+        let selectedDeporte = $(this).val(); // Obtiene el valor seleccionado en el primer select.
+        // Busca el elemento <option> correspondiente al valor seleccionado
+        let selectedOption = $(this).find('option[value="' + selectedDeporte + '"]');
+        let predio_id = document.getElementById("predio_id").value;
+        let descripcion = selectedOption.text()
+
+        $.ajax({
+            url: '/predios_deporte/', //Ojooo con " /  / "
+            method: 'GET',
+            data: {
+                deporte_id: selectedDeporte,
+                predio_id:predio_id,
+            },
+            success: function (data) {
+                let list_canchas = document.getElementById("list_canchas");
+                let cant_colum = document.getElementById("cant_colum").value;
+
+                // Obtén la fila de encabezados (la primera fila de la tabla)
+
+                //vaciar tabla.
+                list_canchas.innerHTML = "";
+
+                //lenar tabla.
+                if (data.length === 0) {
+                    // Si no hay registros, agregar una fila con un mensaje.
+                    let row = list_canchas.insertRow(0);
+                    let cell = row.insertCell(0);
+                    cell.colSpan = 8; // Colspan para que ocupe toda la tabla.
+                    cell.innerHTML = "No existen canchas con estas características.";
+                } else {
+                    data.forEach(function (cancha, index) {
+                        let fila = document.createElement("tr");
+                        var celdaNombre = document.createElement("th");
+                        var divCard = document.createElement("div");
+                        divCard.className = "card"
+                        divCard.innerHTML = `
+                            <div class="row">
+                                <div class="col-md-6">
+                                <img style="height: 100px; width: 100px;" src="${cancha.foto}" alt="${cancha.foto}">
+                                </div>
+                                <div class="col-md-6 px-3">
+                                    <div class="card-block px-6">
+                                        <h4 class="card-title">${cancha.nombre}</h4>
+                                        <p class="card-text">${cancha.deporte}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                        celdaNombre.appendChild(divCard);
+                        fila.appendChild(celdaNombre)
+                        for (var i = 0; i < cant_colum; i++) {
+                            let celda = document.createElement("th");
+                            celda.innerHTML = "Libre";
+                            fila.append(celda)
+                        }
+                        list_canchas.appendChild(fila);
+
+                    });
+
+                }
+            },
+            error: function (error) {
+                console.error(error);
+            }
+        });
+    });
+</script>
 {% endblock %}

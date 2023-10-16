@@ -40,7 +40,7 @@
                     </div>
                 </div>
                 <div class="col-md-6">
-                    <img src="{{ predio.logo.url }}" alt="{{ predio.logo.url}}">
+                    <img src="{% if predio.logo.url %}{{ predio.logo.url }}{% else %}ruta/a/imagen-por-defecto.jpg{% endif %}" alt="{% if predio.logo.url %}{{ predio.logo.url }}{% else %}Texto alternativo por defecto{% endif %}">
                 </div>
             </div>
         </div>
