@@ -11,7 +11,12 @@
 {% endblock %}
 
     <body>
-        <header>
+        {% if 'http://127.0.0.1:8000/' == request.build_absolute_uri %}
+            <header>
+        {% else %}
+            <header class="absolute">
+        {% endif %}
+
             <!-- <a href="{% url 'predios' %}">Predios</a> -->
 
             <nav class="navbar navbar-expand-lg px-4">
