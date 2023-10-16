@@ -1,0 +1,548 @@
+@import url("https://fonts.googleapis.com/css2?family=Khula:wght@300;400;700;800&family=Lexend:wght@100;300;400;500;600;700;900&display=swap");
+header {
+  padding-top: 1.25rem;
+  padding-left: 3.0625rem;
+  padding-right: 3.0625rem;
+  position: fixed;
+  width: 100%;
+}
+header nav {
+  background-color: none;
+  color: #ABF7F7;
+}
+header nav h1 {
+  font-size: 3rem;
+  color: #575757;
+  font-family: "Lexend", sans-serif;
+  width: 17.0625rem;
+  height: 4rem;
+  margin: 0rem;
+}
+header nav h1 a img {
+  display: flex;
+  width: 12.5rem;
+}
+
+.absolute {
+  position: static;
+  background-color: #042F2F;
+  padding: 0.625rem;
+}
+
+.navbar {
+  font-family: "Lexend", sans-serif;
+  padding: 0.9375rem 0rem;
+}
+.navbar ul {
+  gap: 1.875rem;
+}
+.navbar li a {
+  background-color: #ECFDFD;
+  color: #38CCCC;
+  font-size: 1rem;
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  border-radius: 0.625rem;
+  display: flex;
+  width: 163px;
+  height: 45px;
+  padding: 8px 20px;
+  justify-content: center;
+  align-items: center;
+  gap: 60px;
+}
+.navbar li a:hover {
+  transform: translateZ(50px);
+  transform: scale(1.05);
+}
+.navbar li a:active {
+  transform: translateY(-1px);
+  transform: rotate(2deg);
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+}
+.navbar li a:hover {
+  color: #38CCCC;
+}
+.navbar .inises {
+  background-color: #329F9F;
+  color: #ECFDFD;
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+.navbar .inises:hover {
+  transform: translateZ(50px);
+  transform: scale(1.05);
+}
+.navbar .inises:active {
+  transform: translateY(-1px);
+  transform: rotate(2deg);
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+}
+.navbar .inises:hover {
+  color: #042F2F;
+}
+
+.bienvenida {
+  height: 100vh;
+  background-image: url(../img/background-image.png);
+  background-size: cover;
+  background-repeat: no-repeat;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1.8125rem;
+}
+.bienvenida h2 {
+  width: 52.1875rem;
+  font-size: 3.75rem;
+  font-family: "Lexend", sans-serif;
+  font-weight: bold;
+  text-align: center;
+  color: #ABF7F7;
+}
+.bienvenida h2 strong {
+  color: #38CCCC;
+}
+.bienvenida p {
+  width: 39.6875rem;
+  font-family: Khula;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  color: #ECFDFD;
+  text-align: center;
+}
+.bienvenida button {
+  display: inline-flex;
+  height: 45px;
+  padding: 8px 20px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+  border-radius: 10px;
+  background-color: #38CCCC;
+  box-shadow: 2px 7px 13px 1px rgba(0, 0, 0, 0.25);
+  border: none;
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+.bienvenida button:hover {
+  transform: translateZ(50px);
+  transform: scale(1.05);
+}
+.bienvenida button:active {
+  transform: translateY(-1px);
+  transform: rotate(2deg);
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+}
+.bienvenida button a {
+  color: #ECFDFD;
+  text-decoration: none;
+  font-family: "Lexend", sans-serif;
+  font-size: 16px;
+}
+
+footer {
+  background-color: #042F2F;
+  color: #ECFDFD;
+  width: 100%;
+  height: 15.375rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0rem 4.375rem;
+}
+
+.footer-logo {
+  width: 17.75rem;
+  height: 8.75rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1.25rem;
+}
+.footer-logo img {
+  width: 16.6875rem;
+}
+.footer-logo p {
+  font-size: 1.25rem;
+  font-family: "Khula", sans-serif;
+  text-align: center;
+}
+
+.footer-redes-sociales {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.footer-predios h4 {
+  font-family: "Khula", sans-serif;
+  font-size: 16px;
+  opacity: 0.5;
+  color: #329F9F;
+  padding-bottom: 0.625rem;
+}
+.footer-predios ul li {
+  text-decoration: none;
+  font-family: "Khula", sans-serif;
+  font-size: 16px;
+  color: #ECFDFD;
+  list-style: none;
+  padding-bottom: 0.625rem;
+  cursor: pointer;
+}
+
+.footer-info-contacto {
+  width: 17.4375rem;
+  height: 8.6875rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  gap: 1.25rem;
+}
+.footer-info-contacto div {
+  gap: 1.25rem;
+  display: flex;
+  justify-content: left;
+  align-items: center;
+}
+.footer-info-contacto div img {
+  width: 1.875rem;
+  height: 1.875rem;
+  object-fit: contain;
+}
+.footer-info-contacto div p {
+  font-size: 1rem;
+  font-family: "Khula", sans-serif;
+  margin-bottom: 0;
+}
+
+.section-login, .section-register {
+  background-color: #042F2F;
+  color: #ABF7F7;
+  display: grid;
+  grid-template-columns: 50% 50%;
+  height: 100vh;
+}
+
+.img-container {
+  grid-column: 1/2;
+  background-image: url(../img/foto-login.png);
+  background-size: cover;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  height: 100vh;
+}
+.img-container a {
+  display: flex;
+  justify-content: center;
+  align-self: center;
+  width: 70%;
+}
+.img-container .logo {
+  background-image: none;
+  display: flex;
+  align-self: center;
+  width: 100%;
+  height: auto;
+}
+
+.iniciar-sesion, .section-register .iniciar-sesion {
+  grid-column: 2/3;
+  width: 27.4375rem;
+  height: auto;
+  justify-self: center;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  gap: 1.5rem;
+  margin-top: 2.375rem;
+  margin-bottom: 2rem;
+  justify-content: center;
+}
+.iniciar-sesion .titulo-container {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  gap: 1.75rem;
+}
+.iniciar-sesion .titulo-container h2 {
+  font-size: 2.25rem;
+  font-family: "Lexend", sans-serif;
+  font-weight: bold;
+  text-align: center;
+}
+.iniciar-sesion .titulo-container p {
+  font-size: 1.25rem;
+  font-family: "Khula", sans-serif;
+  text-align: center;
+}
+.iniciar-sesion form, .section-register .iniciar-sesion form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: start;
+  gap: 1.25rem;
+}
+.iniciar-sesion form label, .section-register .iniciar-sesion form label {
+  font-size: 1rem;
+  font-family: "Lexend", sans-serif;
+}
+.iniciar-sesion form input, .section-register .iniciar-sesion form input {
+  width: 27.4375rem;
+  font-family: "Khula", sans-serif;
+  height: 3rem;
+  border-radius: 0.75rem;
+  background: #ABF7F7;
+  border: 0.0625rem solid #D4D7E3;
+  padding-left: 0.625rem;
+  background-color: #ECFDFD;
+}
+.iniciar-sesion form input::placeholder, .section-register .iniciar-sesion form input::placeholder {
+  color: #8897AD;
+  font-size: 1rem;
+  font-family: "Khula", sans-serif;
+}
+.iniciar-sesion form a, .section-register .iniciar-sesion form a {
+  color: #38CCCC;
+  text-decoration: none;
+  font-size: 1rem;
+  font-family: "Lexend", sans-serif;
+  font-weight: bolder;
+}
+.iniciar-sesion button, .section-register .iniciar-sesion button {
+  background-color: #38CCCC;
+  border-color: #329F9F;
+  border-radius: 0.75rem;
+  color: #ABF7F7;
+  font-size: 1.25rem;
+  font-family: "Lexend", sans-serif;
+  font-weight: bolder;
+  text-align: center;
+  width: 27.4375rem;
+  height: 3.25rem;
+  border-style: none;
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+.iniciar-sesion button:hover {
+  transform: translateZ(50px);
+  transform: scale(1.05);
+}
+.iniciar-sesion button:active {
+  transform: translateY(-1px);
+  transform: rotate(2deg);
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+}
+
+.login-alt {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  gap: 16px;
+}
+.login-alt button {
+  background-color: rgba(181, 181, 181, 0.4431372549);
+  color: #ECFDFD;
+  border-style: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1.25rem;
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+.login-alt button:hover {
+  transform: translateZ(50px);
+  transform: scale(1.05);
+}
+.login-alt button:active {
+  transform: translateY(-1px);
+  transform: rotate(2deg);
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+}
+.login-alt img {
+  background-image: none;
+}
+
+.registrate-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 0.625rem;
+}
+.registrate-container p {
+  font-size: 1rem;
+  font-family: "Lexend", sans-serif;
+  color: #ABF7F7;
+  font-weight: bold;
+}
+.registrate-container a {
+  color: #38CCCC;
+  text-decoration: none;
+  font-size: 1rem;
+  font-family: "Lexend", sans-serif;
+  font-weight: bolder;
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+.registrate-container a:hover {
+  transform: translateZ(50px);
+  transform: scale(1.05);
+}
+.registrate-container a:active {
+  transform: translateY(-1px);
+  transform: rotate(2deg);
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+}
+
+.section-register {
+  background-color: #ABF7F7;
+  color: #042F2F;
+}
+.section-register .img-container {
+  grid-column: 2/3;
+}
+.section-register .iniciar-sesion {
+  grid-column: 1/2;
+  grid-row: 1/2;
+  background-color: #ABF7F7;
+}
+.section-register .registrate-container p {
+  color: #042F2F;
+}
+
+.predios {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.predios ul {
+  width: 80%;
+}
+.predios ul li {
+  display: flex;
+  gap: 1.875rem;
+  height: 12.5rem;
+  text-decoration: none;
+  list-style: none;
+  background-color: #ECFDFD;
+  box-shadow: 0px 2px 15px 0px rgba(56, 204, 204, 0.31), 0px 0px 4px 0px rgba(0, 0, 0, 0.4), 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  margin: 1.25rem;
+  border-radius: 24px;
+  padding: 1.25rem;
+}
+.predios ul li .datos-predio {
+  padding-top: 0.625rem;
+  justify-content: space-between;
+}
+.predios ul li .datos-predio a {
+  text-decoration: none;
+  color: #042F2F;
+}
+.predios ul li .datos-predio h3 {
+  font-family: "Lexend", sans-serif;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 700;
+  cursor: pointer;
+}
+.predios ul li .datos-predio div {
+  margin-top: 1.75rem;
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+}
+.predios ul li .datos-predio div p {
+  margin: 0;
+}
+
+.pag {
+  /*--------- Pager2 ---------*/
+}
+.pag nav {
+  margin: 0 auto;
+  padding-top: 50px;
+  padding-bottom: 0.625rem;
+}
+.pag .pagination.pagination-circle .page-item.active .page-link {
+  border-radius: 70%;
+}
+.pag .pagination .page-item .page-link:hover {
+  -webkit-transition: all 0.3s linear;
+  transition: all 0.3s linear;
+  border-radius: 0.125rem;
+  background-color: #eee;
+}
+.pag .pagination .page-item.active .page-link {
+  -webkit-transition: all 0.2s linear;
+  transition: all 0.2s linear;
+  border-radius: 0.125rem;
+  background-color: #BD5410;
+  color: #fff;
+}
+.pag .pagination .page-item .page-link {
+  -webkit-transition: all 0.3s linear;
+  transition: all 0.3s linear;
+  outline: 0;
+  border: 0;
+  background-color: transparent;
+  font-size: 0.9rem;
+  color: #999;
+  font-family: "Lexend", sans-serif;
+  font-weight: bold;
+}
+.pag .pagination.pagination-circle .page-item .page-link:hover {
+  border-radius: 50%;
+}
+.pag .pagination.pagination-circle .page-item .page-link {
+  margin-left: 2px;
+  margin-right: 2px;
+  border-radius: 50%;
+}
+.pag .pagination .page-item.active .page-link {
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+}
+.pag .page-link {
+  border: none !important;
+}
+.pag .pagination {
+  gap: 1.25rem;
+}
+.pag .Pager2 .pagination .page-item .page-link:hover {
+  -webkit-transition: all 0.3s linear;
+  transition: all 0.3s linear;
+  border-radius: 0.3125rem;
+  background-color: #ABF7F7;
+}
+.pag .Pager2 .pagination.pg-blue .page-item.active .page-link:hover {
+  background-color: #38CCCC;
+}
+.pag .Pager2 .pagination .page-item.active .page-link {
+  -webkit-transition: all 0.2s linear;
+  transition: all 0.2s linear;
+  border-radius: 0.3125rem;
+  background-color: #38CCCC;
+  color: #fff;
+}
+.pag .Pager2 .pagination .page-item .page-link {
+  -webkit-transition: all 0.3s linear;
+  transition: all 0.3s linear;
+  outline: 0;
+  border: 0;
+  background-color: transparent;
+  font-size: 1rem;
+  color: #042F2F;
+  border: 1px solid #329F9F;
+}
+.pag .Pager2 .pagination .page-item.active .page-link {
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+}
+.pag .Pager2 .page-link {
+  border: none !important;
+}
+.pag .Pager2 .page-link:focus {
+  z-index: 2;
+  outline: 0;
+  box-shadow: 0;
+}

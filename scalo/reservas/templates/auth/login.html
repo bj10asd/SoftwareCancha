@@ -1,4 +1,5 @@
-{% extends 'base.html' %}
+{% extends 'base2.html' %}
+{% load static %}
 {% block content %}
 
 <!-- MENSAJES DE OK O FAIL -->
@@ -17,24 +18,60 @@
         {% endif %}
     {% endfor %}
 {% endif %}
-<h1>LOGIN</h1>
-<form action="{% url 'login' %}" method="post">
-    {% csrf_token %}
-    <div class="form-group form-outline form-white mb-2"><!-- 4 -->
+<!-- <h1>LOGIN</h1> -->
+
+<section class="section-login">
+    <div class="img-container">
+        <a href="{% url 'index' %}" ><img class="img-container logo" src="{% static 'img/logo-no-background.png' %}" alt="ReservaTotal"></a>
+    </div>  
+
+    <div class ="iniciar-sesion">
+        <div class="titulo-container">
+            <h2>Inicia sesión en Reserva Total</h2>
+            <p>Accede a todas las canchas con solo un clic. ¡Bienvenido a Reserva Total!</p>
+        </div>
+        <div>
+            <form action="{% url 'login' %}" method="post">
+                {% csrf_token %}
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" placeholder="ejemplo@mail.com">
+
+                <label for="password">Contraseña</label>
+                <input type="password" name="password" id="password" placeholder="al menos 8 caracteres">
+
+                <a href="{% url 'recuperacion' %}">Olvidaste la contraseña?</a>
+
+                <input type="text" name="ant" id="ant" value="{{request.META.HTTP_REFERER}}" hidden >
+                <button type="submit">Iniciar sesión</button>
+            </form>
+        </div>
+        <!-- <div class="login-alt">
+            <button><img src="../assets/img/Google-logo.png" alt="Google-logo">Inicia sesión con Google</button>
+        </div> -->
+
+        <div class="registrate-container">
+            <p>No tienes una cuenta?</p> 
+            <a href="{% url 'registro' %}">Registrate</a>
+        </div>
+
+    </div>
+</section>
+
+    <!-- <div class="form-group form-outline form-white mb-2">
       <input type="email" id="email" name="email" class="form-control form-control-lg" />
       <label class="form-label" for="email">Email</label>
     </div>
 
-    <div class="form-group form-outline form-white mb-2"><!-- 4 -->
+    <div class="form-group form-outline form-white mb-2">
       <input type="password" name="password" id="password" class="form-control form-control-lg" />
       <label class="form-label" for="password">Contraseña</label>
     </div>
 
-    <p class="small mb-2 pb-lg-1"><a class="text-white-50" href="{% url 'recuperacion' %}">Olvidaste la contraseña?</a></p><!-- 5 2 -->
-    <p class="small mb-2 pb-lg-1"><a class="text-white-50" href="{% url 'registro' %}">Registrarse</a></p><!-- 5 2 -->
+    <p class="small mb-2 pb-lg-1"><a class="text-white-50" href="{% url 'recuperacion' %}">Olvidaste la contraseña?</a></p>
+    <p class="small mb-2 pb-lg-1"><a class="text-white-50" href="{% url 'registro' %}">Registrarse</a></p>
 
     <input type="text" name="ant" id="ant" value="{{request.META.HTTP_REFERER}}" hidden >
     <button type="submit" class="btn btn-outline-light btn-lg px-5" >Ingresar</button>
-</form>
+</form> -->
 
 {% endblock %}
