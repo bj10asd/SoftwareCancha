@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import path
-from reservas.models import UsuarioXRoles,Roles,Predios,Deportes,Canchas
+from reservas.models import UsuarioXRoles,Roles,Predios,Deportes,Canchas,Reservas
 from django.contrib.auth import login,logout,authenticate
 from django.contrib import messages
 from django.contrib.auth.models import User
@@ -144,6 +144,10 @@ def predio(request,pk):#import datetime
     dia_actual = datetime.now().strftime("%d/%m")
     hora_actual = datetime.now()
 
+    #msotrando reservas
+    reservas = Reservas.objects.filter(cancha_id__in=canchas)
+    #print("contando las reservas de este predio de diferentes canchas: "+ str(reservas.count()))
+
     # Establece los minutos y  segundos en cero
     hora_actual = hora_actual.replace(minute=0, second=0, microsecond=0)
 
@@ -155,11 +159,12 @@ def predio(request,pk):#import datetime
         
 
 
-    return render(request,'predio.html',{'predio':predio ,
-                                        'canchas':canchas ,
-                                        'deportes':deportes,
-                                        'horas':horas,
-                                        'dia_actual':dia_actual})
+    return render(request,'predio.html',{'predio':      predio ,
+                                        'canchas':      canchas ,
+                                        'deportes':     deportes,
+                                        'horas':        horas,
+                                        'dia_actual':   dia_actual,
+                                        'reservas':     reservas})
         
 
 def predios_deporte(request):

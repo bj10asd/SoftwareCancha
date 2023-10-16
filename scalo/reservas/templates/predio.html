@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load consulta_reservas %}
 {% block content %}
 <div class="container">
     <div cl id="contenedor_perfil" class="row">
@@ -32,7 +33,7 @@
             </div>
         </div>
         <div>
-            <h4>Descripcion predio</h4>
+            <h4>Descripcion predio </h4>
             {% if predio.descripcion %}
             {{ predio.descripcion }}
             {% else %}
@@ -79,7 +80,13 @@
                         </div>
                     </th>
                     {% for hora in horas %}
-                    <td>Libre</td>
+                        {% get_reservas cancha hora as r %}
+                            {% if r %}
+                                <td>{{r}}</td>
+                            {% else %}
+                                <td>Libre</td> 
+                            {% endif %}
+
                     {% endfor %}
                 </tr>
                 {% endfor %}
