@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block content %}
 {% if messages %}
     {% for message in messages %}
@@ -25,6 +26,7 @@
         {% endif %}
     {% endfor %}
 {% endif %}
+<<<<<<< HEAD
 <h1>Listado de predios</h1>
 <form action="{% url 'predios' %}" method="get">
     {% csrf_token %}
@@ -43,10 +45,32 @@
 
     <button> filtrar</button>
 </form>
+=======
+<section class="predios">
+    <h1>Predios disponibles</h1>
+>>>>>>> 5d0a21b49d212e06598dd86ea8d189283fa201e5
+<section class="predios">
+    <h1>Predios disponibles</h1>
+    <form action="{% url 'predios' %}" method="get">
+        {% csrf_token %}
+        buscar<input type="text" value="{{filtro_txt}}" id="filtro_txt" name="filtro_txt">
+        deportes:
+        <select name="fil_select" id="fil_select">
+            <option value="0"> TODOS</option>
+            {% for e in deportes %}
+                {% if fil_select == e.id %}
+                    <option value="{{e.id}}" selected> {{e.descripcion}}</option>
+                {% else %}
+                    <option value="{{e.id}}" >         {{e.descripcion}}</option>
+                {% endif %}
+            {% endfor %}
+        </select>
+    
+        <button> filtrar</button>
+    </form>
 {% if predios %}
     {% for predio in predios %}
-    <div class="row">
-        <!-- Card Start -->
+    <!-- <div class="row">
         <div class="card">
             <div class="row">
                 <div class="col-md-6 px-3">
@@ -61,30 +85,43 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
+
+        <ul>
+            <li>
+                <img src="{% if predio.logo.url %}{{ predio.logo.url }}{% else %}ruta/a/imagen-por-defecto.jpg{% endif %}" alt="{% if predio.logo.url %}{{ predio.logo.url }}{% else %}Texto alternativo por defecto{% endif %}">
+                <div class="datos-predio">
+                    <a href="{% url 'predio' pk=predio.id %}"><h3>{{ predio.nombre }}</h3></a>
+                    <div>
+                        <img src="{% static 'img/Address.png' %}" alt="">
+                        <p>{{ predio.direccion }}</p>
+                    </div>
+                </div>
+            </li>
+        </ul>
     {% endfor %}
 {% else %}
     <p>No existen predios disponibles en este momento.</p>
 {% endif %}
-
+    </section>  
 
  
 
 
-<div class="pagination">
+<div class="pagination justify-content-center">
     <span class="step-links">
         {% if predios.has_previous %}
-            <a href="?page=1">&laquo; first</a>
-            <a href="?page={{ predios.previous_page_number }}">previous</a>
+            <a href="?page=1">&laquo; Primera</a>
+            <a href="?page={{ predios.previous_page_number }}">Anterior</a>
         {% endif %}
 
         <span class="current">
-            Page {{ predios.number }} of {{ predios.paginator.num_pages }}.
+            Página {{ predios.number }} de {{ predios.paginator.num_pages }}
         </span>
 
         {% if predios.has_next %}
-            <a href="?page={{ predios.next_page_number }}">next</a>
-            <a href="?page={{ predios.paginator.num_pages }}">last &raquo;</a>
+            <a href="?page={{ predios.next_page_number }}">Siguiente</a>
+            <a href="?page={{ predios.paginator.num_pages }}">Última &raquo;</a>
         {% endif %}
     </span>
 </div>
