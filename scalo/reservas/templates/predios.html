@@ -25,8 +25,52 @@
         {% endif %}
     {% endfor %}
 {% endif %}
-<h1>predios</h1>
-{% for e in p %}
-<a href="{% url 'predio' pk=e.id %}">{{e.id}} {{e.nombre}}</a>
-{% endfor %}
+<h1>Listado de predios</h1>
+{% if predios %}
+    {% for predio in predios %}
+    <div class="row">
+        <!-- Card Start -->
+        <div class="card">
+            <div class="row">
+                <div class="col-md-6 px-3">
+                    <div class="card-block px-6">
+                        <h4 class="card-title">{{ predio.nombre }}</h4>
+                        <p class="card-text">{{ predio.direccion }}</p>
+                        <a href="{% url 'predio' pk=predio.id %}" class="mt-auto btn btn-primary">Ver</a>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <img src="{{ predio.logo.url }}" alt="{{ predio.logo.url}}">
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+{% else %}
+    <p>No existen predios disponibles en este momento.</p>
+{% endif %}
+
+
+ 
+
+
+<div class="pagination">
+    <span class="step-links">
+        {% if predios.has_previous %}
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ predios.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ predios.number }} of {{ predios.paginator.num_pages }}.
+        </span>
+
+        {% if predios.has_next %}
+            <a href="?page={{ predios.next_page_number }}">next</a>
+            <a href="?page={{ predios.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+    </span>
+</div>
+
+</ul>
 {% endblock %}
