@@ -1,4 +1,5 @@
-{% extends 'base.html' %}
+{% extends 'base2.html' %}
+{% load static %}
 
 {% block content %}
 
@@ -18,10 +19,45 @@
     {% endfor %}
 {% endif %}
 
-<h1 class="fw-bold mb-2 text-uppercase">Registro</h1>
+<!-- <h1 class="fw-bold mb-2 text-uppercase">Registro</h1> -->
 
-<form action="{% url 'registro' %}" method="post">
-{% csrf_token %}
+<section class="section-register">
+    <div class="img-container">
+        <a href="{% url 'index' %}" ><img class="img-container logo" src="{% static 'img/logo-no-background.png' %}" alt="ReservaTotal"></a>
+    </div>  
+
+    <div class ="iniciar-sesion">
+        <div class="titulo-container">
+            <h2>Registrate en Reserva Total</h2>
+        </div>
+        <div>
+            <form action="{% url 'registro' %}" method="post">
+                {% csrf_token %}
+                <label for="email">Email</label>
+                <input type="email" name="email" id="email" placeholder="ejemplo@mail.com">
+
+                <label for="password">Contraseña</label>
+                <input type="password" name="password" id="password" placeholder="al menos 8 caracteres">
+
+                <label for="password">Confirmar contraseña</label>
+                <input type="password" name="password2" id="password2" placeholder="al menos 8 caracteres">
+
+                <button type="submit">Registrarse</button>
+            </form>
+        </div>
+        <!-- <div class="login-alt">
+            <button><img src="../assets/img/Google-logo.png" alt="Google-logo">Inicia sesión con Google</button>
+        </div> -->
+
+        <div class="registrate-container">
+            <p>¿Ya tienes una cuenta?</p> 
+            <a href="{% url 'login' %}">Inicia Sesión</a>
+        </div>
+
+    </div>
+</section>
+
+
 
 <!--
 <div class="form-group form-outline form-white mb-4">
@@ -29,7 +65,7 @@
     <label class="form-label" for="username">Usuario</label>
 </div>
 -->
-<div class="form-group form-outline form-white mb-4">
+<!-- <div class="form-group form-outline form-white mb-4">
     <input type="email" id="email" name="email" class="form-control form-control-lg" />
     <label class="form-label" for="email">Email</label>
 </div>
@@ -47,6 +83,6 @@
 <button type="submit" class="btn btn-outline-light btn-lg px-5" >Registrarme</button>
 </form>
 
-<span>¿Ya tienes una cuenta? <a href="{% url 'login' %}">Inicia sesión</a></span>
+<span>¿Ya tienes una cuenta? <a href="{% url 'login' %}">Inicia sesión</a></span> -->
 
 {% endblock %}

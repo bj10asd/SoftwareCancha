@@ -43,7 +43,7 @@ def login_view(request):
                 return redirect('predios')
         else:
             messages.error(request, "Usuario o contraseña invalidos")
-            return redirect('auth/login')
+            return redirect('login')
 
     return render(request, 'auth/login.html',{})
 
@@ -59,25 +59,25 @@ def registrarse(request):
         rdo = User.objects.filter(email=e).count()
         if rdo > 0:
             messages.error(request, 'El email proporcionado ya está en uso')
-            return redirect('auth/registro')
+            return redirect('registro')
         else:
             p1 = request.POST.get('password')
             p2 = request.POST.get('password2')
             if p1!=p2:
                 messages.error(request, 'Las contraseñas no coinciden')
-                return redirect('auth/registro')
+                return redirect('registro')
             else:
                 if len(p1)<7:
                     messages.error(request, 'La contraseña debe tener al menos 8 caracteres')
-                    return redirect('auth/registro')
+                    return redirect('registro')
                 else:
                     if not any(c.isupper() for c in p1):
                         messages.error(request, 'La contraseña debe contener una mayuscula')
-                        return redirect('auth/registro')
+                        return redirect('registro')
                     if not any(c in string.punctuation for c in p1):
                         #C: !" #$%&'()*+,-./:;<=>?@[\]^_`{|} ~.
                         messages.error(request, 'La contraseña debe contener al menos un caracter especial')
-                        return redirect('auth/registro')
+                        return redirect('registro')
             #AL NO PEDIR USUARIO, VAMOS A GENERAR EL USUARIO APARTIR DEL EMAIL
             #ES DECIR EL USUARIO SERA LO QUE ANTECEDA AL @
             u = request.POST.get('email').split("@")[0]
