@@ -38,7 +38,7 @@ class UsuarioXRolesAdmin(admin.ModelAdmin):
 admin.site.register(UsuarioXRoles,UsuarioXRolesAdmin)
 
 class PrediosAdmin(admin.ModelAdmin):
-    list_display    = ['id','user_id','nombre','direccion','lat','lng']
+    list_display    = ['id','user_id','nombre','direccion','lat','lng','logo']
     readonly_fields = ['id']
     search_fields   = ['user_id','nombre','direccion']
     actions         = None

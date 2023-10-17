@@ -21,11 +21,13 @@ class Predios(models.Model):
     #Predio_ID GENERADO POR DJANGO
     user_id   = models.ForeignKey(User, models.PROTECT, db_column='user_id',verbose_name='User ID')
     nombre    = models.CharField (db_column='Nombre',max_length=50,null=False)
-    direccion = models.CharField (db_column='Direccion',max_length=250,null=True,blank=True)
-    logo      = models.ImageField(upload_to='upload/',db_column='Foto',null=True,blank=True)#, null=True)#(db_column='Foto',max_length=250)
+    direccion = models.CharField (db_column='Direccion',max_length=250)
+    logo      = models.ImageField(upload_to='upload/',db_column='Foto')#, null=True)#(db_column='Foto',max_length=250)
     lat       = models.FloatField(db_column='lat',blank=True,null=True)
     lng       = models.FloatField(db_column='lng',blank=True,null=True)
-
+    telefono = models.CharField(max_length=15, db_column='Telefono', blank=True, null=True)  
+    email = models.EmailField(max_length=100, db_column='Email', blank=True, null=True)
+    descripcion = models.EmailField(max_length=100, db_column='Desripcion', blank=True, null=True)
     class Meta:
         db_table            = 'predios'
         ordering            = ['nombre']

@@ -16,7 +16,11 @@
                 <h4>Datos del predio</h4>
                 Nombre: {{ predio.nombre }}
                 <br>
-                Dirrecion :{{ predio.direccion }}
+                Dirrecion :{% if predio.direccion %}
+                            {{ predio.direccion }}
+                            {% else %}
+                            No se encuentra cargado
+                            {% endif %}
                 <br>
                 Telefono :{% if predio.telefono %}
                         {{ predio.telefono }}
