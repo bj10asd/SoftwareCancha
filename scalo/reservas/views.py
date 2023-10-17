@@ -191,7 +191,7 @@ def predios_deporte(request):
                     'anticipo': cancha.anticipo,
                 })
         else:
-            canchas = Canchas.objects.all()
+            canchas = Canchas.objects.filter(predio_id=predio_id)
             for cancha in canchas:
                 canchas_data.append({
                     'cancha_id':cancha.id,
