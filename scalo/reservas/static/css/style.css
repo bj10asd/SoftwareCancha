@@ -569,6 +569,147 @@ footer {
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
 }
 
+/* Predio */
+
+.datos {
+  padding: 0;
+  height: 25rem;
+  background-color: #ABF7F7;
+  border-radius: 1.625rem;
+  box-shadow: 3px 7px 15px 0px rgba(0, 0, 0, 0.25);
+}
+
+.titl {
+  padding: 20px 20px 0 20px;
+}
+
+.row h4 {
+  font-family: "Lexend", sans-serif;
+  font-size: 2.5rem;
+  font-weight: bold;
+  padding-top: 1.25rem;
+  padding-bottom: .625rem;
+  color: #042F2F;
+}
+.datos h4 {
+  padding: 0;
+}
+.row h3 {
+  font-family: "Lexend", sans-serif;
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: #042F2F;
+}
+
+.row div {
+  justify-content: start;
+}
+
+.desc {
+  min-height: 6.25rem;
+  margin-top: .625rem;
+  padding: 20px 20px 0 20px;
+}
+
+.desc p {
+  color: #042F2F;
+
+  font-family: Khula;
+  font-size: 18px;
+}
+
+.dir-container {
+  display: flex;
+  align-items: center;
+}
+
+.dir-container p {
+  font-family: Khula;
+  font-size: 22px;
+  font-style: normal;
+  margin: 0%;
+}
+
+.turnos {
+  padding-top: 2.5rem;
+  padding-bottom: 2.5rem;
+}
+
+.turnos h2 {
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  font-family: Lexend;
+  font-size: 32px;
+  color: #042F2F;
+}
+
+.turnos p {
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  font-family: Lexend;
+  font-size: 18px;
+  color: #042F2F;
+  padding-top: 1.25rem;
+}
+
+.table-container {
+  background-color: #ABF7F7;
+  border-radius: 1.25rem;
+  padding: 1.875rem;
+}
+
+.turnos table {
+  width: 95%;
+  background-color: #ABF7F7;
+  border-radius: 20px;
+  padding: 1.25rem;
+}
+
+.turnos thead {
+  background-color: #38CCCC;
+  border-radius: 20px;
+  color: #ECFDFD;
+  text-align: center;
+  font-family: Lexend;
+  font-size: 14px;
+}
+
+.turnos tr {
+  height: 4.125rem;
+  border-radius: 20px;
+}
+
+.turnos thead select {
+  background-color: #042F2F;
+  border-radius: 28px;
+  color: #ECFDFD;
+  text-align: center;
+  font-family: Lexend;
+  font-size: 14px;
+  box-shadow: 3px 7px 15px 0px rgba(0, 0, 0, 0.25);
+  border: none;
+  width: 90%;
+}
+
+.turnos h4 {
+  font-family: Lexend;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 600;
+  color: #ECFDFD;
+}
+
+.card-block p {
+  font-family: Lexend;
+  font-size: 12px;
+  font-style: normal;
+  text-align: start;
+  justify-content: start;
+  color: #ECFDFD;
+}
+
 /* .pag {
   
 }

@@ -1,104 +1,118 @@
 {% extends 'base.html' %}
+{% load static %}
 {% load consulta_reservas %}
 {% block content %}
 <div class="container">
-    <div cl id="contenedor_perfil" class="row">
-        <h4>Perfil predio</h4>
-        <div class="col-6 ">
+    <div cl id="contenedor_perfil" class="row mb-3">
+        <h4>Perfil del predio</h4>
+        <div class="col-6 d-flex justify-content-center align-items-center">
             {% if predio.logo %}
-            <img style="height: 150px; width: 150px;" src="{{ predio.logo.url }}" alt="{{ predio.logo.url }}">
+            <img style="height: 340px; width: 340px; border-radius: 26px;" src="{{ predio.logo.url }}" alt="{{ predio.logo.url }}">
             {% else %}
-            <img src="media/upload/predio.png" alt="Imagen Predeterminada">
+            <img style="height: 340px; width: 340px; border-radius: 26px;" src="media/upload/predio.png" alt="Imagen Predeterminada">
             {% endif %}
         </div>
-        <div class="col-6 ">
-            <div>
-                <h4>Datos del predio</h4>
-                Nombre: {{ predio.nombre }}
+        <div class="col-6 d-flex flex-column justify-content-center datos">
+            <div class="titl">
+                <h4>{{ predio.nombre }}</h4>
                 <br>
-                Dirrecion :{{ predio.direccion }}
+                <h3>{% if predio.direccion %}
+                    {{ predio.direccion }}
+                    {% else %}
+                    No se encuentra cargado
+                    {% endif %}</h3>
                 <br>
-                Telefono :{% if predio.telefono %}
+                <div class="dir-container">
+                    <img src="{% static 'img/VOIP.png' %}" alt="Direccion: ">
+                    <p>{% if predio.telefono %}
                         {{ predio.telefono }}
                         {% else %}
                         No se encuentra cargado
-                        {% endif %}
+                        {% endif %}</p>
+                </div>
                 <br>
-                Email ::{% if predio.email %}
-                        {{ predio.email }}
-                        {% else %}
-                        No se encuentra cargado
-                        {% endif %}
+                <div class="dir-container">
+                    <img src="{% static 'img/Database-Mail.png' %}" alt="Direccion: ">
+                    <p>
+                        {% if predio.email %}
+                            {{ predio.email }}
+                            {% else %}
+                            No se encuentra cargado
+                            {% endif %}
+                    </p>
+                </div>
                 <input type="hidden" id="predio_id" value="{{ predio.id }}">
             </div>
-        </div>
-        <div>
-            <h4>Descripcion predio </h4>
-            {% if predio.descripcion %}
-            {{ predio.descripcion }}
-            {% else %}
-            No esta cargada una descripcion
-            {% endif %}
+            <div class="desc">
+                <p>
+                    {% if predio.descripcion %}
+                    {{ predio.descripcion }}
+                    {% else %}
+                    No esta cargada una descripcion
+                    {% endif %}
+                </p>
+            </div>
         </div>
     </div>
-    <div id="contenedor_canchas" class="row">
-        <h1>Canchas</h1>
+    <div id="contenedor_canchas" class="row turnos">
+        <h2>Turnos disponibles del predio</h2>
         <input type="hidden" name="cant_colum" id="cant_colum" value="{{ horas|length }}">
         <p>Dia :{{dia_actual }}</p>
-        <table>
-            <thead>
-                <td style="width: 20%;">
-                    <select class="form-select" name="deporte" aria-label="Default select example">
-                        <option value='all' selected>Selecciona un deporte</option>
-                        {% for deporte in deportes %}
-                        <option value="{{ deporte.id }}">{{ deporte.descripcion }}</option>
-                        {% endfor %}
-                    </select>
-                </td>
-                {% for hora in horas %}
-                <td>{{ hora|date:"H:i" }}</td>
-
-                {% endfor %}
-            </thead>
-            <tbody id="list_canchas">
-                {% if canchas %}
-                {% for cancha in canchas %}
-                <tr>
-                    <th>
-                        <div class="card">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <img style="height: 100px; width: 100px;" src="{{ cancha.foto.url }}" alt="{{ cancha.foto }}">
-                                </div>
-                                <div class="col-md-6 px-3">
-                                    <div class="card-block px-6">
-                                        <h4 class="card-title">{{ cancha.nombre }}</h4>
-                                        <p class="card-text">{{ cancha.deporte_id }}</p>
+        <div class="table-container d-flex justify-content-center">
+            <table>
+                <thead>
+                    <td style="width: 25%; background-color: #ABF7F7;">
+                        <select class="form-select" name="deporte" aria-label="Default select example">
+                            <option value='all' selected>Selecciona un deporte</option>
+                            {% for deporte in deportes %}
+                            <option value="{{ deporte.id }}">{{ deporte.descripcion }}</option>
+                            {% endfor %}
+                        </select>
+                    </td>
+                    {% for hora in horas %}
+                    <td>{{ hora|date:"H:i" }}</td>
+    
+                    {% endfor %}
+                </thead>
+                <tbody id="list_canchas">
+                    {% if canchas %}
+                    {% for cancha in canchas %}
+                    <tr style="height: 9.1875rem;">
+                        <th style="height: 9.1875rem;">
+                            <div class="card d-flex justify-content-center" style="height: 147px; background-color: #38CCCC; border-radius: .6875rem;">
+                                <div class="row">
+                                    <div class="col-md-6 d-flex align-items-center ">
+                                        <img style="border-radius: .75rem; width: 114px; height: 114px; margin-left: .625rem;" src="{{ cancha.foto.url }}" alt="{{ cancha.foto }}">
+                                    </div>
+                                    <div class="col-md-6 px-3">
+                                        <div class="card-block px-6">
+                                            <h4 class="card-title">{{ cancha.nombre }}</h4>
+                                            <p class="card-text">{{ cancha.deporte_id }}</p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </th>
-                    {% for hora in horas %}
-                        {% get_reservas cancha hora as r %}
-                            {% if r %}
-                                <td>{{r}}</td>
-                            {% else %}
-                                <td>Libre</td> 
-                            {% endif %}
-
+                        </th>
+                        {% for hora in horas %}
+                            {% get_reservas cancha hora as r %}
+                                {% if r %}
+                                    <td style="height: 9.1875rem; background-color: #577373; border: 1px solid #38CCCC; color: #ABF7F7; text-align: center; font-family: Lexend; font-weight: bold;">{{r}}</td>
+                                {% else %}
+                                    <td style="height: 9.1875rem; background-color: #ECFDFD; border: 1px solid #38CCCC;"></td> 
+                                {% endif %}
+    
+                        {% endfor %}
+                    </tr>
                     {% endfor %}
-                </tr>
-                {% endfor %}
-                {% else %}
-                <tr>
-                    <td colspan="{{ horas|length}}">No existen canchas disponibles en este momento.</td>
-                </tr>
-                {% endif %}
-            </tbody>
-            
+                    {% else %}
+                    <tr>
+                        <td colspan="{{ horas|length}}">No existen canchas disponibles en este momento.</td>
+                    </tr>
+                    {% endif %}
+                </tbody>
+            </table>
 
-        </table>
+        </div>
     </div>
 
 </div>
@@ -147,14 +161,16 @@
                         var divCard = document.createElement("div");
                         divCard.className = "card"
                         divCard.innerHTML = `
-                            <div class="row">
-                                <div class="col-md-6">
-                                <img style="height: 100px; width: 100px;" src="${cancha.foto}" alt="${cancha.foto}">
-                                </div>
-                                <div class="col-md-6 px-3">
-                                    <div class="card-block px-6">
-                                        <h4 class="card-title">${cancha.nombre}</h4>
-                                        <p class="card-text">${cancha.deporte}</p>
+                            <div class="card d-flex justify-content-center" style="height: 147px; background-color: #38CCCC; border-radius: .6875rem;">
+                                <div class="row">
+                                    <div class="col-md-6 d-flex align-items-center ">
+                                        <img style="border-radius: .75rem; width: 114px; height: 114px; margin-left: .625rem;" src="${cancha.foto}" alt="${cancha.foto}">
+                                    </div>
+                                    <div class="col-md-6 px-3">
+                                        <div class="card-block px-6">
+                                            <h4 class="card-title">${cancha.nombre}</h4>
+                                            <p class="card-text">${cancha.deporte}</p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -163,7 +179,8 @@
                         fila.appendChild(celdaNombre)
                         for (var i = 0; i < cant_colum; i++) {
                             let celda = document.createElement("th");
-                            celda.innerHTML = "Libre";
+                            celda.style = style="height: 9.1875rem; background-color: #ECFDFD; border: 1px solid #38CCCC;";
+                            celda.innerHTML = "";
                             fila.append(celda)
                         }
                         list_canchas.appendChild(fila);
