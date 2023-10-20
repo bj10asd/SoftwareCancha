@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+{% if messages %}
+    {% for message in messages %}
+        {% if message.tags == 'success' %}
+            <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+                <symbol id="check-circle-fill" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+                </symbol>
+            </svg>
+            <div class="alert alert-success d-flex align-items-center alert-dismissible fade show" role="alert" style="position: fixed; width: 100%;"><svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg> 
+                {{ message|safe }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% else %}
+            <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+                <symbol id="exclamation-triangle-fill" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+                </symbol>
+            </svg>
+            <div class="alert alert-danger d-flex align-items-center alert-dismissible fade show" role="alert" style="position: fixed; width: 100%;"><svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+                {{ message|safe }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endif %}
+    {% endfor %}
+{% endif %}
+
+<section class="predios">
+    <h1>Mis Reservas</h1>
+    <form action="{% url 'mis_reservas' %}" method="get" class="filtros">
+        {% csrf_token %}
+        <div>
+            Buscar:<input type="text" value="{{filtro_txt}}" id="filtro_txt" name="filtro_txt">
+        </div>
+        <div>
+            Deportes:
+            <select name="fil_select" id="fil_select">
+                <option value="0"> TODOS</option>
+                {% for e in deportes %}
+                    {% if fil_select == e.id %}
+                        <option value="{{e.id}}" selected> {{e.descripcion}}</option>
+                    {% else %}
+                        <option value="{{e.id}}" >         {{e.descripcion}}</option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+        </div>
+    
+        <button>FILTRAR</button>
+    </form>
+{% if reservas %}
+    {% for reserva in reservas %}
+    
+
+        <ul>
+            <li>
+                <img src="{% if reserva.cancha_id.foto.url %}{{ reserva.cancha_id.foto.url }}{% else %}ruta/a/imagen-por-defecto.jpg{% endif %}" alt="{% if predio.logo.url %}{{ predio.logo.url }}{% else %}Texto alternativo por defecto{% endif %}">
+                <div class="datos-reservas">
+                    <a href="{% url 'predio' pk=reserva.cancha_id.predio_id.id %}"><h3>{{ reserva.cancha_id.predio_id.nombre }}</h3></a>
+                    <div>
+                        <p>{{ reserva.cancha_id.nombre }}</p>
+                        <p>{{ reserva.fecha_ini }} - {{ reserva.fecha_fin }}</p>
+                        <p>${{ reserva.precio }}</p>
+                    </div>
+                    <div>
+                        <img src="{% static 'img/Address.png' %}" alt="">
+                        <p>{{ reserva.cancha_id.predio_id.direccion }}</p>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    {% endfor %}
+{% else %}
+    <p>No tienes reservas aún.</p>
+{% endif %}
+    </section>  
+
+ 
+
+
+<div class="pagination justify-content-center">
+    <span class="step-links">
+        {% if reservas.has_previous %}
+            <a href="?page=1">&laquo; Primera</a>
+            <a href="?page={{ reservas.previous_page_number }}">Anterior</a>
+        {% endif %}
+
+        <span class="current">
+            Página {{ reservas.number }} de {{ reservas.paginator.num_pages }}
+        </span>
+
+        {% if reservas.has_next %}
+            <a href="?page={{ reservas.next_page_number }}">Siguiente</a>
+            <a href="?page={{ reservas.paginator.num_pages }}">Última &raquo;</a>
+        {% endif %}
+    </span>
+</div>
+
+</ul>
+{% endblock %}

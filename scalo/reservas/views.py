@@ -3,7 +3,7 @@ from django.urls import path
 from reservas.models import UsuarioXRoles,Roles,Predios,Deportes,Canchas,Reservas
 from django.contrib.auth import login,logout,authenticate
 from django.contrib import messages
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Permission
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.core.paginator import Paginator #Paginacion.
@@ -90,6 +90,8 @@ def registrarse(request):
             if user:
                 DarRol(user,"Cliente")
                 login(request,user)
+                p= Permission.objects.get(name='Can view Reserva')
+                user.user_permissions.add(p)
                 messages.success(request, 'Usuario registrado exitosamente, bienvenido {}'.format(user.email))
                 return redirect('predios')
             else:

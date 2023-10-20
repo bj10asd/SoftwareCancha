@@ -536,6 +536,44 @@ footer {
   padding: 1.25rem;
 }
 
+/* Mis reservas */
+
+.predios ul li .datos-reservas {
+  padding-top: 0.625rem;
+  justify-content: space-between;
+}
+.predios ul li .datos-reservas img {
+  width: 40px;
+  height: 40px;
+}
+.predios ul li .datos-reservas a {
+  text-decoration: none;
+  color: #042F2F;
+}
+.predios ul li .datos-reservas h3 {
+  font-family: "Lexend", sans-serif;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 700;
+  cursor: pointer;
+}
+.predios ul li .datos-reservas div {
+  margin-top: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+}
+.predios ul li .datos-reservas div p {
+  margin: 0;
+  padding: 0.5rem;
+}
+
+.predios p {
+  font-family: "Lexend", sans-serif;
+  font-size: 1.25rem;
+  padding: 1.25rem;
+}
+
 .step-links {
   font-family: "Lexend", sans-serif;
   font-size: 1rem;

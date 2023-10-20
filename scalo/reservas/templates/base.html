@@ -31,6 +31,11 @@
                         <ul class="navbar-nav">
                             {% if user.is_authenticated %}
                                 <!-- <a href="{% url 'logout' %}">Salir</a> -->
+                                {% if perms.reservas.view_reservas %}
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{% url 'mis_reservas' %}">Mis reservas</a>
+                                </li>
+                                {% endif %}
                                 <li class="nav-item">
                                     <a class="nav-link inises" href="{% url 'logout' %}">Salir</a>
                                 </li>
