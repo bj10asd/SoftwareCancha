@@ -281,18 +281,18 @@ footer {
   font-family: "Khula", sans-serif;
   text-align: center;
 }
-.iniciar-sesion form, .section-register .iniciar-sesion form {
+.iniciar-sesion form, .section-register .iniciar-sesion form, #add-cancha {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: start;
   gap: 1.25rem;
 }
-.iniciar-sesion form label, .section-register .iniciar-sesion form label {
+.iniciar-sesion form label, .section-register .iniciar-sesion form label, #add-cancha label {
   font-size: 1rem;
   font-family: "Lexend", sans-serif;
 }
-.iniciar-sesion form input, .section-register .iniciar-sesion form input {
+.iniciar-sesion form input, .section-register .iniciar-sesion form input, #add-cancha input {
   width: 27.4375rem;
   font-family: "Khula", sans-serif;
   height: 3rem;
@@ -574,7 +574,39 @@ footer {
   font-size: 1.25rem;
   padding: 1.25rem;
 }
-
+/* Mi predio */
+.add-cancha button {
+  padding: 8px 10px;
+  background-color: #38CCCC;
+  width: fit-content;
+  color: #ABF7F7;
+  border-style: none;
+  display: flex;
+  color: #ECFDFD;
+  font-family: "Lexend", sans-serif;
+  font-weight: bolder;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  border-radius: 28px;
+}
+.add-cancha button label i{
+  padding-right: 0.5rem;
+}
+.add-cancha button label{
+  cursor: pointer;
+}
+.add-cancha button:hover {
+  transform: translateZ(50px);
+  transform: scale(1.05);
+  color: #042F2F;
+}
+.add-cancha button:active {
+  transform: translateY(-1px);
+  transform: rotate(2deg);
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+}
 .step-links {
   font-family: "Lexend", sans-serif;
   font-size: 1rem;

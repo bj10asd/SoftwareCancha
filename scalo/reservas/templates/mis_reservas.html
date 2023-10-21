@@ -73,7 +73,7 @@
         <ul>
             <li {% if not reserva.fecha_fin|is_past %} style=" border-left: solid green 8px;" {% endif %}>
                 <img src="{% if reserva.cancha_id.foto.url %}{{ reserva.cancha_id.foto.url }}{% else %}ruta/a/imagen-por-defecto.jpg{% endif %}" alt="{% if predio.logo.url %}{{ predio.logo.url }}{% else %}Texto alternativo por defecto{% endif %}">
-                <div class="datos-reservas" style="width: 100%;">
+                <div class="datos-reservas w-100" >
                     <div class="title-reserva" style="padding: 0; margin: 0;justify-content: space-between;">
                         <a href="{% url 'predio' pk=reserva.cancha_id.predio_id.id %}"><h3>{{ reserva.cancha_id.predio_id.nombre }}</h3></a>
                         <p><i class="bi bi-calendar-event" style="color: #38CCCC;"></i>  {{ reserva.fecha_ini|date:"d/m/y"}}</p>

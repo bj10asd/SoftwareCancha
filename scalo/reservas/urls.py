@@ -19,5 +19,6 @@ urlpatterns = [
 
     #Reservas
     path('mis_reservas/',         reservas.mis_reservas,  name='mis_reservas'),
+    path('mi_predio/',         reservas.mi_predio,  name='mi_predio'),
 ]
 

@@ -58,3 +58,34 @@ def mis_reservas(request):
                                                 'state_select': int(state_select),
                                                 })
     else: return redirect('index')
+
+def mi_predio(request):
+    
+    predio = Predios.objects.filter(user_id=request.user.id).first()
+    canchas = Canchas.objects.filter(predio_id=predio)
+    deportes = Deportes.objects.all()
+    dia_actual = datetime.now().strftime("%d/%m")
+    hora_actual = datetime.now()
+
+    #msotrando reservas
+    reservas = Reservas.objects.filter(cancha_id__in=canchas)
+    #print("contando las reservas de este predio de diferentes canchas: "+ str(reservas.count()))
+
+    # Establece los minutos y  segundos en cero
+    hora_actual = hora_actual.replace(minute=0, second=0, microsecond=0)
+
+    # Crea una lista de horas desde la hora actual hasta la medianoche (24:00)
+    horas = []
+    for i in range(1, 10):
+        siguiente_hora = hora_actual + timedelta(hours=i)
+        horas.append(siguiente_hora)
+        
+
+
+    return render(request,'mi_predio.html',{'predio':      predio ,
+                                        'canchas':      canchas ,
+                                        'deportes':     deportes,
+                                        'horas':        horas,
+                                        'dia_actual':   dia_actual,
+                                        'reservas':     reservas})
+        
