@@ -2,6 +2,7 @@ import datetime
 from django import template
 from reservas.models import UsuarioXRoles,Roles,Predios,Deportes,Canchas,Reservas
 from datetime import datetime
+from django.utils import timezone
 
 register = template.Library()
 
@@ -14,3 +15,7 @@ def get_reservas(cancha,hora):
     else:
         print("No devuelve nada")
         return ""
+    
+@register.filter(expects_localtime=True)
+def is_past(timestamp):
+    return timestamp<timezone.now()

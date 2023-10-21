@@ -32,7 +32,8 @@ def mis_reservas(request):
     if request.user.is_authenticated:
         filtro_txt      = request.GET.get('filtro_txt')
         fil_select      = int(request.GET.get('fil_select') or 0)
-        reservas_lista   = Reservas.objects.filter(user_id=request.user) 
+        state_select      = int(request.GET.get('state_select') or 0)
+        reservas_lista   = Reservas.objects.filter(user_id=request.user).order_by('-fecha_ini') 
         if filtro_txt is not None:
             reservas_lista = reservas_lista.filter(cancha_id__predio_id__in=Predios.objects.filter( nombre__icontains=filtro_txt)).distinct()
 
@@ -41,6 +42,11 @@ def mis_reservas(request):
         if fil_select != 0:
             if fil_select is not None:
                 reservas_lista = reservas_lista.filter(cancha_id__deporte_id=Deportes.objects.get(id=fil_select)).distinct()
+        if state_select != 0:
+            if state_select is not None:
+                if state_select == 1:
+                    reservas_lista= reservas_lista.filter(fecha_fin__gt=datetime.now())
+                else: reservas_lista= reservas_lista.filter(fecha_fin__lt=datetime.now())
         paginator = Paginator(reservas_lista, 10)
         # Obtiene el número de página de la URL o utiliza la página 1 como predeterminada
         pagina  = request.GET.get('page') or 1
@@ -48,5 +54,7 @@ def mis_reservas(request):
         return render(request, 'mis_reservas.html', {'reservas':      reservas,
                                                 'deportes':     Deportes.objects.all(),
                                                 'filtro_txt':   filtro_txt if filtro_txt is not None else '',
-                                                'fil_select':   int(fil_select)})
+                                                'fil_select':   int(fil_select),
+                                                'state_select': int(state_select),
+                                                })
     else: return redirect('index')
