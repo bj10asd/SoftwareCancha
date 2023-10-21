@@ -61,6 +61,20 @@ def mis_reservas(request):
 
 def mi_predio(request):
     
+    if request.method == 'POST' :
+        name= request.POST.get('nombre')
+        precio= request.POST.get('precio')
+        anticipo= request.POST.get('anticipo')
+        deporte= Deportes.objects.get(id=request.POST.get('deporte_cancha'))
+        imagen= request.FILES['foto_cancha']
+        Canchas.objects.create(predio_id=Predios.objects.filter(user_id=request.user.id).first(),
+                               deporte_id=deporte,
+                               nombre=name,
+                               foto=imagen,
+                               precio=precio,
+                               anticipo=anticipo
+                               )
+
     predio = Predios.objects.filter(user_id=request.user.id).first()
     canchas = Canchas.objects.filter(predio_id=predio)
     deportes = Deportes.objects.all()
