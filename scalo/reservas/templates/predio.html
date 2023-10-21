@@ -2,14 +2,42 @@
 {% load static %}
 {% load consulta_reservas %}
 {% block content %}
+    {% if messages %}
+    {% for message in messages %}
+        {% if message.tags == 'success' %}
+            <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+                <symbol id="check-circle-fill" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+                </symbol>
+            </svg>
+            <div class="alert alert-success d-flex align-items-center alert-dismissible fade show" role="alert" style="position: fixed; width: 100%;"><svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg> 
+                {{ message|safe }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% else %}
+            <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+                <symbol id="exclamation-triangle-fill" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+                </symbol>
+            </svg>
+            <div class="alert alert-danger d-flex align-items-center alert-dismissible fade show" role="alert" style="position: fixed; width: 100%;"><svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+                {{ message|safe }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endif %}
+        {% endfor %}
+    {% endif %}
 <div class="container">
+
     <div cl id="contenedor_perfil" class="row mb-3">
         <h4>Perfil del predio</h4>
         <div class="col-6 d-flex justify-content-center align-items-center">
             {% if predio.logo %}
-            <img style="height: 340px; width: 340px; border-radius: 26px;" src="{{ predio.logo.url }}" alt="{{ predio.logo.url }}">
+            <img style="height: 340px; width: 340px; border-radius: 26px;" src="{{ predio.logo.url }}"
+                alt="{{ predio.logo.url }}">
             {% else %}
-            <img style="height: 340px; width: 340px; border-radius: 26px;" src="media/upload/predio.png" alt="Imagen Predeterminada">
+            <img style="height: 340px; width: 340px; border-radius: 26px;" src="media/upload/predio.png"
+                alt="Imagen Predeterminada">
             {% endif %}
         </div>
         <div class="col-6 d-flex flex-column justify-content-center datos">
@@ -35,10 +63,10 @@
                     <img src="{% static 'img/Database-Mail.png' %}" alt="Direccion: ">
                     <p>
                         {% if predio.email %}
-                            {{ predio.email }}
-                            {% else %}
-                            No se encuentra cargado
-                            {% endif %}
+                        {{ predio.email }}
+                        {% else %}
+                        No se encuentra cargado
+                        {% endif %}
                     </p>
                 </div>
                 <input type="hidden" id="predio_id" value="{{ predio.id }}">
@@ -56,8 +84,16 @@
     </div>
     <div id="contenedor_canchas" class="row turnos">
         <h2>Turnos disponibles del predio</h2>
-        <input type="hidden" name="cant_colum" id="cant_colum" value="{{ horas|length }}">
-        <p>Dia :{{dia_actual }}</p>
+        <input type="text" name="cant_colum" id="cant_colum" value="{{ horas }}">
+        
+                <p>Reserva para el dia :{{dia_actual}}</p>
+                <form method="get" action="{% url 'predio' predio.id %}">
+                    <input type="text" name="dia_siguiente" id="dia_siguiente" value="{{ dia_actual }}">
+                    <button type="submit">Siguiente</button>
+
+                </form>
+
+                
         <div class="table-container d-flex justify-content-center">
             <table>
                 <thead>
@@ -71,7 +107,7 @@
                     </td>
                     {% for hora in horas %}
                     <td>{{ hora|date:"H:i" }}</td>
-    
+
                     {% endfor %}
                 </thead>
                 <tbody id="list_canchas">
@@ -79,10 +115,12 @@
                     {% for cancha in canchas %}
                     <tr style="height: 9.1875rem;">
                         <th style="height: 9.1875rem;">
-                            <div class="card d-flex justify-content-center" style="height: 147px; background-color: #38CCCC; border-radius: .6875rem;">
+                            <div class="card d-flex justify-content-center"
+                                style="height: 147px; background-color: #38CCCC; border-radius: .6875rem;">
                                 <div class="row">
                                     <div class="col-md-6 d-flex align-items-center ">
-                                        <img style="border-radius: .75rem; width: 114px; height: 114px; margin-left: .625rem;" src="{{ cancha.foto.url }}" alt="{{ cancha.foto }}">
+                                        <img style="border-radius: .75rem; width: 114px; height: 114px; margin-left: .625rem;"
+                                            src="{{ cancha.foto.url }}" alt="{{ cancha.foto }}">
                                     </div>
                                     <div class="col-md-6 px-3">
                                         <div class="card-block px-6">
@@ -94,13 +132,16 @@
                             </div>
                         </th>
                         {% for hora in horas %}
-                            {% get_reservas cancha hora as r %}
-                                {% if r %}
-                                    <td style="height: 9.1875rem; background-color: #577373; border: 1px solid #38CCCC; color: #ABF7F7; text-align: center; font-family: Lexend; font-weight: bold;">{{r}}</td>
-                                {% else %}
-                                    <td style="height: 9.1875rem; background-color: #ECFDFD; border: 1px solid #38CCCC;"></td> 
-                                {% endif %}
-    
+                        
+                        {% get_reservas cancha hora as r %}
+                        {% if r %}
+                        <td
+                            style="height: 9.1875rem; background-color: #577373; border: 1px solid #38CCCC; color: #ABF7F7; text-align: center; font-family: Lexend; font-weight: bold;">
+                            {{r}}</td>
+                        {% else %}
+                        <td  onclick="openModal('{{ cancha.id }}','{{ hora }}')" style="height: 9.1875rem; background-color: #ECFDFD; border: 1px solid #38CCCC;"></td>
+                        {% endif %}
+
                         {% endfor %}
                     </tr>
                     {% endfor %}
@@ -115,19 +156,112 @@
         </div>
     </div>
 
+
+
 </div>
 
 
+<!-- Modal -->
+<div class="modal fade" id="modalreserva" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Confirmar Reserva</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form method="post" action="{% url 'crear_reserva' %}">
+            {% csrf_token %}
+
+            <div class="modal-body">
+                    <div class="row">
+                            <div class="col-4 offset-4">
+                                <div class="form-group text-center">
+                                    <label for="fecha_reserva">Fecha de reserva</label>
+                                    <input type="text" class="form-control" id="fecha_reserva" name="fecha_reserva" value="{{ dia_actual }}" readonly >
+                                </div>
+                            </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="predio">Predio</label>
+                        <input type="text" class="form-control" id="predio" aria-describedby="predioHelp" value="{{ predio.nombre }}" disabled>
+                        <small id="predioHelp" class="form-text text-muted">Predio donde vamos a reservar</small>
+                    </div>
+
+
+                    <div class="row">
+                        <div class="form-group col">
+                            <label for="cancha">Cancha</label>
+                            <input type="text" class="form-control " id="cancha" aria-describedby="canchaHelp">
+
+                        </div>
+                        <div class="form-group col">
+                            <div class="form-group">
+                                <label for="duracion">Duración:</label>
+                                <select class="form-control" id="duracion" name="duracion" onchange="cambio_duracion()">
+                                    <option value="60" selected>60 min</option>
+                                    <option value="120">120 min</option>
+                                </select>
+                            </div>
+
+                        </div>
+                    </div>
+                    <input type="hidden" class="form-control" name="cancha_id" id="cancha_id">
+
+                    <div class="row">
+                        <!-- Las primeras 6 columnas están vacías -->
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label for="Fecha_ini">Horario de inicio</label>
+                                <input type="text" class="form-control" id="Fecha_ini" name="Fecha_ini" readonly >
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label for="Fecha_fin">Horario fin </label>
+                                <input type="text" class="form-control" id="Fecha_fin" name="Fecha_fin" readonly >
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <!-- Las primeras 6 columnas están vacías -->
+                        <div class="col-6"></div>
+                        <div class="form-group col">
+                            <label for="precio">Precio</label>
+                            <input type="number" class="form-control" id="precio" name="precio" readonly  >
+                            <input type="hidden" class="form-control" id="precio_base" name="precio_base">
+
+                        </div>
+                    </div>
+            
+            
+            
+            
+            
+    
+            </div>
+            <div class="modal-footer">
+                <a type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</a>
+                <button type="submit" class="btn btn-primary">Confirmar Reserv</button>
+            </div>
+        </form>
+
+        </div>
+    </div>
+</div>
 
 
 {% endblock %}
 
 {% block javascript %}
+
 <script>
+    
+    //filter por deporte.
     $('select[name="deporte"]').change(function () {
-        let selectedDeporte = $(this).val(); // Obtiene el valor seleccionado en el primer select.
+        let selectedDeporte = $(this).val() // Obtiene el valor seleccionado en el primer select.
         // Busca el elemento <option> correspondiente al valor seleccionado
-        let selectedOption = $(this).find('option[value="' + selectedDeporte + '"]');
+        let selectedOption = $(this).find('option[value="' + selectedDeporte + '"]')
         let predio_id = document.getElementById("predio_id").value;
         let descripcion = selectedOption.text()
 
@@ -136,29 +270,29 @@
             method: 'GET',
             data: {
                 deporte_id: selectedDeporte,
-                predio_id:predio_id,
+                predio_id: predio_id,
             },
             success: function (data) {
-                let list_canchas = document.getElementById("list_canchas");
-                let cant_colum = document.getElementById("cant_colum").value;
+                let list_canchas = document.getElementById("list_canchas")
+                let cant_colum = document.getElementById("cant_colum").value
 
                 // Obtén la fila de encabezados (la primera fila de la tabla)
 
                 //vaciar tabla.
-                list_canchas.innerHTML = "";
+                list_canchas.innerHTML = ""
 
                 //lenar tabla.
                 if (data.length === 0) {
                     // Si no hay registros, agregar una fila con un mensaje.
-                    let row = list_canchas.insertRow(0);
-                    let cell = row.insertCell(0);
-                    cell.colSpan = 8; // Colspan para que ocupe toda la tabla.
-                    cell.innerHTML = "No existen canchas con estas características.";
+                    let row = list_canchas.insertRow(0)
+                    let cell = row.insertCell(0)
+                    cell.colSpan = 8// Colspan para que ocupe toda la tabla.
+                    cell.innerHTML = "No existen canchas con estas características."
                 } else {
                     data.forEach(function (cancha, index) {
-                        let fila = document.createElement("tr");
-                        var celdaNombre = document.createElement("th");
-                        var divCard = document.createElement("div");
+                        let fila = document.createElement("tr")
+                        var celdaNombre = document.createElement("th")
+                        var divCard = document.createElement("div")
                         divCard.className = "card"
                         divCard.innerHTML = `
                             <div class="card d-flex justify-content-center" style="height: 147px; background-color: #38CCCC; border-radius: .6875rem;">
@@ -179,8 +313,8 @@
                         fila.appendChild(celdaNombre)
                         for (var i = 0; i < cant_colum; i++) {
                             let celda = document.createElement("th");
-                            celda.style = style="height: 9.1875rem; background-color: #ECFDFD; border: 1px solid #38CCCC;";
-                            celda.innerHTML = "";
+                            celda.style = style = "height: 9.1875rem; background-color: #ECFDFD; border: 1px solid #38CCCC;"
+                            celda.innerHTML = ""
                             fila.append(celda)
                         }
                         list_canchas.appendChild(fila);
@@ -194,5 +328,100 @@
             }
         });
     });
+
+    function openModal(cancha_id,hora) {
+
+        //Hora
+        // Utiliza expresiones para extraer la hora
+        let inphorario_i = document.getElementById("Fecha_ini")
+        //let hora_c = hora.match(/\d{2}:\d{2}/)[0];
+        inphorario_i.value = convertirFecha(hora)
+
+
+        // Formatear la nueva fecha y hora en un formato específico
+        $.ajax({
+            url: '/cancha/', //Ojooo con " /  / "
+            method: 'GET',
+            data: {
+                cancha_id: cancha_id,
+            },
+            success: function (data) {
+
+                console.log(data)
+                //cancha_id
+                let inpcancha_id = document.getElementById("cancha_id")
+                inpcancha_id.value = cancha_id
+                //Nombre de cancha
+                let inpcancha = document.getElementById("cancha")
+                inpcancha.value = data.nombre
+                //Precio
+                let inprecio =document.getElementById("precio")
+                inprecio.value=parseInt(data.precio)
+
+                var fecha_final = new Date(hora);
+                // Sumar una hora
+                fecha_final.setHours(fecha_final.getHours() + 1);
+            
+                let inphorario_f = document.getElementById("Fecha_fin")
+                
+                inphorario_f.value=convertirFecha(fecha_final)
+        
+                sessionStorage.setItem('precio_base',data.precio) //Variable sesion
+                sessionStorage.setItem('hora_base',convertirFecha(hora)) //Variable sesion
+
+                        
+            },
+            error: function (error) {
+                console.error(error);
+            }
+        });
+
+        $('#modalreserva').modal('show')
+    }
+
+    function convertirFecha(fechaOriginal) {
+        let fecha = new Date(fechaOriginal);
+        let año = fecha.getFullYear();
+        let mes = ('0' + (fecha.getMonth() + 1)).slice(-2);
+        let dia = ('0' + fecha.getDate()).slice(-2);
+        let hora = ('0' + fecha.getHours()).slice(-2);
+        let minutos = ('0' + fecha.getMinutes()).slice(-2);
+      
+        let fechaFormateada = año + '-' + mes + '-' + dia + ' ' + hora + ':' + minutos;
+        return fechaFormateada;
+      }
+      
+    
+    function cambio_duracion(precio){
+        let select = document.getElementById("duracion")
+        let selectedValue = select.options[select.selectedIndex].value
+
+        let  hora_base = sessionStorage.getItem('hora_base');
+        let  precio_base = sessionStorage.getItem('precio_base');
+
+        let inprecio =document.getElementById("precio")
+        inprecio.value = parseInt(precio_base) * (selectedValue / 60);
+
+        alert(hora_base)
+        let fecha_fin = document.getElementById("Fecha_fin")
+        
+        fecha_fin.value =sumarHoras(hora_base,(selectedValue / 60))
+
+
+
+    }
+    function sumarHoras(horaOriginal, n) {
+        // Crea un objeto Date a partir de la hora original
+        var fechaHora = new Date(horaOriginal);
+      
+        // Suma n horas a la hora original
+        fechaHora.setHours(fechaHora.getHours() + n);
+      
+        // Formatea la nueva hora en el formato "AAAA-MM-DD HH:MM"
+      
+        return convertirFecha(fechaHora);
+      }
+
+
 </script>
 {% endblock %}

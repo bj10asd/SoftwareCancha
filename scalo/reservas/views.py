@@ -14,7 +14,7 @@ from django.http import JsonResponse  #JSon
 from django.http import HttpResponse
 from django.db.models import Q
 import string
-
+import json
 
 # Create your views here.
 
@@ -107,15 +107,6 @@ def DarRol(user,rol):
 def recuperar_pw(request):
     return render(request,'auth/recuperacion_pw.html',{})
 
-def predios(request):
-    predios_lista =Predios.objects.all()
-
-    # Configura la paginación con 10 elementos por página
-    paginator = Paginator(predios_lista, 10)
-    # Obtiene el número de página de la URL o utiliza la página 1 como predeterminada
-    pagina = request.GET.get('page') or 1
-    predios = paginator.get_page(pagina)
-    return render(request, 'predios.html', {'predios': predios })
 
 def predios(request):
     filtro_txt      = request.GET.get('filtro_txt')
@@ -129,6 +120,7 @@ def predios(request):
     if fil_select != 0:
         if fil_select is not None:
             predios_lista = predios_lista.filter(id__in=Canchas.objects.filter(deporte_id=fil_select).values('predio_id')).distinct()
+            
     paginator = Paginator(predios_lista, 10)
     # Obtiene el número de página de la URL o utiliza la página 1 como predeterminada
     pagina  = request.GET.get('page') or 1
@@ -139,34 +131,42 @@ def predios(request):
                                             'fil_select':   int(fil_select)})
 
 def predio(request,pk):#import datetime
-    
-    predio = Predios.objects.get(id=pk)
-    canchas = Canchas.objects.filter(predio_id=predio)
-    deportes = Deportes.objects.all()
-    dia_actual = datetime.now().strftime("%d/%m")
-    hora_actual = datetime.now()
-
-    #msotrando reservas
-    reservas = Reservas.objects.filter(cancha_id__in=canchas)
-    #print("contando las reservas de este predio de diferentes canchas: "+ str(reservas.count()))
-
-    # Establece los minutos y  segundos en cero
-    hora_actual = hora_actual.replace(minute=0, second=0, microsecond=0)
-
-    # Crea una lista de horas desde la hora actual hasta la medianoche (24:00)
-    horas = []
-    for i in range(1, 10):
-        siguiente_hora = hora_actual + timedelta(hours=i)
-        horas.append(siguiente_hora)
+    if request.method == 'GET':
         
+        predio = Predios.objects.get(id=pk)
+        canchas = Canchas.objects.filter(predio_id=predio)
+        deportes = Deportes.objects.all()
+        # Obtén la fecha y hora actual
+        fecha_hora_actual = datetime.now()
+
+        # Formatea la fecha y hora en el formato deseado
+        dia_actual = fecha_hora_actual.strftime("%Y-%m-%d")
+        hora_actual = datetime.now()
+
+        #msotrando reservas
+        reservas = Reservas.objects.filter(cancha_id__in=canchas)
+        #print("contando las reservas de este predio de diferentes canchas: "+ str(reservas.count()))
+
+        # Establece los minutos y  segundos en cero
+        hora_actual = hora_actual.replace(minute=0, second=0, microsecond=0)
+
+        # Crea una lista de horas desde la hora actual hasta la medianoche (24:00)
+        horas = []
+        for i in range(1, 10):
+            siguiente_hora = hora_actual + timedelta(hours=i)
+            #if siguiente_hora.hour <= 23 and siguiente_hora.hour !=0  :
+            horas.append(siguiente_hora)
+            #else:
+                # No agregues la hora si supera las 23
+            
 
 
-    return render(request,'predio.html',{'predio':      predio ,
-                                        'canchas':      canchas ,
-                                        'deportes':     deportes,
-                                        'horas':        horas,
-                                        'dia_actual':   dia_actual,
-                                        'reservas':     reservas})
+        return render(request,'predio.html',{'predio':      predio ,
+                                            'canchas':      canchas ,
+                                            'deportes':     deportes,
+                                            'horas':        horas,
+                                            'dia_actual':   dia_actual,
+                                            'reservas':     reservas})
         
 
 def predios_deporte(request):
@@ -181,7 +181,7 @@ def predios_deporte(request):
             deporte = Deportes.objects.filter(id=deporte_id).first()
 
             canchas = Canchas.objects.filter(Q(predio_id=predio_id) & Q(deporte_id=deporte_id))
-            
+
             for cancha in canchas:
                 canchas_data.append({
                     'cancha_id':cancha.id,
@@ -206,3 +206,18 @@ def predios_deporte(request):
                 })
 
         return JsonResponse(canchas_data, safe=False)
+    
+def cancha(request):
+    cancha_data = ''
+    if request.method == 'GET':
+        cancha_id = request.GET.get('cancha_id')
+        cancha = Canchas.objects.filter(id=cancha_id).first()
+        cancha_data = {
+                'id': cancha.id,
+                'nombre': cancha.nombre,
+                'precio': cancha.precio,
+            }
+
+    return JsonResponse(cancha_data, safe=False)
+
+

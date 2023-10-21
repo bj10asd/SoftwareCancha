@@ -19,5 +19,10 @@ urlpatterns = [
 
     #Reservas
     path('mis_reservas/',         reservas.mis_reservas,  name='mis_reservas'),
+    path('crear_reserva/',         reservas.crear_reserva,  name='crear_reserva'),
+
+    #Cancha
+    path('cancha/', views.cancha, name='cancha'),
+
 ]
 
