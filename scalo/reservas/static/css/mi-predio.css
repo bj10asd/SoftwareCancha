@@ -1,0 +1,65 @@
+/* Mi predio */
+.add-cancha button {
+    padding: 8px 10px;
+    background-color: #38CCCC;
+    width: fit-content;
+    color: #ABF7F7;
+    border-style: none;
+    display: flex;
+    color: #ECFDFD;
+    font-family: "Lexend", sans-serif;
+    font-weight: bolder;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    border-radius: 28px;
+  }
+  .add-cancha button label i{
+    padding-right: 0.5rem;
+  }
+  .add-cancha button label{
+    cursor: pointer;
+  }
+  .add-cancha button:hover {
+    transform: translateZ(50px);
+    transform: scale(1.05);
+    color: #042F2F;
+  }
+  .add-cancha button:active {
+    transform: translateY(-1px);
+    transform: rotate(2deg);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  }
+  .step-links {
+    font-family: "Lexend", sans-serif;
+    font-size: 1rem;
+    font-weight: bold;
+    background-color: #329F9F;
+    border-radius: 1.625rem;
+    padding: .625rem;
+    color: #ABF7F7;
+    display: flex;
+    align-items: center;
+    gap: 1.875rem;
+    margin-bottom: 1.25rem;
+  }
+  
+  .step-links a {
+    background-color: #ABF7F7;
+    border-radius: 1.625rem;
+    text-decoration: none;
+    list-style: none;
+    color: #042F2F;
+    padding: .625rem;
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+  .step-links a:hover {
+    transform: translateZ(50px);
+    transform: scale(1.05);
+  }
+  .step-links a:active {
+    transform: translateY(-1px);
+    transform: rotate(2deg);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  }

@@ -1,0 +1,76 @@
+footer {
+    background-color: #042F2F;
+    color: #ECFDFD;
+    width: 100%;
+    height: 15.375rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0rem 4.375rem;
+  }
+  
+  .footer-logo {
+    width: 17.75rem;
+    height: 8.75rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1.25rem;
+  }
+  .footer-logo img {
+    width: 16.6875rem;
+  }
+  .footer-logo p {
+    font-size: 1.25rem;
+    font-family: "Khula", sans-serif;
+    text-align: center;
+  }
+  
+  .footer-redes-sociales {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  
+  .footer-predios h4 {
+    font-family: "Khula", sans-serif;
+    font-size: 16px;
+    opacity: 0.5;
+    color: #329F9F;
+    padding-bottom: 0.625rem;
+  }
+  .footer-predios ul li {
+    text-decoration: none;
+    font-family: "Khula", sans-serif;
+    font-size: 16px;
+    color: #ECFDFD;
+    list-style: none;
+    padding-bottom: 0.625rem;
+    cursor: pointer;
+  }
+  
+  .footer-info-contacto {
+    width: 17.4375rem;
+    height: 8.6875rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    gap: 1.25rem;
+  }
+  .footer-info-contacto div {
+    gap: 1.25rem;
+    display: flex;
+    justify-content: left;
+    align-items: center;
+  }
+  .footer-info-contacto div img {
+    width: 1.875rem;
+    height: 1.875rem;
+    object-fit: contain;
+  }
+  .footer-info-contacto div p {
+    font-size: 1rem;
+    font-family: "Khula", sans-serif;
+    margin-bottom: 0;
+  }

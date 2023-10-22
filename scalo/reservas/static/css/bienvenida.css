@@ -1,0 +1,62 @@
+.bienvenida {
+    height: 100vh;
+    background-image: url(../img/background-image.png);
+    background-size: cover;
+    background-repeat: no-repeat;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1.8125rem;
+  }
+  .bienvenida h2 {
+    padding-top: 3.125rem;
+    width: 54.1875rem;
+    font-size: 3.75rem;
+    font-family: "Lexend", sans-serif;
+    font-weight: bold;
+    text-align: center;
+    color: #ABF7F7;
+  }
+  .bienvenida h2 strong {
+    color: #38CCCC;
+  }
+  .bienvenida p {
+    width: 39.6875rem;
+    font-family: Khula;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    color: #ECFDFD;
+    text-align: center;
+  }
+  .bienvenida button {
+    display: inline-flex;
+    height: 45px;
+    padding: 8px 20px;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+    border-radius: 10px;
+    background-color: #38CCCC;
+    box-shadow: 2px 7px 13px 1px rgba(0, 0, 0, 0.25);
+    border: none;
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+  .bienvenida button:hover {
+    transform: translateZ(50px);
+    transform: scale(1.05);
+  }
+  .bienvenida button:active {
+    transform: translateY(-1px);
+    transform: rotate(2deg);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  }
+  .bienvenida button a {
+    color: #ECFDFD;
+    text-decoration: none;
+    font-family: "Lexend", sans-serif;
+    font-size: 16px;
+  }
