@@ -132,40 +132,52 @@ def predios(request):
 
 def predio(request,pk):#import datetime
     if request.method == 'GET':
-        
+        dia_reserva=''
+        dia = request.GET.get('dia_reserva')
+        horas = []
+        if dia is not None:
+            dia = datetime.strptime(dia, "%Y-%m-%d")
+            nueva_fecha = dia + timedelta(days=1)
+            dia_reserva = nueva_fecha.strftime("%Y-%m-%d")
+            for i in range(12,24):#Revisar
+                siguiente_hora = datetime(nueva_fecha.year, nueva_fecha.month, nueva_fecha.day, i, 0)
+                horas.append(siguiente_hora)           
+        else:
+            fecha_hora_actual = datetime.now()           
+            # Formatea la fecha y hora en el formato deseado
+            dia_reserva = fecha_hora_actual.strftime("%Y-%m-%d")
+            hora_actual = datetime.now()
+
+
+            # Establece los minutos y  segundos en cero
+            hora_actual = hora_actual.replace(minute=0, second=0, microsecond=0)
+
+            # Crea una lista de horas desde la hora actual hasta la medianoche (24:00)
+            for i in range(1, 10):
+                siguiente_hora = hora_actual + timedelta(hours=i)
+                if siguiente_hora.hour <= 23 and siguiente_hora.hour !=0  :
+                    horas.append(siguiente_hora)
+                else:
+                    break
+                
+
         predio = Predios.objects.get(id=pk)
         canchas = Canchas.objects.filter(predio_id=predio)
         deportes = Deportes.objects.all()
-        # Obtén la fecha y hora actual
-        fecha_hora_actual = datetime.now()
-
-        # Formatea la fecha y hora en el formato deseado
-        dia_actual = fecha_hora_actual.strftime("%Y-%m-%d")
-        hora_actual = datetime.now()
-
+        
+        
         #msotrando reservas
         reservas = Reservas.objects.filter(cancha_id__in=canchas)
         #print("contando las reservas de este predio de diferentes canchas: "+ str(reservas.count()))
+        # Obtén la fecha y hora actual
 
-        # Establece los minutos y  segundos en cero
-        hora_actual = hora_actual.replace(minute=0, second=0, microsecond=0)
-
-        # Crea una lista de horas desde la hora actual hasta la medianoche (24:00)
-        horas = []
-        for i in range(1, 10):
-            siguiente_hora = hora_actual + timedelta(hours=i)
-            #if siguiente_hora.hour <= 23 and siguiente_hora.hour !=0  :
-            horas.append(siguiente_hora)
-            #else:
-                # No agregues la hora si supera las 23
-            
 
 
         return render(request,'predio.html',{'predio':      predio ,
                                             'canchas':      canchas ,
                                             'deportes':     deportes,
                                             'horas':        horas,
-                                            'dia_actual':   dia_actual,
+                                            'dia_reserva':   dia_reserva,
                                             'reservas':     reservas})
         
 

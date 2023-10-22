@@ -1,7 +1,8 @@
 import datetime
 from django import template
 from reservas.models import UsuarioXRoles,Roles,Predios,Deportes,Canchas,Reservas
-from datetime import datetime ,timedelta
+from datetime import datetime,timedelta
+from django.utils import timezone
 from django.db.models import Q
 
 register = template.Library()
@@ -13,8 +14,10 @@ def get_reservas(cancha,hora):
     reserva = Reservas.objects.filter(Q(cancha_id=cancha) & (Q(fecha_ini=hora) | Q(fecha_fin=hora_fin)))
 
     if reserva.count() > 0:
-        print(reserva[0].user_id) 
         return(reserva[0].user_id)
     else:
-        print("No devuelve nada")
         return ""
+    
+@register.filter(expects_localtime=True)
+def is_past(timestamp):
+    return timestamp<timezone.now()

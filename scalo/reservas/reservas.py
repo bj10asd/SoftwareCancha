@@ -29,12 +29,12 @@ def mis_reservas(request):
         reservas = paginator.get_page(pagina)
         return render(request, 'reservas.html', {'reservas': reservas })
     else: return redirect('index')
-
 def mis_reservas(request):
     if request.user.is_authenticated:
         filtro_txt      = request.GET.get('filtro_txt')
         fil_select      = int(request.GET.get('fil_select') or 0)
-        reservas_lista   = Reservas.objects.filter(user_id=request.user) 
+        state_select      = int(request.GET.get('state_select') or 0)
+        reservas_lista   = Reservas.objects.filter(user_id=request.user).order_by('-fecha_ini') 
         if filtro_txt is not None:
             reservas_lista = reservas_lista.filter(cancha_id__predio_id__in=Predios.objects.filter( nombre__icontains=filtro_txt)).distinct()
 
@@ -43,6 +43,11 @@ def mis_reservas(request):
         if fil_select != 0:
             if fil_select is not None:
                 reservas_lista = reservas_lista.filter(cancha_id__deporte_id=Deportes.objects.get(id=fil_select)).distinct()
+        if state_select != 0:
+            if state_select is not None:
+                if state_select == 1:
+                    reservas_lista= reservas_lista.filter(fecha_fin__gt=datetime.now())
+                else: reservas_lista= reservas_lista.filter(fecha_fin__lt=datetime.now())
         paginator = Paginator(reservas_lista, 10)
         # Obtiene el número de página de la URL o utiliza la página 1 como predeterminada
         pagina  = request.GET.get('page') or 1
@@ -50,8 +55,11 @@ def mis_reservas(request):
         return render(request, 'mis_reservas.html', {'reservas':      reservas,
                                                 'deportes':     Deportes.objects.all(),
                                                 'filtro_txt':   filtro_txt if filtro_txt is not None else '',
-                                                'fil_select':   int(fil_select)})
+                                                'fil_select':   int(fil_select),
+                                                'state_select': int(state_select),
+                                                })
     else: return redirect('index')
+    
     
 def crear_reserva(request):
     if request.user.is_authenticated:
@@ -63,33 +71,86 @@ def crear_reserva(request):
             anticipo = 0
             previous_url = request.META.get('HTTP_REFERER', '/')
             usuario = request.user
-
-            try:
-                cancha = Canchas.objects.get(pk=cancha_id)
-            except Canchas.DoesNotExist:
-                # Manejo de error si no se encuentra la cancha
-                # Puedes redirigir o mostrar un mensaje de error aquí
-                messages.error(request, 'Cancha no existente')
-
-                return redirect(previous_url)        # Crea una instancia de Reserva con los datos
-            nueva_reserva = Reservas(
-                user_id=usuario,
-                cancha_id=cancha,
-                fecha_ini=fecha_ini,
-                fecha_fin=fecha_fin,
-                precio=precio,
-                anticipo=anticipo
-            )
-
-            # Guarda la instancia de Reserva en la base de datos
-            nueva_reserva.save()
-            previous_url = request.META.get('HTTP_REFERER', '/')
             
-            mensaje = f'Reserva creada desde {fecha_ini} hasta {fecha_fin} con éxito.'
+            reservas = Reservas.objects.filter(cancha_id=cancha_id, fecha_fin__gt=fecha_ini, fecha_ini__lt=fecha_fin)
+            
+            if reservas.count() > 0:
+                mensaje = f'El horario desde {fecha_ini} hasta {fecha_fin} ,esta ocupado.'
 
-            # Agregar el mensaje de éxito
-            messages.success(request, mensaje)
+                messages.error(request,mensaje)
+            else:
+                try:
+                    cancha = Canchas.objects.get(pk=cancha_id)
+                except Canchas.DoesNotExist:
+                    # Manejo de error si no se encuentra la cancha
+                    # Puedes redirigir o mostrar un mensaje de error aquí
+                    messages.error(request, 'Cancha no existente')
+
+                    return redirect(previous_url)        # Crea una instancia de Reserva con los datos
+                nueva_reserva = Reservas(
+                    user_id=usuario,
+                    cancha_id=cancha,
+                    fecha_ini=fecha_ini,
+                    fecha_fin=fecha_fin,
+                    precio=precio,
+                    anticipo=anticipo
+                )
+
+                # Guarda la instancia de Reserva en la base de datos
+                nueva_reserva.save()
+                previous_url = request.META.get('HTTP_REFERER', '/')
+                
+                mensaje = f'Reserva creada desde {fecha_ini} hasta {fecha_fin} con éxito.'
+
+                # Agregar el mensaje de éxito
+                messages.success(request, mensaje)                
+                
 
             return redirect(previous_url)
         
     else: return redirect('index')
+def get_reserva(request):
+    if request.method == 'GET':
+        cancha_id = request.GET.get('cancha_id')
+        dia_hora_reserva = request.GET.get('dia_hora_reserva')
+        
+        dia_hora_reserva = datetime.strptime(dia_hora_reserva, '%Y-%m-%d %H:%M')
+
+        hora_fin = dia_hora_reserva + timedelta(hours=1)
+
+        reserva = Reservas.objects.filter(Q(cancha_id=cancha_id) & (Q(fecha_ini=dia_hora_reserva) | Q(fecha_fin=hora_fin))).first()
+        mensaje =' '
+        if reserva:
+            logged_in_user = request.user  # Usuario logeado
+            user = reserva.user_id  # Usuario reserva
+            mi_reserva=''
+            if user == logged_in_user:
+                mi_reserva=1
+            else:mi_reserva=None
+                
+            user_data = {
+                'id': user.id,
+                'username': user.username,
+                # Agrega otros campos del usuario que desees incluir
+            }
+            dia_hora_reserva = dia_hora_reserva
+            response_data = {
+                'user': user_data,
+                'dia_hora_reserva': dia_hora_reserva,
+                'mi_reserva':mi_reserva,
+                'cancha_id':cancha_id
+            }
+            return JsonResponse(response_data)
+        else:
+            response_data = {
+                'user': None,
+                'dia_hora_reserva': dia_hora_reserva,
+                'mi_reserva':None,
+                'cancha_id':cancha_id
+
+            }
+            return JsonResponse(response_data)
+
+            
+
+   

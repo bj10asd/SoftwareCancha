@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load consulta_reservas %}
 {% block content %}
 {% if messages %}
     {% for message in messages %}
@@ -29,7 +30,7 @@
 
 <section class="predios">
     <h1>Mis Reservas</h1>
-    <form action="{% url 'mis_reservas' %}" method="get" class="filtros">
+    <form action="{% url 'mis_reservas' %}" method="get" class="filtros" style="justify-content: space-around;width: 85%;">
         {% csrf_token %}
         <div>
             Buscar:<input type="text" value="{{filtro_txt}}" id="filtro_txt" name="filtro_txt">
@@ -47,7 +48,22 @@
                 {% endfor %}
             </select>
         </div>
-    
+        <div>
+            Estado:
+            <select name="state_select" id="state_select">
+                <option value="0"> TODOS</option>
+                {% if state_select == 1 %}
+                    <option value="1" selected> Activas</option>
+                {% else %}
+                    <option value="1" >         Activas</option>
+                {% endif %}
+                {% if state_select == 2 %}
+                    <option value="2" selected> Pasadas</option>
+                {% else %}
+                    <option value="2" >         Pasadas</option>
+                {% endif %}
+            </select>
+        </div>
         <button>FILTRAR</button>
     </form>
 {% if reservas %}
@@ -55,14 +71,19 @@
     
 
         <ul>
-            <li>
+            <li {% if not reserva.fecha_fin|is_past %} style=" border-left: solid green 8px;" {% endif %}>
                 <img src="{% if reserva.cancha_id.foto.url %}{{ reserva.cancha_id.foto.url }}{% else %}ruta/a/imagen-por-defecto.jpg{% endif %}" alt="{% if predio.logo.url %}{{ predio.logo.url }}{% else %}Texto alternativo por defecto{% endif %}">
-                <div class="datos-reservas">
-                    <a href="{% url 'predio' pk=reserva.cancha_id.predio_id.id %}"><h3>{{ reserva.cancha_id.predio_id.nombre }}</h3></a>
+                <div class="datos-reservas" style="width: 100%;">
+                    <div class="title-reserva" style="padding: 0; margin: 0;justify-content: space-between;">
+                        <a href="{% url 'predio' pk=reserva.cancha_id.predio_id.id %}"><h3>{{ reserva.cancha_id.predio_id.nombre }}</h3></a>
+                        <p><i class="bi bi-calendar-event" style="color: #38CCCC;"></i>  {{ reserva.fecha_ini|date:"d/m/y"}}</p>
+                    </div>
+                    
                     <div>
                         <p>{{ reserva.cancha_id.nombre }}</p>
-                        <p>{{ reserva.fecha_ini }} - {{ reserva.fecha_fin }}</p>
-                        <p>${{ reserva.precio }}</p>
+                        <p><i class="bi bi-clock" style="color: #38CCCC;"></i>  {{ reserva.fecha_ini|date:"H:i"}} - {{ reserva.fecha_fin|date:"H:i" }}</p>
+                        <p><i class="bi bi-currency-dollar" style="color: #38CCCC;"></i>{{ reserva.precio }}</p>
+                        <p style="color: #38CCCC;"><strong>{{ reserva.cancha_id.deporte_id }}</strong></p>
                     </div>
                     <div>
                         <img src="{% static 'img/Address.png' %}" alt="">

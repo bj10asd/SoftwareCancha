@@ -82,20 +82,27 @@
             </div>
         </div>
     </div>
-    <div id="contenedor_canchas" class="row turnos">
+    <div id="contenedor_canchas" class="row turnos ">
         <h2>Turnos disponibles del predio</h2>
-        <input type="text" name="cant_colum" id="cant_colum" value="{{ horas }}">
-        
-                <p>Reserva para el dia :{{dia_actual}}</p>
-                <form method="get" action="{% url 'predio' predio.id %}">
-                    <input type="text" name="dia_siguiente" id="dia_siguiente" value="{{ dia_actual }}">
-                    <button type="submit">Siguiente</button>
 
-                </form>
+        <div style="display: flex;  align-items: center; gap: 20px;justify-content: center " >
+            <form method="get" action="{% url 'predio' predio.id %}">
+                <input type="hidden" name="dia_reserva" id="dia_reserva" value="{{ dia_reserva }}">
+                <input type="hidden" name="accion" id="accion_2" value="anterior">
+                <button type="submit"><</button>
+            </form>
+            <p>Reserva para el dia :{{dia_reserva}}</p>    
+            <form method="get" action="{% url 'predio' predio.id %}">
+                <input type="hidden" name="dia_reserva" id="dia_reserva" value="{{ dia_reserva }}">
+                <input type="hidden" name="accion" id="accion_1" value="siguiente">
+                <button type="submit">></button>
+            </form>
+        </div>
 
-                
+
+
         <div class="table-container d-flex justify-content-center">
-            <table>
+            <table  id="tabla-reservas">
                 <thead>
                     <td style="width: 25%; background-color: #ABF7F7;">
                         <select class="form-select" name="deporte" aria-label="Default select example">
@@ -133,15 +140,21 @@
                         </th>
                         {% for hora in horas %}
                         
-                        {% get_reservas cancha hora as r %}
-                        {% if r %}
-                        <td
-                            style="height: 9.1875rem; background-color: #577373; border: 1px solid #38CCCC; color: #ABF7F7; text-align: center; font-family: Lexend; font-weight: bold;">
-                            {{r}}</td>
-                        {% else %}
-                        <td  onclick="openModal('{{ cancha.id }}','{{ hora }}')" style="height: 9.1875rem; background-color: #ECFDFD; border: 1px solid #38CCCC;"></td>
-                        {% endif %}
+                            {% get_reservas cancha hora as r %}
 
+                            {% if r %}
+                                {% if user != r %}
+                                    <td style="height: 9.1875rem; background-color: #577373; border: 1px solid #38CCCC; color: #ABF7F7; text-align: center; font-family: Lexend; font-weight: bold;">
+                                        {{ r }}
+                                    </td>
+                                {% else %}
+                                    <td style="height: 9.1875rem; background-color: #6aa3b4; border: 1px solid #38CCCC; color: #ABF7F7; text-align: center; font-family: Lexend; font-weight: bold;">
+                                        {{ r }}
+                                    </td>
+                                {% endif %}
+                            {% else %}
+                            <td onclick="openModal('{{ cancha.id }}','{{ hora }}')" style="height: 9.1875rem; background-color: #ECFDFD; border: 1px solid #38CCCC;"></td>
+                             {% endif %}
                         {% endfor %}
                     </tr>
                     {% endfor %}
@@ -174,14 +187,7 @@
             {% csrf_token %}
 
             <div class="modal-body">
-                    <div class="row">
-                            <div class="col-4 offset-4">
-                                <div class="form-group text-center">
-                                    <label for="fecha_reserva">Fecha de reserva</label>
-                                    <input type="text" class="form-control" id="fecha_reserva" name="fecha_reserva" value="{{ dia_actual }}" readonly >
-                                </div>
-                            </div>
-                    </div>
+
                     <div class="form-group">
                         <label for="predio">Predio</label>
                         <input type="text" class="form-control" id="predio" aria-describedby="predioHelp" value="{{ predio.nombre }}" disabled>
@@ -274,12 +280,12 @@
             },
             success: function (data) {
                 let list_canchas = document.getElementById("list_canchas")
-                let cant_colum = document.getElementById("cant_colum").value
 
                 // Obtén la fila de encabezados (la primera fila de la tabla)
 
                 //vaciar tabla.
                 list_canchas.innerHTML = ""
+                horas = obtenerHoras()
 
                 //lenar tabla.
                 if (data.length === 0) {
@@ -311,13 +317,61 @@
                         `;
                         celdaNombre.appendChild(divCard);
                         fila.appendChild(celdaNombre)
-                        for (var i = 0; i < cant_colum; i++) {
-                            let celda = document.createElement("th");
-                            celda.style = style = "height: 9.1875rem; background-color: #ECFDFD; border: 1px solid #38CCCC;"
-                            celda.innerHTML = ""
-                            fila.append(celda)
-                        }
-                        list_canchas.appendChild(fila);
+                        //hora = convertirCadenaALista(hora)
+                        let dia_reserva = document.getElementById("dia_reserva").value
+                        let reservas = []
+                        let solicitudesCompletadas = 0;
+                        let totalSolicitudes = horas.length;
+                        horas.forEach(function(hora,index){
+                            let dia_hora_reserva = dia_reserva + " " + hora;
+
+                            $.ajax({
+                                url: "{% url 'get_reserva' %}", 
+                                method: 'GET',
+                                data: {
+                                    cancha_id: cancha.cancha_id,
+                                    dia_hora_reserva: dia_hora_reserva,
+                                },
+                                success: function (data) {
+                                    reservas.push(data)
+                                    solicitudesCompletadas++;
+
+
+                                    if (solicitudesCompletadas === totalSolicitudes) {
+
+                                        llenartablas(ordenarPorFecha(reservas,'dia_hora_reserva'),fila)
+                                        list_canchas.appendChild(fila);
+                                        //console.log(ordenarPorFecha(reservas,'dia_hora_reserva'))
+
+                                    }
+                                  
+                                    /*alert(dia_hora_reserva+ "reserva ")
+
+                                    // Crea una celda de tabla
+                                    let celda = document.createElement('td');
+                                    celda.style.height = '9.1875rem';
+                                    celda.style.border = '1px solid #38CCCC';
+                                    if (data!=='') {
+                                        celda.style.backgroundColor = '#577373';
+                                        celda.style.color = '#ABF7F7';
+                                        celda.style.textAlign = 'center';
+                                        celda.style.fontFamily = 'Lexend';
+                                        celda.style.fontWeight = 'bold';
+                                        celda.textContent = data;
+                                    } else {
+                                        celda.style.backgroundColor = '#ECFDFD';
+                                        celda.onclick = function() {
+                                            openModal(cancha.cancha_id, dia_hora_reserva);
+                                        };
+                                    }
+                                    fila.appendChild(celda)   */
+
+                                },
+                                error: function (error) {
+                                    console.error(error);
+                                }
+                            });
+                        });
 
                     });
 
@@ -328,14 +382,55 @@
             }
         });
     });
+    function llenartablas(lista,fila){
+        lista.forEach(function(elemento,index){
+            let celda = document.createElement('td');
+            celda.style.height = '9.1875rem';
+            celda.style.border = '1px solid #38CCCC';
+            if (elemento.user === null) {
+                celda.style.backgroundColor = '#ECFDFD';
+                celda.onclick = function() {
+                    openModal(elemento.cancha_id, elemento.dia_hora_reserva);
+                };
+            }
+            else{
+                console.log(elemento.mi_reserva)
+                if(elemento.mi_reserva==null){
+                    celda.style.backgroundColor = '#577373';
+                    celda.textContent = elemento.user.username;
 
+                }
+                else{
+                    celda.textContent = elemento.user.username;
+                    celda.style.backgroundColor = '#6aa3b4';
+
+                }
+                celda.style.color = '#ABF7F7';
+                celda.style.textAlign = 'center';
+                celda.style.fontFamily = 'Lexend';
+                celda.style.fontWeight = 'bold';
+            }
+            fila.appendChild(celda)  
+
+
+        });
+
+
+    }
+
+        
+    function ordenarPorFecha(lista, campo) {
+        return lista.sort(function(a, b) {
+            const dateA = new Date(a[campo]);
+            const dateB = new Date(b[campo]);
+            return dateA - dateB;
+        });
+    }
+    
     function openModal(cancha_id,hora) {
 
         //Hora
-        // Utiliza expresiones para extraer la hora
-        let inphorario_i = document.getElementById("Fecha_ini")
-        //let hora_c = hora.match(/\d{2}:\d{2}/)[0];
-        inphorario_i.value = convertirFecha(hora)
+
 
 
         // Formatear la nueva fecha y hora en un formato específico
@@ -347,7 +442,6 @@
             },
             success: function (data) {
 
-                console.log(data)
                 //cancha_id
                 let inpcancha_id = document.getElementById("cancha_id")
                 inpcancha_id.value = cancha_id
@@ -366,6 +460,10 @@
                 
                 inphorario_f.value=convertirFecha(fecha_final)
         
+                // Utiliza expresiones para extraer la hora
+                let inphorario_i = document.getElementById("Fecha_ini")
+                //let hora_c = hora.match(/\d{2}:\d{2}/)[0];
+                inphorario_i.value = convertirFecha(hora)
                 sessionStorage.setItem('precio_base',data.precio) //Variable sesion
                 sessionStorage.setItem('hora_base',convertirFecha(hora)) //Variable sesion
 
@@ -420,6 +518,18 @@
         // Formatea la nueva hora en el formato "AAAA-MM-DD HH:MM"
       
         return convertirFecha(fechaHora);
+    }
+
+
+    function obtenerHoras() {
+        var encabezados = [];
+        var celdasEncabezados = document.querySelectorAll('#tabla-reservas thead td');
+      
+        for (var i = 1; i < celdasEncabezados.length; i++) { // Empezamos desde 1 para omitir la primera celda
+          encabezados.push(celdasEncabezados[i].textContent.trim());
+        }
+      
+        return encabezados;
       }
 
 
