@@ -1,0 +1,123 @@
+.predios {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 90vh;
+  }
+  .predios h1 {
+    font-family: "Lexend", sans-serif;
+    font-size: 2.5rem;
+    font-weight: bolder;
+    color: #042F2F;
+    padding-top: 1.875rem;
+  }
+  .predios .filtros {
+    width: 80%;
+    display: flex;
+    justify-content: space-evenly;
+    margin-top: .9375rem;
+  }
+  .predios .filtros div {
+    display: flex;
+    gap: .9375rem;
+    color: #042F2F;
+    font-family: "Lexend", sans-serif;
+    font-weight: bolder;
+    align-items: center;
+  }
+  .predios .filtros input {
+    width: 21.875rem;
+    height: 38px;
+    border-radius: 28px;
+    border: 1px solid #E0E0E0;
+    background-color: #ABF7F7;
+    box-shadow: 4px 4px 4px 0px rgba(0, 0, 0, 0.25);
+    padding-left: 1.25rem;
+  }
+  .predios .filtros select {
+    border-radius: 28px;
+    padding: 10px 14px;
+    background-color: #ABF7F7;
+    border: 1px solid #E0E0E0;
+    box-shadow: 4px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  }
+  .predios .filtros button {
+    background-color: #38CCCC;
+    width: 10%;
+    color: #ECFDFD;
+    border-style: none;
+    display: flex;
+    color: #042F2F;
+    font-family: "Lexend", sans-serif;
+    font-weight: bolder;
+    justify-content: center;
+    align-items: center;
+    gap: 1.25rem;
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    border-radius: 28px;
+  }
+  .predios .filtros button:hover {
+    transform: translateZ(50px);
+    transform: scale(1.05);
+    color: #ABF7F7;
+  }
+  .predios .filtros button:active {
+    transform: translateY(-1px);
+    transform: rotate(2deg);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  }
+  .predios ul {
+    width: 80%;
+  }
+  .predios ul li {
+    display: flex;
+    gap: 1.875rem;
+    height: 12.5rem;
+    text-decoration: none;
+    list-style: none;
+    background-color: #ECFDFD;
+    box-shadow: 0px 2px 15px 0px rgba(56, 204, 204, 0.31), 0px 0px 4px 0px rgba(0, 0, 0, 0.4), 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+    margin: 1.25rem;
+    border-radius: 24px;
+    padding: 1.25rem;
+    align-items: center;
+  }
+  .predios ul li img {
+    width: 136px;
+    height: 136px;
+    border-radius: 15px;
+  }
+  .predios ul li .datos-predio {
+    padding-top: 0.625rem;
+    justify-content: space-between;
+  }
+  .predios ul li .datos-predio img {
+    width: 40px;
+    height: 40px;
+  }
+  .predios ul li .datos-predio a {
+    text-decoration: none;
+    color: #042F2F;
+  }
+  .predios ul li .datos-predio h3 {
+    font-family: "Lexend", sans-serif;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 700;
+    cursor: pointer;
+  }
+  .predios ul li .datos-predio div {
+    margin-top: 1.75rem;
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+  }
+  .predios ul li .datos-predio div p {
+    margin: 0;
+  }
+  
+  .predios p {
+    font-family: "Lexend", sans-serif;
+    font-size: 1.25rem;
+    padding: 1.25rem;
+  }

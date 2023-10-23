@@ -1,0 +1,192 @@
+.section-login, .section-register {
+    background-color: #042F2F;
+    color: #ABF7F7;
+    display: grid;
+    grid-template-columns: 50% 50%;
+    height: 100vh;
+  }
+  
+  .img-container {
+    grid-column: 1/2;
+    background-image: url(../img/foto-login.png);
+    background-size: cover;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    height: 100vh;
+  }
+  .img-container a {
+    display: flex;
+    justify-content: center;
+    align-self: center;
+    width: 70%;
+  }
+  .img-container .logo {
+    background-image: none;
+    display: flex;
+    align-self: center;
+    width: 100%;
+    height: auto;
+  }
+  
+  .iniciar-sesion, .section-register .iniciar-sesion {
+    grid-column: 2/3;
+    width: 27.4375rem;
+    height: auto;
+    justify-self: center;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    gap: 1.5rem;
+    margin-top: 2.375rem;
+    margin-bottom: 2rem;
+    justify-content: center;
+  }
+  .iniciar-sesion .titulo-container {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    gap: 1.75rem;
+  }
+  .iniciar-sesion .titulo-container h2 {
+    font-size: 2.25rem;
+    font-family: "Lexend", sans-serif;
+    font-weight: bold;
+    text-align: center;
+  }
+  .iniciar-sesion .titulo-container p {
+    font-size: 1.25rem;
+    font-family: "Khula", sans-serif;
+    text-align: center;
+  }
+  .iniciar-sesion form, .section-register .iniciar-sesion form, #add-cancha {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: start;
+    gap: 1.25rem;
+  }
+  .iniciar-sesion form label, .section-register .iniciar-sesion form label, #add-cancha label {
+    font-size: 1rem;
+    font-family: "Lexend", sans-serif;
+  }
+  .iniciar-sesion form input, .section-register .iniciar-sesion form input, #add-cancha input {
+    width: 27.4375rem;
+    font-family: "Khula", sans-serif;
+    height: 3rem;
+    border-radius: 0.75rem;
+    background: #ABF7F7;
+    border: 0.0625rem solid #D4D7E3;
+    padding-left: 0.625rem;
+    background-color: #ECFDFD;
+  }
+  .iniciar-sesion form input::placeholder, .section-register .iniciar-sesion form input::placeholder {
+    color: #8897AD;
+    font-size: 1rem;
+    font-family: "Khula", sans-serif;
+  }
+  .iniciar-sesion form a, .section-register .iniciar-sesion form a {
+    color: #38CCCC;
+    text-decoration: none;
+    font-size: 1rem;
+    font-family: "Lexend", sans-serif;
+    font-weight: bolder;
+  }
+  .iniciar-sesion button, .section-register .iniciar-sesion button {
+    background-color: #38CCCC;
+    border-color: #329F9F;
+    border-radius: 0.75rem;
+    color: #ABF7F7;
+    font-size: 1.25rem;
+    font-family: "Lexend", sans-serif;
+    font-weight: bolder;
+    text-align: center;
+    width: 27.4375rem;
+    height: 3.25rem;
+    border-style: none;
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+  .iniciar-sesion button:hover {
+    transform: translateZ(50px);
+    transform: scale(1.05);
+  }
+  .iniciar-sesion button:active {
+    transform: translateY(-1px);
+    transform: rotate(2deg);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  }
+  
+  .login-alt {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    gap: 16px;
+  }
+  .login-alt button {
+    background-color: rgba(181, 181, 181, 0.4431372549);
+    color: #ECFDFD;
+    border-style: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1.25rem;
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+  .login-alt button:hover {
+    transform: translateZ(50px);
+    transform: scale(1.05);
+  }
+  .login-alt button:active {
+    transform: translateY(-1px);
+    transform: rotate(2deg);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  }
+  .login-alt img {
+    background-image: none;
+  }
+  
+  .registrate-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    gap: 0.625rem;
+  }
+  .registrate-container p {
+    font-size: 1rem;
+    font-family: "Lexend", sans-serif;
+    color: #ABF7F7;
+    font-weight: bold;
+  }
+  .registrate-container a {
+    color: #38CCCC;
+    text-decoration: none;
+    font-size: 1rem;
+    font-family: "Lexend", sans-serif;
+    font-weight: bolder;
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+  .registrate-container a:hover {
+    transform: translateZ(50px);
+    transform: scale(1.05);
+  }
+  .registrate-container a:active {
+    transform: translateY(-1px);
+    transform: rotate(2deg);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  }
+  
+  .section-register {
+    background-color: #ABF7F7;
+    color: #042F2F;
+  }
+  .section-register .img-container {
+    grid-column: 2/3;
+  }
+  .section-register .iniciar-sesion {
+    grid-column: 1/2;
+    grid-row: 1/2;
+    background-color: #ABF7F7;
+  }
+  .section-register .registrate-container p {
+    color: #042F2F;
+  }
