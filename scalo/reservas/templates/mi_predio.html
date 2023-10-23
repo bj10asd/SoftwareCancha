@@ -50,8 +50,8 @@
             </div>
             <div class="desc">
                 <p> <!-- MAPA -->
-                    <img src="{% static 'img/Address.png' %}" alt="Direccion: ">
                     {% if predio.link_mapa %}
+                        <img src="{% static 'img/Address.png' %}" alt="Direccion: ">
                         <a href="{{predio.link_mapa}}">¿Donde estamos?</a>
                     {% else %}
                         <p>No esta cargado el mapa</p> 
@@ -230,7 +230,7 @@
                                 <option value="60" selected>60 min</option>
                                 <option value="120">120 min</option>
                             </select>-->
-                            <input type="text" class="form-control" name="telef" id="telef" aria-describedby="predioHelp" value="{{ predio.telefono|default_if_none:"" }}"></input>
+                            <input type="text" class="form-control" name="telef" id="telef" aria-describedby="predioHelp" value="{{ predio.telefono|default_if_none:"" }}">
                         </div>
 
                     </div>
@@ -251,7 +251,7 @@
             </div>
             <div class="modal-footer">
                 <a type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</a>
-                <button type="submit" class="btn btn-primary">Confirmar Reserv</button>
+                <button type="submit" class="btn btn-primary">Confirmar cambios</button>
             </div>
         </form>
 
@@ -356,51 +356,6 @@
 
 
     function ModalEditar(cancha_id) {
-        
-
-        $.ajax({
-            url: '/cancha/', 
-            method: 'GET',
-            data: {
-                cancha_id: cancha_id,
-            },
-            success: function (data) {
-                //direccion
-                //telefono
-                //email
-                //descripcion
-                //mapa
-                //cancha_id
-                let inpcancha_id = document.getElementById("cancha_id")
-                inpcancha_id.value = cancha_id
-                //Nombre de cancha
-                let inpcancha = document.getElementById("cancha")
-                inpcancha.value = data.nombre
-                //Precio
-                let inprecio =document.getElementById("precio")
-                inprecio.value=parseInt(data.precio)
-
-                var fecha_final = new Date(hora);
-                // Sumar una hora
-                fecha_final.setHours(fecha_final.getHours() + 1);
-            
-                let inphorario_f = document.getElementById("Fecha_fin")
-                
-                inphorario_f.value=convertirFecha(fecha_final)
-        
-                // Utiliza expresiones para extraer la hora
-                let inphorario_i = document.getElementById("Fecha_ini")
-                //let hora_c = hora.match(/\d{2}:\d{2}/)[0];
-                inphorario_i.value = convertirFecha(hora)
-                sessionStorage.setItem('precio_base',data.precio) //Variable sesion
-                sessionStorage.setItem('hora_base',convertirFecha(hora)) //Variable sesion
-
-                        
-            },
-            error: function (error) {
-                console.error(error);
-            }
-        });
 
         $('#modaleditar').modal('show')
     }

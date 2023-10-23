@@ -99,8 +99,8 @@
             </div>
             <div class="desc">
                 <p> <!-- MAPA -->
-                    <img src="{% static 'img/Address.png' %}" alt="Direccion: ">
                     {% if predio.link_mapa %}
+                    <img src="{% static 'img/Address.png' %}" alt="Direccion: ">
                         <a href="{{predio.link_mapa}}">¿Donde estamos?</a>
                     {% else %}
                         <p>No esta cargado el mapa</p> 
@@ -291,11 +291,6 @@
     </div>
 </div>
 
-<<<<<<< HEAD
-=======
-
-
->>>>>>> fc8b23d7e9806cf720d36e51bd7b50b5a7b99c57
 {% endblock %}
 
 
