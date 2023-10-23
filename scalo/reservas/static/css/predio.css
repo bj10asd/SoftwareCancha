@@ -150,9 +150,11 @@
   font-size: 20px;
 }
 
-.modal-content form {
+/* .modal-content form {
   background-color: #ABF7F7;
-}
+} */
+
+
 
 .modal-body {
   font-family: Lexend;
@@ -165,6 +167,10 @@
   color: #ECFDFD;
   border-radius: 1.25rem;
   cursor: default;
+}
+
+#add-cancha input {
+  background: #ABF7F7 !important;
 }
 
 .modal-body input:focus {

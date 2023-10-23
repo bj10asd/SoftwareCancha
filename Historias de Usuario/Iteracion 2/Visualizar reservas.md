@@ -16,6 +16,7 @@ para llevar un seguimiento de mis actividades realizadas, y estar al tanto de mi
     - Precio de la reserva.
 - Un boton para redigir al predio de la reserva
 - Las reservas se deben poder filtrar por:
-    - Activas
-    - Pasadas
-- Las reservas activas deben tener un color verde.
+    - Estado (Activas / Pasadas)
+    - Deporte
+    - Nombre
+- Las reservas activas deben tener un color verde
