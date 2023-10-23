@@ -14,7 +14,12 @@
         </div>
         <div class="col-6 d-flex flex-column justify-content-center datos">
             <div class="titl">
-                <h4>{{ predio.nombre }}</h4>
+                <div class=" d-flex flex-colum">
+                    <h4>{{ predio.nombre }}</h4> 
+                    <div class="justify-content-end" style="margin-left: auto; margin-right: 0;" >
+                        <button class="btn-primary" onclick="ModalEditar('{{ cancha.id }}')">Editar</button>
+                    </div>
+                </div>
                 <br>
                 <h3>{% if predio.direccion %}
                     {{ predio.direccion }}
@@ -44,6 +49,14 @@
                 <input type="hidden" id="predio_id" value="{{ predio.id }}">
             </div>
             <div class="desc">
+                <p> <!-- MAPA -->
+                    <img src="{% static 'img/Address.png' %}" alt="Direccion: ">
+                    {% if predio.link_mapa %}
+                        <a href="{{predio.link_mapa}}">¿Donde estamos?</a>
+                    {% else %}
+                        <p>No esta cargado el mapa</p> 
+                    {% endif %}
+                </p>
                 <p>
                     {% if predio.descripcion %}
                     {{ predio.descripcion }}
@@ -183,6 +196,70 @@
 
 
 
+<!-- Modal PARA EDITAR -->
+<div class="modal fade" id="modaleditar" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Editando mi predio</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form method="post" action="{% url 'editar_mipredio' %}">
+            {% csrf_token %}
+
+            <div class="modal-body">
+
+                <div class="form-group">
+                    <label for="predio">Predio</label>
+                    <input type="text" class="form-control" id="predio" name="predio" aria-describedby="predioHelp" value="{{ predio.nombre }}">
+                    <!--<small id="predioHelp" class="form-text text-muted">Predio donde vamos a reservar</small>-->
+                </div>
+
+
+                <div class="row">
+                    <div class="form-group col">
+                        <label for="direccion">Direccion</label>
+                        <input type="text" class="form-control " id="direccion" name="direccion" />
+
+                    </div>
+                    <div class="form-group col">
+                        <div class="form-group">
+                            <label for="telef">Telefono:</label>
+                            <!--<select class="form-control" id="telef" name="telef" > onchange="cambio_duracion()"
+                                <option value="60" selected>60 min</option>
+                                <option value="120">120 min</option>
+                            </select>-->
+                            <input type="text" class="form-control" name="telef" id="telef" aria-describedby="predioHelp" value="{{ predio.telefono|default_if_none:"" }}"></input>
+                        </div>
+
+                    </div>
+                </div>
+                <input type="hidden" class="form-control" name="predio_id" id="predio_id" value="{{predio.id}}">
+                <div class="form-group">
+                    <label for="mapa">Link dirección</label>
+                    <input type="text" class="form-control" id="mapa" name="mapa" aria-describedby="mapaHelp" value="{{ predio.link_mapa }}">
+                    <!--<small id="predioHelp" class="form-text text-muted">Predio donde vamos a reservar</small>-->
+                </div>
+                <div class="form-group">
+                    <label for="descripcion">Descripción</label>
+                    <!--<textarea type="textarea" class="form-control" id="descripcion" aria-describedby="descripHelp" value="{{ predio.descripcion|default_if_none:"" }}">-->
+                        <textarea name="descripcion" id="descripcion" cols="30" rows="10" class="form-control" aria-describedby="descripHelp">{{ predio.descripcion|default_if_none:"" }}</textarea>
+                    <!--<small id="predioHelp" class="form-text text-muted">Predio donde vamos a reservar</small>-->
+                </div>
+    
+            </div>
+            <div class="modal-footer">
+                <a type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</a>
+                <button type="submit" class="btn btn-primary">Confirmar Reserv</button>
+            </div>
+        </form>
+
+        </div>
+    </div>
+</div>
+
+
 
 {% endblock %}
 
@@ -276,5 +353,57 @@
             }
         });
     });
+
+
+    function ModalEditar(cancha_id) {
+        
+
+        $.ajax({
+            url: '/cancha/', 
+            method: 'GET',
+            data: {
+                cancha_id: cancha_id,
+            },
+            success: function (data) {
+                //direccion
+                //telefono
+                //email
+                //descripcion
+                //mapa
+                //cancha_id
+                let inpcancha_id = document.getElementById("cancha_id")
+                inpcancha_id.value = cancha_id
+                //Nombre de cancha
+                let inpcancha = document.getElementById("cancha")
+                inpcancha.value = data.nombre
+                //Precio
+                let inprecio =document.getElementById("precio")
+                inprecio.value=parseInt(data.precio)
+
+                var fecha_final = new Date(hora);
+                // Sumar una hora
+                fecha_final.setHours(fecha_final.getHours() + 1);
+            
+                let inphorario_f = document.getElementById("Fecha_fin")
+                
+                inphorario_f.value=convertirFecha(fecha_final)
+        
+                // Utiliza expresiones para extraer la hora
+                let inphorario_i = document.getElementById("Fecha_ini")
+                //let hora_c = hora.match(/\d{2}:\d{2}/)[0];
+                inphorario_i.value = convertirFecha(hora)
+                sessionStorage.setItem('precio_base',data.precio) //Variable sesion
+                sessionStorage.setItem('hora_base',convertirFecha(hora)) //Variable sesion
+
+                        
+            },
+            error: function (error) {
+                console.error(error);
+            }
+        });
+
+        $('#modaleditar').modal('show')
+    }
+
 </script>
 {% endblock %}

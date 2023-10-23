@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import path
-from reservas.models import UsuarioXRoles,Roles,Predios,Deportes,Canchas,Reservas
+from reservas.models import UsuarioXRoles,Roles,Predios,Deportes,Canchas,Reservas,usuarios
 from django.contrib.auth import login,logout,authenticate
 from django.contrib import messages
 from django.contrib.auth.models import User, Permission
@@ -88,10 +88,14 @@ def registrarse(request):
             user = User.objects.create_user(u,e,request.POST.get('password'))
             
             if user:
+                user.first_name = request.POST.get('nombre')
+                user.last_name  = request.POST.get('apellido')
+                extra_fields(user,request.POST.get('fec_nac'),request.POST.get('telef'))
                 DarRol(user,"Cliente")
                 login(request,user)
                 p= Permission.objects.get(name='Can view Reserva')
                 user.user_permissions.add(p)
+                user.save()
                 messages.success(request, 'Usuario registrado exitosamente, bienvenido {}'.format(user.email))
                 return redirect('predios')
             else:
@@ -103,6 +107,14 @@ def DarRol(user,rol):
     nuevo_ru.user_id = user
     nuevo_ru.rol_id  = Roles.objects.get(descripcion=rol)
     nuevo_ru.save()
+
+def extra_fields(user,fec_nac,telef):
+    u = usuarios()
+    u.user_id = user
+    u.fec_nac = fec_nac
+    u.telef   = telef
+    u.save()
+
 
 def recuperar_pw(request):
     return render(request,'auth/recuperacion_pw.html',{})
@@ -137,8 +149,10 @@ def predio(request,pk):#import datetime
         horas = []
         if dia is not None:
             dia = datetime.strptime(dia, "%Y-%m-%d")
+            #dia = datetime.strftime("%d-%m-%Y")
             nueva_fecha = dia + timedelta(days=1)
-            dia_reserva = nueva_fecha.strftime("%Y-%m-%d")
+            dia_reserva = nueva_fecha.strftime("%Y-%m-%d") #cambio de como se muestra la fecha
+            #dia_reserva = nueva_fecha.strftime("%d-%m-%Y")
             for i in range(12,24):#Revisar
                 siguiente_hora = datetime(nueva_fecha.year, nueva_fecha.month, nueva_fecha.day, i, 0)
                 horas.append(siguiente_hora)           
@@ -146,6 +160,7 @@ def predio(request,pk):#import datetime
             fecha_hora_actual = datetime.now()           
             # Formatea la fecha y hora en el formato deseado
             dia_reserva = fecha_hora_actual.strftime("%Y-%m-%d")
+            #dia_reserva = fecha_hora_actual.strftime("%d-%m-%Y")
             hora_actual = datetime.now()
 
 
@@ -177,7 +192,7 @@ def predio(request,pk):#import datetime
                                             'canchas':      canchas ,
                                             'deportes':     deportes,
                                             'horas':        horas,
-                                            'dia_reserva':   dia_reserva,
+                                            'dia_reserva':  dia_reserva,
                                             'reservas':     reservas})
         
 
@@ -233,3 +248,18 @@ def cancha(request):
     return JsonResponse(cancha_data, safe=False)
 
 
+def editar_predio(request):
+    print(request.POST.get('predio_id'))
+    print(request.POST.get('predio'))
+    print(request.POST.get('direccion'))
+    print(request.POST.get('telef'))
+    print(request.POST.get('mapa'))
+    print(request.POST.get('descripcion'))
+    p = Predios.objects.get(id=request.POST.get('predio_id'))
+    p.direccion   = request.POST.get('direccion')   if request.POST.get('direccion') is not None else p.direccion
+    p.nombre      = request.POST.get('predio')      if request.POST.get('predio') is not None else p.nombre
+    p.telefono    = request.POST.get('telef')       if request.POST.get('telef') is not None else p.telefono
+    p.link_mapa   = request.POST.get('mapa')        if request.POST.get('mapa') is not None else p.link_mapa
+    p.descripcion = request.POST.get('descripcion') if request.POST.get('descripcion') is not None else p.descripcion
+    p.save()
+    return redirect('mi_predio')

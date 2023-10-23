@@ -19,15 +19,16 @@ class Deportes(models.Model):
 
 class Predios(models.Model):
     #Predio_ID GENERADO POR DJANGO
-    user_id   = models.ForeignKey(User, models.PROTECT, db_column='user_id',verbose_name='User ID')
-    nombre    = models.CharField (db_column='Nombre',max_length=50,null=False)
-    direccion = models.CharField (db_column='Direccion',max_length=250)
-    logo      = models.ImageField(upload_to='upload/',db_column='Foto')#, null=True)#(db_column='Foto',max_length=250)
-    lat       = models.FloatField(db_column='lat',blank=True,null=True)
-    lng       = models.FloatField(db_column='lng',blank=True,null=True)
-    telefono = models.CharField(max_length=15, db_column='Telefono', blank=True, null=True)  
-    email = models.EmailField(max_length=100, db_column='Email', blank=True, null=True)
-    descripcion = models.EmailField(max_length=100, db_column='Desripcion', blank=True, null=True)
+    user_id     = models.ForeignKey(User, models.PROTECT, db_column='user_id',verbose_name='User ID')
+    nombre      = models.CharField (db_column='Nombre',max_length=50,null=False)
+    direccion   = models.CharField (db_column='Direccion',max_length=250)
+    logo        = models.ImageField(upload_to='upload/',db_column='Foto')#, null=True)#(db_column='Foto',max_length=250)
+    lat         = models.FloatField(db_column='lat',blank=True,null=True)
+    lng         = models.FloatField(db_column='lng',blank=True,null=True)
+    telefono    = models.CharField(max_length=15, db_column='Telefono', blank=True, null=True)  
+    email       = models.EmailField(max_length=100, db_column='Email', blank=True, null=True)
+    descripcion = models.CharField(max_length=100, db_column='Desripcion', blank=True, null=True)
+    link_mapa   = models.CharField(max_length=100, db_column='link_mapa', blank=True, null=True)
     class Meta:
         db_table            = 'predios'
         ordering            = ['nombre']
@@ -104,3 +105,17 @@ class UsuarioXRoles(models.Model):
         #return super().__str__()
         return str(self.user_id)+ ' - '+str(self.rol_id)
 
+class usuarios(models.Model):
+    user_id = models.ForeignKey(User,models.PROTECT,db_column='user_id',verbose_name='User ID')
+    fec_nac = models.DateField(db_column='fec_nac', verbose_name="Fecha de nacimiento")
+    telef   = models.CharField(db_column='telefono',max_length=11,verbose_name="Teléfono")
+
+    class Meta:
+        db_table            = 'usuarios'
+        ordering            = ['user_id']
+        verbose_name        = 'Datos de usuario'
+        verbose_name_plural = 'Datos de usuarios'
+
+    def __str__(self) -> str:
+        #return super().__str__()
+        return str(self.user_id)

@@ -36,6 +36,11 @@
                                     <a class="nav-link" href="{% url 'mis_reservas' %}">Mis reservas</a>
                                 </li>
                                 {% endif %}
+                                {% if perms.reservas.change_predios %}
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{% url 'mi_predio' %}">Mi predio</a>
+                                </li>
+                                {% endif %}
                                 <li class="nav-item">
                                     <a class="nav-link inises" href="{% url 'logout' %}">Salir</a>
                                 </li>

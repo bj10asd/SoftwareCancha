@@ -21,3 +21,8 @@ def get_reservas(cancha,hora):
 @register.filter(expects_localtime=True)
 def is_past(timestamp):
     return timestamp<timezone.now()
+
+@register.simple_tag
+def reformat_date(dia):
+    d = dia.split("-")
+    return d[2]+"-"+d[1]+"-"+d[0]

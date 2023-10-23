@@ -33,6 +33,19 @@
         <div>
             <form action="{% url 'registro' %}" method="post">
                 {% csrf_token %}
+
+                <label for="nombre">Nombre</label>
+                <input type="text" name="nombre" id="nombre" required>
+
+                <label for="apellido">Apellido</label>
+                <input type="text" name="apellido" id="apellido" required>
+
+                <label for="telef">Teléfono</label>
+                <input type="number" name="telef" id="telef" required>
+
+                <label for="fec_nac">Fecha de nacimiento</label>
+                <input type="date" name="fec_nac" id="fec_nac" required>
+
                 <label for="email">Email</label>
                 <input type="email" name="email" id="email" placeholder="ejemplo@mail.com">
 

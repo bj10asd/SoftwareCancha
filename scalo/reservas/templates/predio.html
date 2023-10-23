@@ -42,7 +42,7 @@
         </div>
         <div class="col-6 d-flex flex-column justify-content-center datos">
             <div class="titl">
-                <h4>{{ predio.nombre }}</h4>
+                    <h4>{{ predio.nombre }}</h4> 
                 <br>
                 <h3>{% if predio.direccion %}
                     {{ predio.direccion }}
@@ -72,6 +72,14 @@
                 <input type="hidden" id="predio_id" value="{{ predio.id }}">
             </div>
             <div class="desc">
+                <p> <!-- MAPA -->
+                    <img src="{% static 'img/Address.png' %}" alt="Direccion: ">
+                    {% if predio.link_mapa %}
+                        <a href="{{predio.link_mapa}}">¿Donde estamos?</a>
+                    {% else %}
+                        <p>No esta cargado el mapa</p> 
+                    {% endif %}
+                </p>
                 <p>
                     {% if predio.descripcion %}
                     {{ predio.descripcion }}
@@ -87,13 +95,14 @@
 
         <div style="display: flex;  align-items: center; gap: 20px;justify-content: center " >
             <form method="get" action="{% url 'predio' predio.id %}">
-                <input type="hidden" name="dia_reserva" id="dia_reserva" value="{{ dia_reserva }}">
+                <input type="hidden" name="dia_reserva" id="dia_reserva" value="{{ dia_reserva}}">
                 <input type="hidden" name="accion" id="accion_2" value="anterior">
                 <button type="submit"><</button>
             </form>
-            <p>Reserva para el dia :{{dia_reserva}}</p>    
+            {% reformat_date dia_reserva as dia_formateado %}
+            <p>Reserva para el dia : {{ dia_formateado }}</p>    
             <form method="get" action="{% url 'predio' predio.id %}">
-                <input type="hidden" name="dia_reserva" id="dia_reserva" value="{{ dia_reserva }}">
+                <input type="hidden" name="dia_reserva" id="dia_reserva" value="{{ dia_reserva}}">
                 <input type="hidden" name="accion" id="accion_1" value="siguiente">
                 <button type="submit">></button>
             </form>
@@ -255,7 +264,6 @@
         </div>
     </div>
 </div>
-
 
 {% endblock %}
 
@@ -532,6 +540,7 @@
         return encabezados;
       }
 
+      
 
 </script>
 {% endblock %}

@@ -16,6 +16,7 @@ urlpatterns = [
     path('predios/',         views.predios,  name='predios'),
     path('predios_deporte/', views.predios_deporte, name='predios_deporte'),
     path('predio/<int:pk>/', views.predio,  name='predio'),
+    path('predio/edit/',     views.editar_predio,  name='editar_mipredio'),
 
     #Reservas
     path('mis_reservas/',         reservas.mis_reservas,  name='mis_reservas'),
