@@ -138,3 +138,121 @@
     justify-content: start;
     color: #ECFDFD;
   }
+
+.modal-header {
+  background-color: #38CCCC;
+}
+
+.modal-title {
+  color: #ECFDFD;
+  text-align: center;
+  font-family: Lexend;
+  font-size: 20px;
+}
+
+.modal-content form {
+  background-color: #ABF7F7;
+}
+
+.modal-body {
+  font-family: Lexend;
+  color: #042F2F;
+}
+
+.modal-body input {
+  background-color: #769999 !important;
+  border: none;
+  color: #ECFDFD;
+  border-radius: 1.25rem;
+  cursor: default;
+}
+
+.modal-body input:focus {
+  background-color: #769999 !important;
+  border: none;
+  color: #ECFDFD;
+  border-radius: 1.25rem;
+  outline: none;
+  box-shadow: none;
+}
+
+.modal-body select {
+  background-color: #38CCCC;
+  border: none;
+  color: #ECFDFD;
+  border-radius: 1.25rem;
+}
+
+.modal-body select:focus {
+  background-color: #38CCCC;
+  border: none;
+  color: #ECFDFD;
+  border-radius: 1.25rem;
+}
+
+.modal-body option {
+  background-color: #38CCCC;
+  border: none;
+  color: #ECFDFD;
+  border-radius: 1.25rem;
+}
+
+.modal-footer button {
+  display: inline-flex;
+  height: 45px;
+  padding: 8px 20px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+  border-radius: 10px;
+  background-color: #042F2F;
+  box-shadow: 2px 7px 13px 1px rgba(0, 0, 0, 0.25);
+  border: none;
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  color: #ECFDFD;
+  text-decoration: none;
+  font-family: "Lexend", sans-serif;
+  font-size: 16px;
+}
+.modal-footer button:hover {
+  transform: translateZ(50px);
+  transform: scale(1.05);
+  background-color: #38CCCC;
+  color: #ABF7F7;
+}
+.modal-footer button:active {
+  transform: translateY(-1px);
+  transform: rotate(2deg);
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+}
+
+.modal-footer a {
+  display: inline-flex;
+  height: 45px;
+  padding: 8px 20px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+  border-radius: 10px;
+  background-color: #769999;
+  box-shadow: 2px 7px 13px 1px rgba(0, 0, 0, 0.25);
+  border: none;
+  color: #ECFDFD;
+  text-decoration: none;
+  font-family: "Lexend", sans-serif;
+  font-size: 16px;
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+.modal-footer a:hover {
+  transform: translateZ(50px);
+  transform: scale(1.05);
+  background-color: #cc3838;
+  color: #ECFDFD;
+}
+.modal-footer a:active {
+  transform: translateY(-1px);
+  transform: rotate(2deg);
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+}
