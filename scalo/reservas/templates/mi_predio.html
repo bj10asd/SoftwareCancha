@@ -162,15 +162,15 @@
             <form action="{% url 'mi_predio' %}" method="post" id="add-cancha" enctype="multipart/form-data" >
                 {% csrf_token %}
                 <label for="nombre">Nombre</label>
-                <input type="text" id="nombre" name="nombre" placeholder="Nombre">
+                <input type="text" id="nombre" name="nombre" placeholder="Nombre" required>
 
                 <label for="precio">Precio</label>
-                <input type="number" name="precio" min="0" step="any" id="precio" placeholder="ARS$">
+                <input type="number" name="precio" min="0" step="any" id="precio" placeholder="ARS$" required>
                 <label for="anticipo">Anticipo</label>
-                <input type="number" name="anticipo" min="0" step="any" id="anticipo" placeholder="ARS$">
+                <input type="number" name="anticipo" min="0" step="any" id="anticipo" placeholder="ARS$" required>
                 <div style="display: flex; justify-content: space-between;width: 27.4375rem;">
-                    <select class="form-select" name="deporte_cancha" aria-label="Default select example" style="width: 40%;">
-                        <option value='all' selected>Deporte</option>
+                    <select class="form-select" name="deporte_cancha" aria-label="Default select example" style="width: 40%;" required>
+                        <option value=''>Deporte</option>
                         {% for deporte in deportes %}
                         <option value="{{ deporte.id }}">{{ deporte.descripcion }}</option>
                         {% endfor %}
@@ -178,7 +178,7 @@
                     <img id="img_add_cancha" src="#" alt="" style="height: 40px; border-radius: 2px;" />
                     <div>
                         <button type="button" ><label for="add_foto_cancha"><i class="bi bi-camera"></i>Subir Foto</label></button>
-                        <input type="file" id="add_foto_cancha" name="foto_cancha" style="display: none;">
+                        <input type="file" id="add_foto_cancha" name="foto_cancha" style="display: none;" required>
                     </div>
                     
                 </div>
@@ -187,8 +187,8 @@
             </form>
         </div>
         <div class="modal-footer add-cancha">
-          <button type="button"  data-bs-dismiss="modal">Cancelar</button>
-          <button type="submit"  form="add-cancha">Agregar</button>
+            <a type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</a>
+            <button type="submit"  form="add-cancha">Agregar</button>
         </div>
       </div>
     </div>

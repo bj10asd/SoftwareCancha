@@ -171,6 +171,12 @@
 
 #add-cancha input {
   background: #ABF7F7 !important;
+  color: #042F2F;
+}
+
+#add-cancha input:focus {
+  border: 2px solid #042F2F;
+  color: #042F2F;
 }
 
 .modal-body input:focus {
