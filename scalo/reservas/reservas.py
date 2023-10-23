@@ -153,7 +153,12 @@ def crear_reserva(request):
 
             return redirect(previous_url)
         
-    else: return redirect('index')
+    else: 
+        mensaje = f'Necesita estar logeado para poder reservar'
+        messages.error(request,mensaje)
+        previous_url = request.META.get('HTTP_REFERER', '/')
+
+        return redirect(previous_url)
 def get_reserva(request):
     if request.method == 'GET':
         cancha_id = request.GET.get('cancha_id')

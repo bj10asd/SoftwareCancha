@@ -4,7 +4,6 @@ from reservas.models import Deportes,Predios,Roles,Canchas,Reservas,UsuarioXRole
 # Register your models here.
 #USER admin
 #PW   admin
-
 class CanchasAdmin(admin.ModelAdmin):
     list_display    = ['id','predio_id','nombre','foto','precio','anticipo']
     readonly_fields = ['id']

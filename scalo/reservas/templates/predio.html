@@ -17,7 +17,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div> -->
             <script>
-                const Toast = Swal.mixin({
+                const success = Swal.mixin({
                     toast: true,
                     position: 'top-right',
                     iconColor: 'white',
@@ -29,7 +29,7 @@
                     timer: 3500,
                     timerProgressBar: true
                 })
-                Toast.fire({
+                success.fire({
                     icon: 'success',
                     title: '{{ message|safe }}'
                 })
@@ -45,7 +45,19 @@
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div> -->
             <script>
-                Toast.fire({
+                const error = Swal.mixin({
+                    toast: true,
+                    position: 'top-right',
+                    iconColor: 'white',
+                    width: 500,
+                    customClass: {
+                        popup: 'colored-toast'
+                    },
+                    showConfirmButton: false,
+                    timer: 3500,
+                    timerProgressBar: true
+                })
+                error.fire({
                     icon: 'error',
                     title: '{{ message|safe }}'
                 })
@@ -535,7 +547,6 @@
         let inprecio =document.getElementById("precio")
         inprecio.value = parseInt(precio_base) * (selectedValue / 60);
 
-        alert(hora_base)
         let fecha_fin = document.getElementById("Fecha_fin")
         
         fecha_fin.value =sumarHoras(hora_base,(selectedValue / 60))

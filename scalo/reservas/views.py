@@ -8,7 +8,7 @@ from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.core.paginator import Paginator #Paginacion.
 from django.views.generic import ListView
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta,date
 
 from django.http import JsonResponse  #JSon
 from django.http import HttpResponse
@@ -147,15 +147,44 @@ def predio(request,pk):#import datetime
         dia_reserva=''
         dia = request.GET.get('dia_reserva')
         horas = []
-        if dia is not None:
+
+        if dia is not None :
             dia = datetime.strptime(dia, "%Y-%m-%d")
-            #dia = datetime.strftime("%d-%m-%Y")
-            nueva_fecha = dia + timedelta(days=1)
+            accion = request.GET.get('accion')
+            nueva_fecha =''
+            if accion == 'siguiente':
+                #dia = datetime.strftime("%d-%m-%Y")
+                nueva_fecha = dia + timedelta(days=1)
+            else:
+                nueva_fecha = dia - timedelta(days=1)
+
             dia_reserva = nueva_fecha.strftime("%Y-%m-%d") #cambio de como se muestra la fecha
             #dia_reserva = nueva_fecha.strftime("%d-%m-%Y")
-            for i in range(12,24):#Revisar
-                siguiente_hora = datetime(nueva_fecha.year, nueva_fecha.month, nueva_fecha.day, i, 0)
-                horas.append(siguiente_hora)           
+            dia_actual = datetime.now()
+            if nueva_fecha.year == dia_actual.year and nueva_fecha.month == nueva_fecha.month and dia.day == nueva_fecha.day:
+
+                fecha_hora_actual = datetime.now()           
+                #dia_reserva = fecha_hora_actual.strftime("%d-%m-%Y")
+                hora_actual = datetime.now()
+
+
+                # Establece los minutos y  segundos en cero
+                hora_actual = hora_actual.replace(minute=0, second=0, microsecond=0)
+
+                # Crea una lista de horas desde la hora actual hasta la medianoche (24:00)
+                for i in range(1, 10):
+                    siguiente_hora = hora_actual + timedelta(hours=i)
+                    if siguiente_hora.hour <= 23 and siguiente_hora.hour !=0  :
+                        horas.append(siguiente_hora)
+                    else:
+                        break
+         
+            else:
+                           
+                for i in range(12,24):#Revisar
+                    siguiente_hora = datetime(nueva_fecha.year, nueva_fecha.month, nueva_fecha.day, i, 0)
+                    horas.append(siguiente_hora)
+                                    
         else:
             fecha_hora_actual = datetime.now()           
             # Formatea la fecha y hora en el formato deseado
