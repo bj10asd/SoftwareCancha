@@ -192,7 +192,7 @@
 
                             {% if r %}
                                 {% if user != r %}
-                                    <td data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-content="Disabled popover" style="height: 9.1875rem; background-color: #577373; border: 1px solid #38CCCC; color: #ABF7F7; text-align: center; font-family: Lexend; font-weight: bold;">
+                                    <td tabindex="0" data-bs-custom-class="custom-popover" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-content="Por favor seleccione otro" data-bs-title="Horario no disponible"  style="height: 9.1875rem; background-color: #577373; border: 1px solid #38CCCC; color: #ABF7F7; text-align: center; font-family: Lexend; font-weight: bold;">
                                         
                                     </td>
                                 {% else %}
@@ -310,6 +310,9 @@
 {% block javascript %}
 
 <script>
+
+    const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]')
+    const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl))
     
     //filter por deporte.
     $('select[name="deporte"]').change(function () {
@@ -389,6 +392,7 @@
 
                                         llenartablas(ordenarPorFecha(reservas,'dia_hora_reserva'),fila)
                                         list_canchas.appendChild(fila);
+                                        inicializarPopovers();
                                         //console.log(ordenarPorFecha(reservas,'dia_hora_reserva'))
 
                                     }
@@ -437,6 +441,7 @@
             celda.style.border = '1px solid #38CCCC';
             if (elemento.user === null) {
                 celda.style.backgroundColor = '#ECFDFD';
+                celda.style.cursor = "pointer";
                 celda.onclick = function() {
                     openModal(elemento.cancha_id, elemento.dia_hora_reserva);
                 };
@@ -447,6 +452,12 @@
                     celda.style.backgroundColor = '#577373';
                     //celda.textContent = elemento.user.username;
                     celda.style.color = '#ABF7F7';
+                    celda.setAttribute('tabindex', '0');
+                    celda.setAttribute('data-bs-custom-class', 'custom-popover');
+                    celda.setAttribute('data-bs-toggle', 'popover');
+                    celda.setAttribute('data-bs-trigger', 'hover focus');
+                    celda.setAttribute('data-bs-content', 'Por favor seleccione otro');
+                    celda.setAttribute('data-bs-title', 'Horario no disponible');
 
                 }
                 else{
@@ -461,9 +472,7 @@
             }
             fila.appendChild(celda)  
 
-
         });
-
 
     }
 
@@ -587,7 +596,24 @@
         return encabezados;
       }
 
-      
+        // Función para inicializar los popovers
+    function inicializarPopovers() {
+    // Obtén todos los elementos con el atributo data-bs-content dentro de las celdas de la tabla
+    var elementosPopover = document.querySelectorAll('td[data-bs-content]');
+
+    // Inicializa el popover para cada elemento encontrado
+    elementosPopover.forEach(function (elemento) {
+        // Crea una instancia de Popover para el elemento actual con configuración específica
+        new bootstrap.Popover(elemento, {
+        trigger: 'hover focus'
+        });
+    });
+    }
+
+    // Llama a la función para inicializar los popovers al cargar la página
+    document.addEventListener('DOMContentLoaded', function () {
+    inicializarPopovers();
+    });
 
 </script>
 {% endblock %}
