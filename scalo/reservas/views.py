@@ -147,6 +147,7 @@ def predio(request,pk):#import datetime
         dia_reserva=''
         dia = request.GET.get('dia_reserva')
         horas = []
+        container_to_scroll  = ''
 
         if dia is not None :
             dia = datetime.strptime(dia, "%Y-%m-%d")
@@ -184,7 +185,8 @@ def predio(request,pk):#import datetime
                 for i in range(12,24):#Revisar
                     siguiente_hora = datetime(nueva_fecha.year, nueva_fecha.month, nueva_fecha.day, i, 0)
                     horas.append(siguiente_hora)
-                                    
+            container_to_scroll  = 'contenedor_canchas'
+                
         else:
             fecha_hora_actual = datetime.now()           
             # Formatea la fecha y hora en el formato deseado
@@ -215,14 +217,14 @@ def predio(request,pk):#import datetime
         #print("contando las reservas de este predio de diferentes canchas: "+ str(reservas.count()))
         # Obtén la fecha y hora actual
 
-
-
         return render(request,'predio.html',{'predio':      predio ,
                                             'canchas':      canchas ,
                                             'deportes':     deportes,
                                             'horas':        horas,
                                             'dia_reserva':  dia_reserva,
-                                            'reservas':     reservas})
+                                            'reservas':     reservas,
+                                            'container_to_scroll': container_to_scroll,
+                                            })
         
 
 def predios_deporte(request):

@@ -465,6 +465,13 @@
 
     }
 
+    // Get the container to scroll to from the Django context
+    var containerToScroll = "{{ container_to_scroll }}";
+
+    if (containerToScroll) {
+            // Use JavaScript to scroll to the container based on the hash
+        location.hash = "#" + containerToScroll;
+    }
         
     function ordenarPorFecha(lista, campo) {
         return lista.sort(function(a, b) {
