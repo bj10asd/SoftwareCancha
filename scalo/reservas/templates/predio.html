@@ -135,7 +135,7 @@
             <div class="carousel-inner" style="height: 100%;">
                 {% for cancha in canchas %}
               <div class="carousel-item {% if forloop.first %}active{% endif %}" style="height: 100%;">
-                <img src="{{ cancha.foto.url }}" class="d-block w-100" style="height: 100%;"alt="...">
+                <img src="{{ cancha.foto.url }}" class="d-block w-100" style="height: 100%; object-fit: cover;"alt="...">
               </div>
               {% endfor %}
             </div>

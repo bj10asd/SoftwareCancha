@@ -37,7 +37,7 @@
     display: flex;
     flex-direction: column;
     align-items: start;
-    gap: 1.5rem;
+    gap: 1rem;
     margin-top: 2.375rem;
     margin-bottom: 2rem;
     justify-content: center;
@@ -49,7 +49,7 @@
     gap: 1.75rem;
   }
   .iniciar-sesion .titulo-container h2 {
-    font-size: 2.25rem;
+    font-size: 1.95rem;
     font-family: "Lexend", sans-serif;
     font-weight: bold;
     text-align: center;
@@ -64,7 +64,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: start;
-    gap: 1.25rem;
+    gap: .75rem;
   }
   .iniciar-sesion form label, .section-register .iniciar-sesion form label, #add-cancha label {
     font-size: 1rem;
@@ -73,7 +73,7 @@
   .iniciar-sesion form input, .section-register .iniciar-sesion form input, #add-cancha input {
     width: 27.4375rem;
     font-family: "Khula", sans-serif;
-    height: 3rem;
+    height: 2.5rem;
     border-radius: 0.75rem;
     background: #ABF7F7;
     border: 0.0625rem solid #D4D7E3;
