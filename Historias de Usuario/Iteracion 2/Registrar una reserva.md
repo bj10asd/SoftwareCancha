@@ -21,3 +21,4 @@ para asegurarme de tener un espacio y horario disponible para disfrutar de la ac
     - Boton para confirmar la reserva
 - Al confirmar la reserva mostrar una alerta de "Reserva realizada exitosamente"
 - En caso de querer reservar en un horario no disponible, mostrar un popover con el mensaje "Cancha no disponible para este horario".
+- Si quiero reservar no estando logueado, debo mostrar un popover con la posiblidad de redirigir a iniciar sesion.
