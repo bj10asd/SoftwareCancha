@@ -305,19 +305,23 @@ def cancha(request):
 
 
 def editar_predio(request):
-    print(request.POST.get('predio_id'))
-    print(request.POST.get('predio'))
-    print(request.POST.get('direccion'))
-    print(request.POST.get('telef'))
-    print(request.POST.get('mapa'))
-    print(request.POST.get('descripcion'))
-    print(request.POST.get('email_contacto'))
-    p = Predios.objects.get(id=request.POST.get('predio_id'))
-    p.direccion   = request.POST.get('direccion')   if request.POST.get('direccion') is not None else p.direccion
-    p.nombre      = request.POST.get('predio')      if request.POST.get('predio') is not None else p.nombre
-    p.telefono    = request.POST.get('telef')       if request.POST.get('telef') is not None else p.telefono
-    p.link_mapa   = request.POST.get('mapa')        if request.POST.get('mapa') is not None else p.link_mapa
-    p.descripcion = request.POST.get('descripcion') if request.POST.get('descripcion') is not None else p.descripcion
-    p.email       = request.POST.get('email_contacto') if request.POST.get('email_contacto') is not None else p.email
-    p.save()
-    return redirect('mi_predio')
+    if len(request.POST.get('descripcion'))<100:
+        print(request.POST.get('predio_id'))
+        print(request.POST.get('predio'))
+        print(request.POST.get('direccion'))
+        print(request.POST.get('telef'))
+        print(request.POST.get('mapa'))
+        print(request.POST.get('descripcion'))
+        print(request.POST.get('email_contacto'))
+        p = Predios.objects.get(id=request.POST.get('predio_id'))
+        p.direccion   = request.POST.get('direccion')   if request.POST.get('direccion') is not None else p.direccion
+        p.nombre      = request.POST.get('predio')      if request.POST.get('predio') is not None else p.nombre
+        p.telefono    = request.POST.get('telef')       if request.POST.get('telef') is not None else p.telefono
+        p.link_mapa   = request.POST.get('mapa')        if request.POST.get('mapa') is not None else p.link_mapa
+        p.descripcion = request.POST.get('descripcion') if request.POST.get('descripcion') is not None else p.descripcion
+        p.email       = request.POST.get('email_contacto') if request.POST.get('email_contacto') is not None else p.email
+        p.save()
+        return redirect('mi_predio')
+    else:
+        messages.error(request, 'La descripción es muy grande')
+        return redirect('mi_predio')
