@@ -55,6 +55,20 @@ def deslogearse(request):
     logout(request)
     return redirect('index')
 
+def es_menor(fec_nac):
+    #year=fec_nac.year
+    #month = fec_nac.month
+    #day = fec_nac.day
+    #date = date(year,month,day)
+    now = date.today()
+    return (
+        now.year - fec_nac.year < 18
+        or now.year - fec_nac.year == 18 and (
+            now.month < fec_nac.month 
+            or now.month == fec_nac.month and now.day <= fec_nac.day
+        )
+    )
+
 def registrarse(request):
     if request.user.is_authenticated:
         return redirect('index')
@@ -63,6 +77,17 @@ def registrarse(request):
         rdo = User.objects.filter(email=e).count()
         if rdo > 0:
             messages.error(request, 'El email proporcionado ya está en uso')
+            return redirect('registro')
+        elif datetime.strptime(request.POST.get('fec_nac'),'%Y-%m-%d')>=datetime.now():
+            messages.error(request, 'La fecha proporcionada no puede ser mayor a hoy')
+            return redirect('registro')
+        elif es_menor(datetime.strptime(request.POST.get('fec_nac'),'%Y-%m-%d')):
+            print(datetime.now()-datetime.strptime(request.POST.get('fec_nac'),'%Y-%m-%d'))
+            messages.error(request, 'La persona no es mayor de 18 años')
+            return redirect('registro')
+        elif datetime.strptime(request.POST.get('fec_nac'),'%Y-%m-%d').year<=1900:
+            #print(datetime.now()-datetime.strptime(request.POST.get('fec_nac'),'%Y-%m-%d'))
+            messages.error(request, 'El año debe ser mayor a 1900')
             return redirect('registro')
         else:
             p1 = request.POST.get('password')
@@ -286,11 +311,13 @@ def editar_predio(request):
     print(request.POST.get('telef'))
     print(request.POST.get('mapa'))
     print(request.POST.get('descripcion'))
+    print(request.POST.get('email_contacto'))
     p = Predios.objects.get(id=request.POST.get('predio_id'))
     p.direccion   = request.POST.get('direccion')   if request.POST.get('direccion') is not None else p.direccion
     p.nombre      = request.POST.get('predio')      if request.POST.get('predio') is not None else p.nombre
     p.telefono    = request.POST.get('telef')       if request.POST.get('telef') is not None else p.telefono
     p.link_mapa   = request.POST.get('mapa')        if request.POST.get('mapa') is not None else p.link_mapa
     p.descripcion = request.POST.get('descripcion') if request.POST.get('descripcion') is not None else p.descripcion
+    p.email       = request.POST.get('email_contacto') if request.POST.get('email_contacto') is not None else p.email
     p.save()
     return redirect('mi_predio')
