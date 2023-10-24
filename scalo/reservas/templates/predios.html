@@ -84,7 +84,11 @@
                 <div class="datos-predio">
                     <a href="{% url 'predio' pk=predio.id %}"><h3>{{ predio.nombre }}</h3></a>
                     <div>
-                        <img src="{% static 'img/Address.png' %}" alt="">
+                        {% if predio.link_mapa %}
+                            <a href="{{predio.link_mapa}}" target="_blank" rel="noopener noreferrer"><img src="{% static 'img/Address.png' %}" alt=""> </a>
+                        {% else %}    
+                            <img src="{% static 'img/Address.png' %}" alt="">
+                        {% endif %}
                         <p>{{ predio.direccion }}</p>
                     </div>
                 </div>
