@@ -26,3 +26,13 @@ def is_past(timestamp):
 def reformat_date(dia):
     d = dia.split("-")
     return d[2]+"-"+d[1]+"-"+d[0]
+
+
+@register.simple_tag
+def dia_actual(dia_reserva):
+    dia_reserva = datetime.strptime(dia_reserva, "%Y-%m-%d")
+    today = datetime.now()
+    if today.year == dia_reserva.year and today.month == dia_reserva.month and today.day == dia_reserva.day:
+        return True
+    else:
+        return False

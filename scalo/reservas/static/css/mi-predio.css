@@ -63,3 +63,26 @@
     transform: rotate(2deg);
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
   }
+
+  .btn-edit{
+    background-color: none;
+    background: none;
+    border:none;
+    width: 50px;
+    border-radius: 50%;
+    height: 50px;
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+  .btn-edit:hover {
+    transform: translateZ(50px);
+    transform: scale(1.05);
+    background:fixed;
+    background-color: #38CCCC;
+    border-radius: 50%;
+  }
+  .btn-edit:active {
+    transform: translateY(-1px);
+    transform: rotate(2deg);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  }
+  

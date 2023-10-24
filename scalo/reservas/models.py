@@ -27,7 +27,7 @@ class Predios(models.Model):
     lng         = models.FloatField(db_column='lng',blank=True,null=True)
     telefono    = models.CharField(max_length=15, db_column='Telefono', blank=True, null=True)  
     email       = models.EmailField(max_length=100, db_column='Email', blank=True, null=True)
-    descripcion = models.CharField(max_length=100, db_column='Desripcion', blank=True, null=True)
+    descripcion = models.CharField(max_length=1000, db_column='Desripcion', blank=True, null=True)
     link_mapa   = models.CharField(max_length=100, db_column='link_mapa', blank=True, null=True)
     class Meta:
         db_table            = 'predios'
