@@ -19,6 +19,7 @@ para asegurarme de que los detalles del mismo sean precisos, y esten actualizado
     - Foto de la cancha
     - Deporte
     - Precio
-- Un boton "Modificar datos" que despliegue un modal para poder modificar los datos del predio
+    - Horarios y reservas de la cancha
+- Un boton "Editar" que despliegue un modal para poder modificar los datos del predio
 - El modal debe permitir modificar los datos mostrados en la interfaz.
 - Al confirmar las modificaciones mostrar una alerta de "Datos modificados correctamente"

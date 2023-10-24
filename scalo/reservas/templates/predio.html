@@ -71,14 +71,14 @@
         <h4>Perfil del predio</h4>
         <div class="col-6 d-flex justify-content-center align-items-center">
             {% if predio.logo %}
-            <img style="height: 340px; width: 340px; border-radius: 26px;" src="{{ predio.logo.url }}"
+            <img style="height: 400px; width: 400px; border-radius: 26px;" src="{{ predio.logo.url }}"
                 alt="{{ predio.logo.url }}">
             {% else %}
-            <img style="height: 340px; width: 340px; border-radius: 26px;" src="media/upload/predio.png"
+            <img style="height: 400px; width: 400px; border-radius: 26px;" src="media/upload/predio.png"
                 alt="Imagen Predeterminada">
             {% endif %}
         </div>
-        <div class="col-6 d-flex flex-column justify-content-center datos">
+        <div class="col-6 d-flex flex-column justify-content-center datos " style="height: 450px;">
             <div class="titl">
                     <h4>{{ predio.nombre }}</h4> 
                 <br>
@@ -107,17 +107,18 @@
                         {% endif %}
                     </p>
                 </div>
-                <input type="hidden" id="predio_id" value="{{ predio.id }}">
-            </div>
-            <div class="desc">
-                <p> <!-- MAPA -->
+                <br>
+                <div class="dir-container"> <!-- MAPA -->
                     {% if predio.link_mapa %}
                     <img src="{% static 'img/Address.png' %}" alt="Direccion: ">
-                        <a href="{{predio.link_mapa}}">¿Donde estamos?</a>
+                        <a href="{{predio.link_mapa}}">Donde estamos?</a>
                     {% else %}
                         <p>No esta cargado el mapa</p> 
                     {% endif %}
-                </p>
+                </div>
+                <input type="hidden" id="predio_id" value="{{ predio.id }}">
+            </div>
+            <div class="desc">
                 <p>
                     {% if predio.descripcion %}
                     {{ predio.descripcion }}
@@ -135,14 +136,14 @@
             <form method="get" action="{% url 'predio' predio.id %}">
                 <input type="hidden" name="dia_reserva" id="dia_reserva" value="{{ dia_reserva}}">
                 <input type="hidden" name="accion" id="accion_2" value="anterior">
-                <button type="submit"><</button>
+                <button type="submit" class="btn-nav"><</button>
             </form>
             {% reformat_date dia_reserva as dia_formateado %}
             <p>Reserva para el dia : {{ dia_formateado }}</p>    
             <form method="get" action="{% url 'predio' predio.id %}">
                 <input type="hidden" name="dia_reserva" id="dia_reserva" value="{{ dia_reserva}}">
                 <input type="hidden" name="accion" id="accion_1" value="siguiente">
-                <button type="submit">></button>
+                <button type="submit" class="btn-nav">></button>
             </form>
         </div>
 
@@ -191,11 +192,11 @@
 
                             {% if r %}
                                 {% if user != r %}
-                                    <td style="height: 9.1875rem; background-color: #577373; border: 1px solid #38CCCC; color: #ABF7F7; text-align: center; font-family: Lexend; font-weight: bold;">
+                                    <td data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-content="Disabled popover" style="height: 9.1875rem; background-color: #577373; border: 1px solid #38CCCC; color: #ABF7F7; text-align: center; font-family: Lexend; font-weight: bold;">
                                         
                                     </td>
                                 {% else %}
-                                    <td style="height: 9.1875rem; background-color: #6aa3b4; border: 1px solid #38CCCC; color: #ABF7F7; text-align: center; font-family: Lexend; font-weight: bold;">
+                                    <td style="height: 9.1875rem; background-color: #38CCCC; border: 1px solid #38CCCC; color: #ECFDFD; text-align: center; font-family: Lexend; font-weight: bold;">
                                         {{ r }}
                                     </td>
                                 {% endif %}
@@ -445,14 +446,15 @@
                 if(elemento.mi_reserva==null){
                     celda.style.backgroundColor = '#577373';
                     //celda.textContent = elemento.user.username;
+                    celda.style.color = '#ABF7F7';
 
                 }
                 else{
                     celda.textContent = elemento.user.username;
-                    celda.style.backgroundColor = '#6aa3b4';
+                    celda.style.backgroundColor = '#38CCCC';
+                    celda.style.color = '#ECFDFD';
 
                 }
-                celda.style.color = '#ABF7F7';
                 celda.style.textAlign = 'center';
                 celda.style.fontFamily = 'Lexend';
                 celda.style.fontWeight = 'bold';

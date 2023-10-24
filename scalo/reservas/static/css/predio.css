@@ -50,6 +50,7 @@
   .dir-container {
     display: flex;
     align-items: center;
+    gap: .3125rem;
   }
   
   .dir-container p {
@@ -57,6 +58,21 @@
     font-size: 22px;
     font-style: normal;
     margin: 0%;
+  }
+
+  .dir-container a {
+    font-family: Khula;
+    font-size: 22px;
+    font-style: normal;
+    margin: 0%;
+    text-decoration: none;
+  }
+
+  
+  .dir-container img {
+    width: 3rem;
+    height: 2.3125rem;
+    object-fit: contain;
   }
   
   .turnos {
@@ -82,6 +98,31 @@
     color: #042F2F;
     padding-top: 1.25rem;
   }
+
+  .btn-nav {
+    font-family: Lexend;
+    border-radius: 1.25rem;
+    border: none;
+    background-color: #38CCCC;
+    color: #ABF7F7;
+    font-weight: bolder;
+    font-size: 1.25rem;
+    text-align: center;
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    width: 3.125rem;
+  }
+
+.btn-nav:hover {
+  transform: translateZ(50px);
+  transform: scale(1.05);
+  background-color: #042F2F;
+  color: #38CCCC;
+}
+.btn-nav:active {
+  transform: translateY(-1px);
+  transform: rotate(2deg);
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+}
   
   .table-container {
     background-color: #ABF7F7;
