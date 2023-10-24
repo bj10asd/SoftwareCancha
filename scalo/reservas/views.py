@@ -179,12 +179,12 @@ def predio(request,pk):#import datetime
                         horas.append(siguiente_hora)
                     else:
                         break
-         
             else:
                            
                 for i in range(12,24):#Revisar
                     siguiente_hora = datetime(nueva_fecha.year, nueva_fecha.month, nueva_fecha.day, i, 0)
                     horas.append(siguiente_hora)
+                
             container_to_scroll  = 'contenedor_canchas'
                 
         else:
