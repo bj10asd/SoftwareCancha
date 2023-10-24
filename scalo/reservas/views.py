@@ -224,7 +224,7 @@ def predio(request,pk):#import datetime
             hora_actual = hora_actual.replace(minute=0, second=0, microsecond=0)
 
             # Crea una lista de horas desde la hora actual hasta la medianoche (24:00)
-            for i in range(1, 10):
+            for i in range(12, 24): #range(1, 10)
                 siguiente_hora = hora_actual + timedelta(hours=i)
                 if siguiente_hora.hour <= 23 and siguiente_hora.hour !=0  :
                     horas.append(siguiente_hora)
