@@ -17,7 +17,7 @@
                 <div class=" d-flex flex-colum">
                     <h4>{{ predio.nombre }}</h4> 
                     <div class="justify-content-end" style="margin-left: auto; margin-right: 0;" >
-                        <button class="btn-primary" onclick="ModalEditar('{{ cancha.id }}')">Editar</button>
+                        <button class="" onclick="ModalEditar('{{ cancha.id }}')" id="editar"> Editar</button>
                     </div>
                 </div>
                 <br>
@@ -41,9 +41,9 @@
                     <p>
                         {% if predio.email %}
                             {{ predio.email }}
-                            {% else %}
+                        {% else %}
                             No se encuentra cargado
-                            {% endif %}
+                        {% endif %}
                     </p>
                 </div>
                 <input type="hidden" id="predio_id" value="{{ predio.id }}">
@@ -220,7 +220,7 @@
                 <div class="row">
                     <div class="form-group col">
                         <label for="direccion">Direccion</label>
-                        <input type="text" class="form-control " id="direccion" name="direccion" />
+                        <input type="text" class="form-control " id="direccion" name="direccion" value="{{predio.direccion|default_if_none:"" }}">
 
                     </div>
                     <div class="form-group col">
@@ -236,6 +236,11 @@
                     </div>
                 </div>
                 <input type="hidden" class="form-control" name="predio_id" id="predio_id" value="{{predio.id}}">
+                <div class="form-group">
+                    <label for="email_contacto">Email de contacto</label>
+                    <input type="email" class="form-control" id="email_contacto" name="email_contacto" aria-describedby="emailHelp" value="{{ predio.email|default_if_none:"" }}">
+                    <!--<small id="predioHelp" class="form-text text-muted">Predio donde vamos a reservar</small>-->
+                </div>
                 <div class="form-group">
                     <label for="mapa">Link dirección</label>
                     <input type="text" class="form-control" id="mapa" name="mapa" aria-describedby="mapaHelp" value="{{ predio.link_mapa }}">
