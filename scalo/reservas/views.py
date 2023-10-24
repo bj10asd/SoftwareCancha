@@ -46,7 +46,7 @@ def login_view(request):
             else:
                 return redirect('predios')
         else:
-            messages.error(request, "Usuario o contraseña invalidos")
+            messages.error(request, "Usuario o contraseña inválidos.")
             return redirect('login')
 
     return render(request, 'auth/login.html',{})
@@ -76,36 +76,36 @@ def registrarse(request):
         e   = request.POST.get('email')
         rdo = User.objects.filter(email=e).count()
         if rdo > 0:
-            messages.error(request, 'El email proporcionado ya está en uso')
+            messages.error(request, 'El email proporcionado ya está en uso.')
             return redirect('registro')
         elif datetime.strptime(request.POST.get('fec_nac'),'%Y-%m-%d')>=datetime.now():
-            messages.error(request, 'La fecha proporcionada no puede ser mayor a hoy')
+            messages.error(request, 'La fecha proporcionada no puede ser mayor a hoy.')
             return redirect('registro')
         elif es_menor(datetime.strptime(request.POST.get('fec_nac'),'%Y-%m-%d')):
             print(datetime.now()-datetime.strptime(request.POST.get('fec_nac'),'%Y-%m-%d'))
-            messages.error(request, 'La persona no es mayor de 18 años')
+            messages.error(request, 'La persona no es mayor de 18 años.')
             return redirect('registro')
         elif datetime.strptime(request.POST.get('fec_nac'),'%Y-%m-%d').year<=1900:
             #print(datetime.now()-datetime.strptime(request.POST.get('fec_nac'),'%Y-%m-%d'))
-            messages.error(request, 'El año debe ser mayor a 1900')
+            messages.error(request, 'El año debe ser mayor a 1900.')
             return redirect('registro')
         else:
             p1 = request.POST.get('password')
             p2 = request.POST.get('password2')
             if p1!=p2:
-                messages.error(request, 'Las contraseñas no coinciden')
+                messages.error(request, 'Las contraseñas no coinciden.')
                 return redirect('registro')
             else:
                 if len(p1)<7:
-                    messages.error(request, 'La contraseña debe tener al menos 8 caracteres')
+                    messages.error(request, 'La contraseña debe tener al menos 8 carácteres.')
                     return redirect('registro')
                 else:
                     if not any(c.isupper() for c in p1):
-                        messages.error(request, 'La contraseña debe contener una mayuscula')
+                        messages.error(request, 'La contraseña debe contener una mayúscula.')
                         return redirect('registro')
                     if not any(c in string.punctuation for c in p1):
                         #C: !" #$%&'()*+,-./:;<=>?@[\]^_`{|} ~.
-                        messages.error(request, 'La contraseña debe contener al menos un caracter especial')
+                        messages.error(request, 'La contraseña debe contener al menos un carácter especial')
                         return redirect('registro')
             #AL NO PEDIR USUARIO, VAMOS A GENERAR EL USUARIO APARTIR DEL EMAIL
             #ES DECIR EL USUARIO SERA LO QUE ANTECEDA AL @
@@ -124,7 +124,7 @@ def registrarse(request):
                 messages.success(request, 'Usuario registrado exitosamente, bienvenido {}'.format(user.email))
                 return redirect('predios')
             else:
-                print('Ocurrió un error')    
+                print('Ocurrió un error.')    
     return render(request,'auth/registrarse.html',{})
 
 def DarRol(user,rol):
