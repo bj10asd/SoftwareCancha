@@ -187,7 +187,7 @@ def predio(request,pk):#import datetime
             dia_reserva = nueva_fecha.strftime("%Y-%m-%d") #cambio de como se muestra la fecha
             #dia_reserva = nueva_fecha.strftime("%d-%m-%Y")
             dia_actual = datetime.now()
-            if nueva_fecha.year == dia_actual.year and nueva_fecha.month == nueva_fecha.month and dia.day == nueva_fecha.day:
+            if nueva_fecha.year == dia_actual.year and nueva_fecha.month == dia_actual.month and nueva_fecha.day == dia_actual.day:
 
                 fecha_hora_actual = datetime.now()           
                 #dia_reserva = fecha_hora_actual.strftime("%d-%m-%Y")
@@ -198,14 +198,12 @@ def predio(request,pk):#import datetime
                 hora_actual = hora_actual.replace(minute=0, second=0, microsecond=0)
 
                 # Crea una lista de horas desde la hora actual hasta la medianoche (24:00)
-                for i in range(1, 10):
+                for i in range(1, 24):
                     siguiente_hora = hora_actual + timedelta(hours=i)
-                    if siguiente_hora.hour <= 23 and siguiente_hora.hour !=0  :
+                    if siguiente_hora.hour <= 23 and siguiente_hora.hour > 11:
+                        print(siguiente_hora)
                         horas.append(siguiente_hora)
-                    else:
-                        break
-            else:
-                           
+            else:                          
                 for i in range(12,24):#Revisar
                     siguiente_hora = datetime(nueva_fecha.year, nueva_fecha.month, nueva_fecha.day, i, 0)
                     horas.append(siguiente_hora)
@@ -224,12 +222,11 @@ def predio(request,pk):#import datetime
             hora_actual = hora_actual.replace(minute=0, second=0, microsecond=0)
 
             # Crea una lista de horas desde la hora actual hasta la medianoche (24:00)
-            for i in range(12, 24): #range(1, 10)
+            for i in range(1, 24):
                 siguiente_hora = hora_actual + timedelta(hours=i)
-                if siguiente_hora.hour <= 23 and siguiente_hora.hour !=0  :
+                if siguiente_hora.hour <= 23 and siguiente_hora.hour > 11:
                     horas.append(siguiente_hora)
-                else:
-                    break
+                    
                 
 
         predio = Predios.objects.get(id=pk)

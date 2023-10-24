@@ -95,28 +95,10 @@ def mi_predio(request):
                 dia_reserva = nueva_fecha.strftime("%Y-%m-%d") #cambio de como se muestra la fecha
                 #dia_reserva = nueva_fecha.strftime("%d-%m-%Y")
                 dia_actual = datetime.now()
-                if nueva_fecha.year == dia_actual.year and nueva_fecha.month == nueva_fecha.month and dia.day == nueva_fecha.day:
-
-                    fecha_hora_actual = datetime.now()           
-                    #dia_reserva = fecha_hora_actual.strftime("%d-%m-%Y")
-                    hora_actual = datetime.now()
-
-
-                    # Establece los minutos y  segundos en cero
-                    hora_actual = hora_actual.replace(minute=0, second=0, microsecond=0)
-
-                    # Crea una lista de horas desde la hora actual hasta la medianoche (24:00)
-                    for i in range(1, 10):
-                        siguiente_hora = hora_actual + timedelta(hours=i)
-                        if siguiente_hora.hour <= 23 and siguiente_hora.hour !=0  :
-                            horas.append(siguiente_hora)
-                        else:
-                            break
-                else:
-                            
-                    for i in range(10,24):#Revisar
-                        siguiente_hora = datetime(nueva_fecha.year, nueva_fecha.month, nueva_fecha.day, i, 0)
-                        horas.append(siguiente_hora)
+  
+                for i in range(12,24):#Revisar
+                    siguiente_hora = datetime(nueva_fecha.year, nueva_fecha.month, nueva_fecha.day, i, 0)
+                    horas.append(siguiente_hora)
                     
                 container_to_scroll  = 'contenedor_canchas'
                     
@@ -126,15 +108,13 @@ def mi_predio(request):
                 dia_reserva = fecha_hora_actual.strftime("%Y-%m-%d")
                 #dia_reserva = fecha_hora_actual.strftime("%d-%m-%Y")
                 hora_actual = datetime.now()
-
-
                 # Establece los minutos y  segundos en cero
                 hora_actual = hora_actual.replace(minute=0, second=0, microsecond=0)
 
-                # Crea una lista de horas desde la hora actual hasta la medianoche (24:00)
-                for i in range(10, 24):
-                    siguiente_hora = hora_actual + timedelta(hours=i)
+                for i in range(12,24):#Revisar
+                    siguiente_hora = datetime(hora_actual.year, hora_actual.month, hora_actual.day, i, 0)
                     horas.append(siguiente_hora)
+                
                
                     
 
