@@ -13,5 +13,6 @@ para  realizar cambios necesarios en la información de una cancha.
     - Precio
     - Anticipo
     - Foto 
+- Los datos son obligatorios.
 - En la  parte inferior del modal agregar dos botones "Cancelar" , "Confirmar".
-- Al confirmar las modificaciones mostrar una alerta de "Cancha Modificada correctamente"
+- Al confirmar las modificaciones mostrar una alerta de "Cancha Modificada correctamente".
