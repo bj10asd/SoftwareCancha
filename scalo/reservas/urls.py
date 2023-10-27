@@ -1,5 +1,5 @@
 from django.urls import path
-from reservas import views, reservas
+from reservas import views, reservas, predio
 
 
 urlpatterns = [
@@ -17,6 +17,7 @@ urlpatterns = [
     path('predios_deporte/', views.predios_deporte, name='predios_deporte'),
     path('predio/<int:pk>/', views.predio,  name='predio'),
     path('predio/edit/',     views.editar_predio,  name='editar_mipredio'),
+    path('mi_predio/edit-cancha',    predio.editar_cancha,  name='editar_cancha'),
 
     #Reservas
     path('mis_reservas/',         reservas.mis_reservas,  name='mis_reservas'),

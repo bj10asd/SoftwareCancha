@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load l10n %}
 {% load consulta_reservas %}
 {% block content %}
 <div class="container">
@@ -135,14 +136,17 @@
                     <tr style="height: 9.1875rem;">
                         <th style="height: 9.1875rem;">
                             <div class="card d-flex justify-content-center"
-                                style="height: 147px; background-color: #38CCCC; border-radius: .6875rem;">
-                                <div class="row">
-                                    <div class="col-md-6 d-flex align-items-center ">
-                                        <img style="border-radius: .75rem; width: 114px; height: 114px; margin-left: .625rem;"
+                                style="height: 147px; background-color: #38CCCC; border-radius: .6875rem;width: 280px;">
+                                <div class="row" >
+                                    <div class="col-md-6 d-flex align-items-center " >
+                                        <button class="btn-edit"  onclick="ModalEditarCancha('{{ cancha.id }}')" style="margin-left: .125rem;" >
+                                            <i class="bi bi-pencil-square"></i>
+                                        </button>
+                                        <img style="border-radius: .75rem; width: 114px; height: 114px; margin-left: .125rem;"
                                             src="{{ cancha.foto.url }}" alt="{{ cancha.foto }}">
                                     </div>
-                                    <div class="col-md-6 card-datos">
-                                        <div class="card-block px-6">
+                                    <div class="col-md-6 card-datos" >
+                                        <div class="card-block px-6" >
                                             <h4 class="">{{ cancha.nombre }}</h4>
                                             <p class="">{{ cancha.deporte_id }} <br> Precio: ${{ cancha.precio }}</p>
                                         </div>
@@ -229,6 +233,47 @@
   </div>
 
 
+<!-- Modal PARA EDITAR CANCHA-->
+<div class="modal" tabindex="-1" id="edit-cancha">
+    <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+        <div class="modal-header">
+        <h5 class="modal-title">Modificar cancha</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body add-cancha">
+            <form action="{% url 'editar_cancha' %}" method="post" id="editar-cancha" enctype="multipart/form-data" >
+                {% csrf_token %}
+                <input type="hidden" value="{{cancha.id}}" id="edit-id" name="cancha_id">
+                <label for="nombre">Nombre</label>
+                <input type="text" id="edit-nombre" name="nombre" value="{{cancha.nombre}}" placeholder="Nombre" required>
+
+                <label for="edit-precio">Precio</label>
+                <input type="number" name="precio" min="0" value="{{ cancha.precio|unlocalize }}" step="any" id="edit-precio" placeholder="ARS$" required>
+                <label for="edit-anticipo">Anticipo</label>
+                <input type="number" name="anticipo" min="0" value="{{cancha.anticipo|unlocalize}}" step="any" id="edit-anticipo" placeholder="ARS$" required>
+                <div style="display: flex; justify-content: space-between;width: 27.4375rem;">
+                    <select class="form-select" name="deporte_cancha"  aria-label="Default select example" style="width: 40%;" disabled>
+                        <option value='' id="edit-deporte" selected>{{cancha.deporte_id.descripcion}}</option>    
+                    </select>
+                    <img id="img_edit_cancha" src="{{ cancha.foto.url }}" alt="" style="height: 40px; border-radius: 2px;" />
+                    <div>
+                        <button type="button" ><label for="edit_foto_cancha"><i class="bi bi-camera"></i>Subir Foto</label></button>
+                        <input type="file" id="edit_foto_cancha" name="foto_cancha" style="display: none;" >
+                    </div>
+                    
+                </div>
+                
+
+            </form>
+        </div>
+        <div class="modal-footer add-cancha">
+            <a type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</a>
+            <button type="submit"  form="editar-cancha">Modificar</button>
+        </div>
+    </div>
+    </div>
+</div>
 
 <!-- Modal PARA EDITAR -->
 <div class="modal fade" id="modaleditar" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
@@ -304,6 +349,15 @@
 
 {% block javascript %}
 <script>
+
+    let text= '{'+
+        {% for cancha in canchas %}'"{{cancha.id}}" :{ "nombre":"{{cancha.nombre}}" , "precio": {{cancha.precio|unlocalize}}, "anticipo":{{cancha.anticipo|unlocalize}}, "deporte":"{{cancha.deporte_id.descripcion}}", "imagen":"{{ cancha.foto.url }}" }{% if not forloop.last %},' + {% endif %}{% endfor %}}';
+        
+        
+
+    const canchas = JSON.parse(text);
+
+
     var imgOut = document.getElementById("img_add_cancha");
     var imgInp = document.getElementById("add_foto_cancha");
     imgInp.onchange = evt => {
@@ -313,16 +367,52 @@
     }
     }
 
+    var edit_imgOut = document.getElementById("img_edit_cancha");
+    var edit_imgInp = document.getElementById("edit_foto_cancha");
+    edit_imgInp.onchange = evt => {
+    const [edit_file] = edit_imgInp.files
+    if (edit_file) {
+        edit_imgOut.src = URL.createObjectURL(edit_file)
+    }
+    }
+    
     var precio = document.getElementById("precio");
     var anticipo = document.getElementById("anticipo");
+    var edit_precio = document.getElementById("edit-precio");
+    var edit_anticipo = document.getElementById("edit-anticipo");
 
-    function limit() {
-        anticipo.value=Math.min(precio.value,anticipo.value);
+    function limit(prec, antic) {
+        antic.value=Math.min(prec.value,antic.value);
     }
+    function limit_edit() {
+        limit(edit_precio, edit_anticipo);
+    };
+    function limit_add() {
+        limit(precio, anticipo);
+    };
+    edit_precio.onchange=limit_edit;
+    edit_anticipo.onchange=limit_edit;
+    precio.onchange=limit_add;
+    anticipo.onchange=limit_add;
 
-    precio.onchange=limit;
-    anticipo.onchange=limit;
+    function ModalEditarCancha(cancha_id) {
+        var edit_precio = document.getElementById("edit-precio");
+        var edit_anticipo = document.getElementById("edit-anticipo");
+        var edit_nombre = document.getElementById("edit-nombre");
+        var edit_deporte = document.getElementById("edit-deporte");
+        var edit_img = document.getElementById("img_edit_cancha");
+        var edit_id= document.getElementById("edit-id");
 
+        cancha=canchas[cancha_id]
+        edit_id.value=cancha_id;
+        edit_nombre.value=cancha.nombre;
+        edit_precio.value=cancha.precio;
+        edit_anticipo.value=cancha.anticipo;
+        edit_deporte.textContent=cancha.deporte;
+        edit_img.src=cancha.imagen;
+
+        $('#edit-cancha').modal('show')
+    }
 
     function ModalEditar(cancha_id) {
 

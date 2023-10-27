@@ -85,4 +85,40 @@
     transform: rotate(2deg);
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
   }
+
+  #editar-cancha {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: start;
+    gap: .75rem;
+  }
+  #editar-cancha label {
+    font-size: 1rem;
+    font-family: "Lexend", sans-serif;
+  }
+  #editar-cancha input {
+    width: 27.4375rem;
+    font-family: "Khula", sans-serif;
+    height: 2.5rem;
+    border-radius: 0.75rem;
+    background: #ABF7F7;
+    border: 0.0625rem solid #D4D7E3;
+    padding-left: 0.625rem;
+    background-color: #ECFDFD;
+  }
+  #editar-cancha input {
+    background: #ABF7F7 !important;
+    color: #042F2F;
+  }
   
+  #editar-cancha input:focus {
+    border: 2px solid #042F2F;
+    color: #042F2F;
+  }
+  .modal-body select:disabled {
+    background-color: #38CCCC;
+    border: none;
+    color: #042F2F;
+    border-radius: 1.25rem;
+  }
