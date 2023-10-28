@@ -18,20 +18,24 @@ import json
 
 
 def editar_cancha(request):
-    if request.user.is_authenticated:
-        if request.method == 'POST' :
-            cancha=Canchas.objects.get(id= request.POST.get('cancha_id'))
-            if Predios.objects.filter(user_id=request.user).first()==cancha.predio_id:
-                name= request.POST.get('nombre')
-                precio= request.POST.get('precio')
-                anticipo= request.POST.get('anticipo')
-                if len(request.FILES) != 0:
-                    imagen= request.FILES['foto_cancha']
-                    cancha.foto.delete()
-                    cancha.foto=imagen
-                cancha.nombre=name
-                cancha.precio=precio
-                cancha.anticipo=anticipo
-                cancha.save()
+    try:
+        if request.user.is_authenticated:
+            if request.method == 'POST' :
+                cancha=Canchas.objects.get(id= request.POST.get('cancha_id'))
+                if Predios.objects.filter(user_id=request.user).first()==cancha.predio_id:
+                    name= request.POST.get('nombre')
+                    precio= request.POST.get('precio')
+                    anticipo= request.POST.get('anticipo')
+                    if len(request.FILES) != 0:
+                        imagen= request.FILES['foto_cancha']
+                        cancha.foto.delete()
+                        cancha.foto=imagen
+                    cancha.nombre=name
+                    cancha.precio=precio
+                    cancha.anticipo=anticipo
+                    cancha.save()
+                    messages.success(request, f'{cancha.nombre} modificada correctamente.')
+    except Exception:
+        messages.error(request, 'Error al modificar cancha.')
             
     return redirect('mi_predio')
