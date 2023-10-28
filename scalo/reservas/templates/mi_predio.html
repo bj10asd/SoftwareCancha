@@ -499,19 +499,24 @@
                         var divCard = document.createElement("div")
                         divCard.className = "card"
                         divCard.innerHTML = `
-                            <div class="card d-flex justify-content-center" style="height: 147px; background-color: #38CCCC; border-radius: .6875rem;">
-                                <div class="row">
-                                    <div class="col-md-6 d-flex align-items-center ">
-                                        <img style="border-radius: .75rem; width: 114px; height: 114px; margin-left: .625rem;" src="${cancha.foto}" alt="${cancha.foto}">
-                                    </div>
-                                    <div class="col-md-6 px-3">
-                                        <div class="card-block px-6">
-                                            <h4 class="card-title">${cancha.nombre}</h4>
-                                            <p class="card-text">${cancha.deporte}</p>
-                                        </div>
-                                    </div>
+                        <div class="card d-flex justify-content-center"
+                        style="height: 147px; background-color: #38CCCC; border-radius: .6875rem;width: 280px;">
+                        <div class="row" >
+                            <div class="col-md-6 d-flex align-items-center " >
+                                <button class="btn-edit"  onclick="ModalEditarCancha('${ cancha.cancha_id }')" style="margin-left: .125rem;" >
+                                    <i class="bi bi-pencil-square"></i>
+                                </button>
+                                <img style="border-radius: .75rem; width: 114px; height: 114px; margin-left: .125rem;"
+                                    src="${ cancha.foto }" alt="${ cancha.foto }">
+                            </div>
+                            <div class="col-md-6 card-datos" >
+                                <div class="card-block px-6" >
+                                    <h4 class="">${ cancha.nombre }</h4>
+                                    <p class="">${ cancha.deporte } <br> Precio: ${ cancha.precio }</p>
                                 </div>
                             </div>
+                        </div>
+                    </div>
                         `;
                         celdaNombre.appendChild(divCard);
                         fila.appendChild(celdaNombre)
