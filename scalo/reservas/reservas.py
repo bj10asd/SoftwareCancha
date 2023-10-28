@@ -17,18 +17,9 @@ import string
 import json
 
 
+def cancelar_reserva(request):
+    return redirect('mis_reservas')
 
-def mis_reservas(request):
-    if request.user.is_authenticated:
-        reservas_lista =Reservas.objects.all()
-
-        # Configura la paginación con 10 elementos por página
-        paginator = Paginator(reservas_lista, 10)
-        # Obtiene el número de página de la URL o utiliza la página 1 como predeterminada
-        pagina = request.GET.get('page') or 1
-        reservas = paginator.get_page(pagina)
-        return render(request, 'reservas.html', {'reservas': reservas })
-    else: return redirect('index')
 def mis_reservas(request):
     if request.user.is_authenticated:
         filtro_txt      = request.GET.get('filtro_txt')

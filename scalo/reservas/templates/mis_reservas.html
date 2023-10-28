@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load l10n %}
 {% load consulta_reservas %}
 {% block content %}
 
@@ -93,9 +94,16 @@
                         <p><i class="bi bi-currency-dollar" style="color: #38CCCC;"></i>{{ reserva.precio }}</p>
                         <p style="color: #38CCCC;"><strong>{{ reserva.cancha_id.deporte_id }}</strong></p>
                     </div>
-                    <div>
-                        <img src="{% static 'img/Address.png' %}" alt="">
-                        <p>{{ reserva.cancha_id.predio_id.direccion }}</p>
+                    <div style="justify-content: space-between; margin:0px;">
+                        <div>
+                            <img src="{% static 'img/Address.png' %}" alt="">
+                            <p>{{ reserva.cancha_id.predio_id.direccion }}</p>
+                        </div>
+                        {% if not reserva.fecha_fin|is_past %}
+                        <button type="button" onclick="ModalCancelarReserva({{reserva.id}})" style="margin: 8px;">
+                            Cancelar
+                        </button>
+                        {% endif %}
                     </div>
                 </div>
             </li>
@@ -128,4 +136,104 @@
 </div>
 
 </ul>
+
+<div class="modal" tabindex="-1" id="cancel-reserva">
+    <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+        <div class="modal-header">
+        <h5 class="modal-title">Cancelar Reserva</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body add-cancha">
+            <h4>
+                ¿Estás seguro que quieres cancelar esta reserva?
+            </h4>
+            <div style="width: 100%;border-radius: 5px;background-color:lightgray; padding: 10px; margin-bottom: 1rem;">
+                <p id="cancelar_nombre" style="margin: 0;">
+
+                </p>
+                <p id="cancelar_fecha" style="margin: 0;">
+                    <i class="bi bi-calendar-event" style="color: #38CCCC;"></i>
+                </p>
+                <p id="cancelar_horario" style="margin: 0;">
+                    <i class="bi bi-clock" style="color: #38CCCC;"></i>
+                </p>
+                <p id="cancelar_precio" style="margin: 0;">
+                    <i class="bi bi-currency-dollar" style="color: #38CCCC;"></i>
+                </p>
+            </div>
+            
+            <div style="width: 100%;border-radius: 5px;background-color:coral; justify-content: center; display: flex;margin-bottom: 1rem; align-items: center; padding: 0px;">
+                <p style="margin: 1rem;">
+                    Recuerde que el monto de la reserva no será devuelto.
+                </p>
+            </div>
+            <form action="{% url 'cancelar_reserva' %}" method="post" id="cancelar-reserva" enctype="multipart/form-data" >
+                {% csrf_token %}
+                <input type="hidden" value="" id="reserva-id" name="reserva_id">
+            </form>
+        </div>
+        <div class="modal-footer add-cancha">
+            <a type="button" class="btn btn-secondary" data-bs-dismiss="modal">Volver</a>
+            <button type="submit"  form="cancelar-reserva">Cancelar</button>
+        </div>
+    </div>
+    </div>
+</div>
+
+<script>
+
+    function capitalizeWords(str) {
+    // Divide el string en palabras usando espacio como separador
+    const words = str.split(' ');
+
+    // Itera sobre cada palabra y capitaliza la primera letra
+    const capitalizedWords = words.map(word => {
+        if (word.length > 0) {
+        return word[0].toUpperCase() + word.slice(1).toLowerCase();
+        } else {
+        return word; // Si la palabra está vacía, la deja igual
+        }
+    });
+
+    // Une las palabras nuevamente en un solo string
+    return capitalizedWords.join(' ');
+    }
+    let text= '{'+
+        {% for reserva in reservas %}'"{{reserva.id}}" :{ "predio":"{{reserva.cancha_id.predio_id.nombre}}" , "cancha": "{{reserva.cancha_id.nombre}}", "fecha":"{{reserva.fecha_ini|date:"l d/m"}}", "horario":"{{reserva.fecha_ini|date:"H:i"}} - {{reserva.fecha_fin|date:"H:i"}}", "precio": {{reserva.precio|unlocalize}} }{% if not forloop.last %},' + {% endif %}{% endfor %}}';
+        
+        
+
+    const reservas = JSON.parse(text);
+
+
+    function ModalCancelarReserva(reserva_id) {
+        var cancel_horario = document.getElementById("cancelar_horario");
+        var cancel_fecha = document.getElementById("cancelar_fecha");
+        var cancel_nombre = document.getElementById("cancelar_nombre");
+        var cancel_precio = document.getElementById("cancelar_precio");
+
+
+        reserva=reservas[reserva_id]
+        const icon_fecha = cancel_fecha.querySelector('i');
+        const icon_horario = cancel_horario.querySelector('i');
+        const icon_precio = cancel_precio.querySelector('i');
+
+        // Reemplaza el contenido de texto dentro del párrafo
+        cancel_fecha.removeChild(cancel_fecha.firstChild); // Elimina el texto existente
+        cancel_horario.removeChild(cancel_horario.firstChild);
+        cancel_precio.removeChild(cancel_precio.firstChild); 
+        // Añade el ícono nuevamente
+        cancel_fecha.appendChild(icon_fecha);
+        cancel_horario.appendChild(icon_horario);
+        cancel_precio.appendChild(icon_precio);
+        // Agrega el nuevo texto
+        cancel_fecha.appendChild(document.createTextNode(capitalizeWords(reserva.fecha))); 
+        cancel_horario.appendChild(document.createTextNode(reserva.horario)); 
+        cancel_precio.appendChild(document.createTextNode(reserva.precio)); 
+
+        cancel_nombre.textContent=reserva.predio + ' - ' + reserva.cancha 
+        $('#cancel-reserva').modal('show')
+    }
+</script>
 {% endblock %}
