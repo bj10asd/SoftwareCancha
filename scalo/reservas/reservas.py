@@ -18,6 +18,14 @@ import json
 
 
 def cancelar_reserva(request):
+    if request.user.is_authenticated:
+        if request.method == 'POST' :
+            reserva_id = request.POST.get('reserva_id')
+            reserva = Reservas.objects.get(id=reserva_id)
+            if request.user == reserva.user_id:
+                reserva.estado = 'Cancelado'
+                reserva.save()
+
     return redirect('mis_reservas')
 
 def mis_reservas(request):
@@ -37,7 +45,7 @@ def mis_reservas(request):
         if state_select != 0:
             if state_select is not None:
                 if state_select == 1:
-                    reservas_lista= reservas_lista.filter(fecha_fin__gt=datetime.now())
+                    reservas_lista= reservas_lista.filter(fecha_fin__gt=datetime.now()).filter(estado="Pendiente")
                 else: reservas_lista= reservas_lista.filter(fecha_fin__lt=datetime.now())
         paginator = Paginator(reservas_lista, 10)
         # Obtiene el número de página de la URL o utiliza la página 1 como predeterminada
