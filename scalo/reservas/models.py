@@ -67,6 +67,7 @@ class Reservas(models.Model):
     fecha_fin = models.DateTimeField(db_column='Fecha_Fin',null=False,blank=False)
     precio    = models.FloatField (db_column='Precio')#,null=True,blank=True)
     anticipo  = models.FloatField(db_column='Anticipo')#,blank=True,null=True)
+    #idpago
 
     class Meta:
         db_table            = 'reservas'
@@ -119,3 +120,9 @@ class usuarios(models.Model):
     def __str__(self) -> str:
         #return super().__str__()
         return str(self.user_id)
+
+#class pagos(models.Model):
+    #id
+    #status
+
+    

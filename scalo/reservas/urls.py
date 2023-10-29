@@ -27,5 +27,13 @@ urlpatterns = [
     #Cancha
     path('cancha/', views.cancha, name='cancha'),
 
+    #mp
+    path('obtener_links/', views.mercadopago_func, name='mercadopago_func'),
+
+    #prueba
+    path('prueba/', views.prueba, name='prueba'),
+    path('retorno-pago/', views.retorno_pago, name='retorno_pago'),
+    #path('notificacion-pago/', views.notificacion_pago, name='notificacion_pago'),
+
 ]
 

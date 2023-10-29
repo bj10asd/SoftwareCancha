@@ -12,6 +12,12 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 
 from pathlib import Path
 
+# SDK de Mercado Pago
+#import mercadopago
+# Agrega credenciales
+#sdk = mercadopago.SDK("APP_USR-5356790108164574-102419-d8674a362fdf8c1bedf821d8159c1d3e-1522412137")
+YOUR_PUBLIC_KEY="APP_USR-49830c2d-5e11-4c81-a9e9-4fd2fc139e92"
+YOUR_ACCESS_TOKEN="APP_USR-5356790108164574-102419-d8674a362fdf8c1bedf821d8159c1d3e-1522412137"
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -25,7 +31,9 @@ SECRET_KEY = 'django-insecure-013b_+ub)1bho77vrq+7tkwmqnjct)=!8b!kw#^92lmaxrtu#x
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1']
+ALLOWED_HOSTS = ['127.0.0.1',
+    '9084-2803-9800-b402-7ed6-ba3f-4184-fa5a-474e.ngrok-free.app', #esta es la direccion a cambiar por el ngrok, sin https
+    '127.0.0.1:4040']
 
 
 # Application definition

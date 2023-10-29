@@ -9,12 +9,15 @@ from django.views.generic.detail import DetailView
 from django.core.paginator import Paginator #Paginacion.
 from django.views.generic import ListView
 from datetime import datetime, timedelta,date
-
+from django.conf import settings
 from django.http import JsonResponse  #JSon
 from django.http import HttpResponse
 from django.db.models import Q
 import string
 import json
+from django.urls import reverse
+
+#at=APP_USR-5356790108164574-102419-d8674a362fdf8c1bedf821d8159c1d3e-1522412137
 
 # Create your views here.
 
@@ -287,17 +290,74 @@ def predios_deporte(request):
 
         return JsonResponse(canchas_data, safe=False)
     
+import mercadopago    
 def cancha(request):
     cancha_data = ''
     if request.method == 'GET':
         cancha_id = request.GET.get('cancha_id')
         cancha = Canchas.objects.filter(id=cancha_id).first()
-        cancha_data = {
-                'id': cancha.id,
-                'nombre': cancha.nombre,
-                'precio': cancha.precio,
-            }
+        
 
+        # Agrega credenciales
+        #sdk = mercadopago.SDK("APP_USR-5356790108164574-102419-d8674a362fdf8c1bedf821d8159c1d3e-1522412137")
+        
+        # Crea un ítem en la preferencia
+        """preference_data = {
+            "items": [
+                {
+                    "title": "Reserva",
+                    "quantity": 1,
+                    "currency_id":"ARS",
+                    "unit_price": cancha.precio,#debería ser monto pasado por 
+                }
+            ],
+            ""back_urls": [
+                {
+                    "success": "https://127.0.0.1:8000",
+                    "failure": "https://127.0.0.1:8000",
+                    "pending": "https://127.0.0.1:8000",                                  
+                },
+            ],"
+            "auto_return": "approved",
+        }
+
+        preference_data_min = {
+            "items": [
+                {
+                    "title": "Reserva",
+                    "quantity": 1,
+                    "currency_id":"ARS",
+                    "unit_price": cancha.anticipo,#debería ser monto pasado por 
+                }
+            ],
+            "back_urls": [
+                {
+                    "success": "https://dae3-2803-9800-b402-7ed6-7974-ed5a-7297-b4a8.ngrok-free.app/prueba",                        
+                },
+            ],
+            "auto_return": "approved",
+            "notification_url":"https://dae3-2803-9800-b402-7ed6-7974-ed5a-7297-b4a8.ngrok-free.app/prueba"
+        }
+
+        preference_response = sdk.preference().create(preference_data)
+        preference = preference_response["response"]
+
+        preference_response_min = sdk.preference().create(preference_data_min)
+        preference_min = preference_response_min["response"]"""
+
+        #print(preference)
+        #print(preference['init_point'])
+
+
+        cancha_data = {
+                'id'       : cancha.id,
+                'nombre'   : cancha.nombre,
+                'precio'   : cancha.precio,
+                'anticipo' : cancha.anticipo,
+                #'link'     : preference['id'],
+                #'p' : preference,
+                #'p_min' :preference_min
+            }
     return JsonResponse(cancha_data, safe=False)
 
 
@@ -322,3 +382,107 @@ def editar_predio(request):
     else:
         messages.error(request, 'La descripción es muy grande')
         return redirect('mi_predio')
+
+import mercadopago
+def mercadopago_func(request):
+    if request.method == 'GET':
+        cancha_id = request.GET.get('cancha_id')
+        cancha = Canchas.objects.filter(id=cancha_id).first()
+
+        # Agrega credenciales
+        sdk = mercadopago.SDK("APP_USR-5356790108164574-102419-d8674a362fdf8c1bedf821d8159c1d3e-1522412137")
+        
+        # Crea un ítem en la preferencia
+        preference_data = {
+            "items": [
+                {
+                    "title": "Pago de reserva en "+cancha.nombre+" "+cancha.predio_id.nombre+" Reserva Total",
+                    "quantity": 1,
+                    "currency_id":"ARS",
+                    "unit_price": cancha.precio if int(request.GET.get('duracion')) == 60 else cancha.precio*2
+                }
+            ],
+            "back_urls": {
+                "success": "https://9084-2803-9800-b402-7ed6-ba3f-4184-fa5a-474e.ngrok-free.app/retorno-pago/",
+            },
+            "auto_return": "approved",
+            #"notification_url":"https://9084-2803-9800-b402-7ed6-ba3f-4184-fa5a-474e.ngrok-free.app/notificacion-pago/",
+        }
+
+        preference_data_min = {
+            "items": [
+                {
+                    "title": "Pago de anticipo reserva en "+cancha.nombre+" "+cancha.predio_id.nombre+" Reserva Total",
+                    "quantity": 1,
+                    "currency_id":"ARS",
+                    "unit_price": cancha.anticipo if int(request.GET.get('duracion')) == 60 else cancha.anticipo*2
+                }
+            ],
+            "metadata": {
+                "descripcion": "cancha3",
+                "id_usuario": 1234,
+                # Agregar más campos según tus necesidades
+            },
+            "back_urls": {
+                "success": "https://9084-2803-9800-b402-7ed6-ba3f-4184-fa5a-474e.ngrok-free.app/retorno-pago/",
+            },
+            "auto_return": "approved",
+            #"notification_url":"https://9084-2803-9800-b402-7ed6-ba3f-4184-fa5a-474e.ngrok-free.app/notificacion-pago/",
+        }
+
+        preference_response = sdk.preference().create(preference_data)
+        preference = preference_response["response"]
+
+        preference_response_min = sdk.preference().create(preference_data_min)
+        preference_min = preference_response_min["response"]
+
+        #print(preference)
+        #print(preference['init_point'])
+        print("terminando con mp ",preference)
+        print("terminando con mp min ",preference_min)
+
+        cancha_data = {
+                'id'       : cancha.id,
+                'nombre'   : cancha.nombre,
+                'precio'   : cancha.precio,
+                'anticipo' : cancha.anticipo,
+                #'link'     : preference['id'],
+                'p'        : preference,
+                'p_min'    : preference_min
+            }
+    return JsonResponse(cancha_data, safe=False)
+
+def prueba(request):
+    print("HOLA POR NOTIFICATION URL")
+    return render(request,'prueba.html',{})
+
+#from mercadopago import MercadoPago
+
+#mp = MercadoPago('206337924', 'APP_USR-49830c2d-5e11-4c81-a9e9-4fd2fc139e92') 
+
+def retorno_pago(request):
+    # Obtener datos del pago y actualizar el estado de tu pedido
+    sdk = mercadopago.SDK("APP_USR-5356790108164574-102419-d8674a362fdf8c1bedf821d8159c1d3e-1522412137")
+    print("HOLA POR RETORNO PAGO")
+    print("MOSTRANDO PAGO ID: ",request.GET.get('payment_id'))
+    print("MOSTRANDO STATUS: ",request.GET.get('status'))
+    mp = sdk.preference().get(request.GET.get('preference_id'))
+    print("mostrando preferences ",mp)
+    print("mostrando cosas ",mp['response']['metadata'])
+    return render(request, 'prueba.html',{})
+
+"""from django.views.decorators.csrf import csrf_exempt
+@csrf_exempt
+def notificacion_pago(request):
+    print("ENTRO A NOTIFICACION PAGO")
+    sdk = mercadopago.SDK("APP_USR-5356790108164574-102419-d8674a362fdf8c1bedf821d8159c1d3e-1522412137")
+    if request.method == "POST":
+        #data = request.POST.dict()
+        data = request.POST
+        print("MOSTRANDO DATA",data)
+        #payment = sdk.get_payment(data['id'])
+        #print(payment)
+        # Procesar la notificación y actualizar el estado de tu pedido
+        # Puedes usar el objeto 'payment' para obtener información sobre el pago
+        
+    return HttpResponse(status=200)"""

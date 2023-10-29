@@ -3,6 +3,12 @@
 {% load consulta_reservas %}
 {% block content %}
 
+
+    
+
+    <body>
+        <script src="https://sdk.mercadopago.com/js/v2"></script>
+      </body>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     {% if messages %}
     {% for message in messages %}
@@ -317,13 +323,19 @@
             
             
             
-    
+    </form>
             </div>
             <div class="modal-footer">
                 <a type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</a>
-                <button type="submit" class="btn btn-primary">Confirmar Reserva</button>
+
+                <div id="wallet_container">
+                    <!--{#<buttontype="submit" id="wallet" href="" class="btn btn-primary" >Confirmar Reserva</button>#}-->
+                    <a href="" id="goto">Pagar</a>
+                    <a href="" id="goto_m">Pagar minimo</a>
+                </div>
+
             </div>
-        </form>
+        
 
         </div>
     </div>
@@ -335,6 +347,10 @@
 {% block javascript %}
 
 <script>
+    const mp = new MercadoPago('APP_USR-49830c2d-5e11-4c81-a9e9-4fd2fc139e92');
+    const bricksBuilder = mp.bricks();
+
+    
 
     const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]')
     const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl))
@@ -520,8 +536,9 @@
     function openModal(cancha_id,hora) {
 
         //Hora
-
-
+        //formateo para que siempre sea 60 a la hora de abrir el modal
+        $('#duracion').val('60');
+        
 
         // Formatear la nueva fecha y hora en un formato específico
         $.ajax({
@@ -554,10 +571,16 @@
                 let inphorario_i = document.getElementById("Fecha_ini")
                 //let hora_c = hora.match(/\d{2}:\d{2}/)[0];
                 inphorario_i.value = convertirFecha(hora)
+                sessionStorage.setItem('cancha_id',inpcancha_id.value);
                 sessionStorage.setItem('precio_base',data.precio) //Variable sesion
                 sessionStorage.setItem('hora_base',convertirFecha(hora)) //Variable sesion
 
-                        
+                //document.getElementById('goto').setAttribute("href",data.p.init_point);
+                //document.getElementById('goto_m').setAttribute("href",data.p_min.init_point);
+                //document.getElementById('wallet_container').appendChild(`<a href="${data.link}">ir a pagar</a>`)
+                //alert("primera vez cancha_id"+sessionStorage.getItem('cancha_id'));
+                //alert("primera vez dura selected "+60);
+                ResetearLinksPago(inpcancha_id.value,"60");
             },
             error: function (error) {
                 console.error(error);
@@ -593,8 +616,13 @@
         let fecha_fin = document.getElementById("Fecha_fin")
         
         fecha_fin.value =sumarHoras(hora_base,(selectedValue / 60))
+        //alert("el precio base es: "+precio_base);
+        //alert("el precio es: "+inprecio.value);
 
-
+        //alert(selectedValue);
+        //alert("cambio dura cancha_id"+sessionStorage.getItem('cancha_id'))
+        //alert("cambio dura selected "+selectedValue)
+        ResetearLinksPago(sessionStorage.getItem('cancha_id'),selectedValue)
 
     }
     function sumarHoras(horaOriginal, n) {
@@ -639,6 +667,32 @@
     document.addEventListener('DOMContentLoaded', function () {
     inicializarPopovers();
     });
+
+    function ResetearLinksPago(cancha_id,duracion){
+        //alert("antes de ajax id cancha: "+id_cancha);
+        //alert("antes de ajax duracion: "+duracion);
+        $.ajax({
+            url: '/obtener_links/',
+            method: 'GET',
+            data: {
+                cancha_id: cancha_id,
+                duracion : duracion,
+            },
+            success: function (data) {
+                //document.getElementById('goto').setAttribute("href",data.p.init_point);
+                //document.getElementById('goto_m').setAttribute("href",data.p_min.init_point);
+                //document.getElementById('wallet_container').appendChild(`<a href="${data.link}">ir a pagar</a>`)
+                //alert(data.nombre);
+                //alert(data.p.init_point);
+                //alert(data.p_min.init_point);
+                document.getElementById('goto').setAttribute("href",data.p.init_point);
+                document.getElementById('goto_m').setAttribute("href",data.p_min.init_point);
+            },
+            error: function (error) {
+                console.error(error);
+            }
+        });
+    }
 
 </script>
 {% endblock %}
