@@ -60,6 +60,15 @@ class Canchas(models.Model):
         return self.predio_id.nombre+' | '+ self.nombre
 
 class Reservas(models.Model):
+
+    ESTADO_RESERVA = (
+        ('Cancelado', 'Cancelado'),
+        ('Pendiente', 'Pendiente'),
+        ('Activo', 'Activo'),
+        ('Si_jugo', 'Si_jugo'),
+        ('No_jugo', 'No_jugo'),
+    )
+
     #Reserva_ID GENERADO POR DJANGO
     user_id   = models.ForeignKey   (User, models.PROTECT, db_column='user_id',verbose_name='User ID')
     cancha_id = models.ForeignKey   (Canchas,models.PROTECT,db_column='cancha_id')
@@ -67,7 +76,9 @@ class Reservas(models.Model):
     fecha_fin = models.DateTimeField(db_column='Fecha_Fin',null=False,blank=False)
     precio    = models.FloatField (db_column='Precio')#,null=True,blank=True)
     anticipo  = models.FloatField(db_column='Anticipo')#,blank=True,null=True)
+    estado  = models.CharField(db_column='estado',max_length=20,choices=ESTADO_RESERVA, default='Pendiente')
     #idpago
+
 
     class Meta:
         db_table            = 'reservas'
@@ -121,8 +132,19 @@ class usuarios(models.Model):
         #return super().__str__()
         return str(self.user_id)
 
-#class pagos(models.Model):
+class pagos(models.Model):
     #id
-    #status
+    payment_id = models.CharField(max_length=25, db_column='payment_id', blank=True, null=True)  
+    status  = models.CharField(max_length=15, db_column='status', blank=True, null=True)  
+    monto = models.FloatField (db_column='monto')#,null=True,blank=True)
+    reserva_id = models.ForeignKey(Reservas,models.PROTECT,db_column='reserva_id',)
 
-    
+    class Meta:
+        db_table            = 'pagos'
+        #ordering            = ['user_id']
+        verbose_name        = 'Pago'
+        verbose_name_plural = 'Pagos'
+
+    def __str__(self) -> str:
+        #return super().__str__()
+        return str(self.payment_id)
