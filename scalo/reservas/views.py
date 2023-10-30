@@ -172,8 +172,16 @@ def predios(request):
 
 def predio(request,pk):#import datetime
     predio = Predios.objects.get(id=pk)
-    p_hora_fin = int(predio.hora_fin)
-    p_hora_inicio = int(predio.hora_ini)
+    p_hora_fin = ''
+    p_hora_inicio=''
+    if predio.hora_fin is None:
+         p_hora_fin = 24
+    else:
+        p_hora_fin = int(predio.hora_fin)
+    if predio.hora_ini is None:
+        p_hora_inicio= 12
+    else:
+        p_hora_inicio = int(predio.hora_ini)
     #return HttpResponse(p_hora_inicio)
     if request.method == 'GET':
         dia_reserva=''
