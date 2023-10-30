@@ -226,9 +226,10 @@
         const icon_precio = cancel_precio.querySelector('i');
 
         // Reemplaza el contenido de texto dentro del párrafo
-        cancel_fecha.removeChild(cancel_fecha.firstChild); // Elimina el texto existente
-        cancel_horario.removeChild(cancel_horario.firstChild);
-        cancel_precio.removeChild(cancel_precio.firstChild); 
+        cancel_fecha.textContent=""; // Elimina el texto existente
+        cancel_horario.textContent="";
+        cancel_precio.textContent="";
+        cancel_fecha.textContent="";
         // Añade el ícono nuevamente
         cancel_fecha.appendChild(icon_fecha);
         cancel_horario.appendChild(icon_horario);
