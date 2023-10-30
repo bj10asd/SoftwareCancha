@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import path
-from reservas.models import UsuarioXRoles,Roles,Predios,Deportes,Canchas,Reservas,usuarios
+from reservas.models import UsuarioXRoles,Roles,Predios,Deportes,Canchas,Reservas,usuarios,pagos
 from django.contrib.auth import login,logout,authenticate
 from django.contrib import messages
 from django.contrib.auth.models import User, Permission
@@ -399,15 +399,25 @@ def mercadopago_func(request):
                     "title": "Pago de reserva en "+cancha.nombre+" "+cancha.predio_id.nombre+" Reserva Total",
                     "quantity": 1,
                     "currency_id":"ARS",
-                    "unit_price": cancha.precio if int(request.GET.get('duracion')) == 60 else cancha.precio*2
+                    "unit_price": cancha.precio if int(request.GET.get('duracion')) == 60 else cancha.precio*2,
+                    "description":"Pago de la totalidad"
                 }
             ],
+            "metadata": {
+                "cancha_id": cancha_id,
+                "duracion": request.GET.get('duracion'),
+                "fecha_ini": request.GET.get('fecha_ini'),
+                "fecha_fin": request.GET.get('fecha_fin'),
+                # Agregar más campos según tus necesidades
+            },
             "back_urls": {
                 "success": "https://9084-2803-9800-b402-7ed6-ba3f-4184-fa5a-474e.ngrok-free.app/retorno-pago/",
             },
             "auto_return": "approved",
             #"notification_url":"https://9084-2803-9800-b402-7ed6-ba3f-4184-fa5a-474e.ngrok-free.app/notificacion-pago/",
         }
+        preference_response = sdk.preference().create(preference_data)
+        preference = preference_response["response"]
 
         preference_data_min = {
             "items": [
@@ -415,12 +425,15 @@ def mercadopago_func(request):
                     "title": "Pago de anticipo reserva en "+cancha.nombre+" "+cancha.predio_id.nombre+" Reserva Total",
                     "quantity": 1,
                     "currency_id":"ARS",
-                    "unit_price": cancha.anticipo if int(request.GET.get('duracion')) == 60 else cancha.anticipo*2
+                    "unit_price": cancha.anticipo if int(request.GET.get('duracion')) == 60 else cancha.anticipo*2,
+                    "description":"Pago del anticipo"
                 }
             ],
             "metadata": {
-                "descripcion": "cancha3",
-                "id_usuario": 1234,
+                "cancha_id": cancha_id,
+                "duracion": request.GET.get('duracion'),
+                "fecha_ini": request.GET.get('fecha_ini'),
+                "fecha_fin": request.GET.get('fecha_fin'),
                 # Agregar más campos según tus necesidades
             },
             "back_urls": {
@@ -430,46 +443,95 @@ def mercadopago_func(request):
             #"notification_url":"https://9084-2803-9800-b402-7ed6-ba3f-4184-fa5a-474e.ngrok-free.app/notificacion-pago/",
         }
 
-        preference_response = sdk.preference().create(preference_data)
-        preference = preference_response["response"]
-
         preference_response_min = sdk.preference().create(preference_data_min)
         preference_min = preference_response_min["response"]
-
-        #print(preference)
-        #print(preference['init_point'])
-        print("terminando con mp ",preference)
-        print("terminando con mp min ",preference_min)
+        #print("terminando con mp ",preference)
+        #print("terminando con mp min ",preference_min)
 
         cancha_data = {
                 'id'       : cancha.id,
                 'nombre'   : cancha.nombre,
                 'precio'   : cancha.precio,
                 'anticipo' : cancha.anticipo,
-                #'link'     : preference['id'],
                 'p'        : preference,
                 'p_min'    : preference_min
             }
     return JsonResponse(cancha_data, safe=False)
 
-def prueba(request):
-    print("HOLA POR NOTIFICATION URL")
-    return render(request,'prueba.html',{})
-
-#from mercadopago import MercadoPago
 
 #mp = MercadoPago('206337924', 'APP_USR-49830c2d-5e11-4c81-a9e9-4fd2fc139e92') 
 
 def retorno_pago(request):
-    # Obtener datos del pago y actualizar el estado de tu pedido
     sdk = mercadopago.SDK("APP_USR-5356790108164574-102419-d8674a362fdf8c1bedf821d8159c1d3e-1522412137")
-    print("HOLA POR RETORNO PAGO")
-    print("MOSTRANDO PAGO ID: ",request.GET.get('payment_id'))
-    print("MOSTRANDO STATUS: ",request.GET.get('status'))
     mp = sdk.preference().get(request.GET.get('preference_id'))
-    print("mostrando preferences ",mp)
-    print("mostrando cosas ",mp['response']['metadata'])
-    return render(request, 'prueba.html',{})
+    #print("MOSTRANDO PAGO ID: ",request.GET.get('payment_id'))
+    #print("MOSTRANDO STATUS: ", request.GET.get('status'))
+    predio_redirect = Canchas.objects.get(pk=mp['response']['metadata']['cancha_id'])
+
+    #if status==approved
+    print("user is auth? ",request.user.is_authenticated)
+    if request.user.is_authenticated:
+        if request.method == 'GET':
+            cancha_id   = mp['response']['metadata']['cancha_id']
+            fecha_ini   = mp['response']['metadata']['fecha_ini']
+            fecha_fin   = mp['response']['metadata']['fecha_fin']
+            usuario = request.user
+            
+            reservas = Reservas.objects.filter(cancha_id=cancha_id, fecha_fin__gt=fecha_ini, fecha_ini__lt=fecha_fin)
+            
+            if reservas.count() > 0:
+                mensaje = f'El horario desde {fecha_ini} hasta {fecha_fin} ,esta ocupado.'
+
+                messages.error(request,mensaje)
+            else:
+
+                if request.GET.get('status') == 'approved':
+
+                    try:
+                        cancha = Canchas.objects.get(pk=cancha_id)
+                    except Canchas.DoesNotExist:
+                        # Manejo de error si no se encuentra la cancha
+                        # Puedes redirigir o mostrar un mensaje de error aquí
+                        messages.error(request, 'Cancha no existente')
+
+                        return redirect('predio',pk=predio_redirect.predio_id.pk)        # Crea una instancia de Reserva con los datos
+                    nueva_reserva = Reservas.objects.create(
+                        user_id=usuario,
+                        cancha_id=cancha,
+                        fecha_ini=fecha_ini,
+                        fecha_fin=fecha_fin,
+                        precio=mp['response']['items'][0]['unit_price'],
+                        anticipo=mp['response']['items'][0]['unit_price']
+                    )
+
+                    # Guarda la instancia de Reserva en la base de datos
+                    #p = nueva_reserva.save()
+                    reserva_id=Reservas.objects.filter(user_id=usuario,cancha_id=cancha,fecha_fin=fecha_fin,fecha_ini=fecha_ini).last()
+                    grabar_pago(request.GET.get('payment_id'),request.GET.get('status'),mp['response']['items'][0]['unit_price'],nueva_reserva)
+                    
+                    
+                    mensaje = f'Reserva creada desde {fecha_ini} hasta {fecha_fin} con éxito.'
+
+                    # Agregar el mensaje de éxito
+                    messages.success(request, mensaje)   
+                else:
+                    messages.error(request, "No pudimos registrar tu pago") 
+                    #return redirect('predio',pk=predio_redirect.predio_id.pk)     
+                
+
+            #return redirect(previous_url)
+            return redirect('predio',pk=predio_redirect.predio_id.pk)
+        
+    else: 
+        mensaje = f'Necesita estar logeado para poder reservar'
+        messages.error(request,mensaje)
+        #previous_url = request.META.get('HTTP_REFERER', '/')
+
+        #return redirect(previous_url)
+        return redirect('predio',pk=predio_redirect.predio_id.pk)
+
+
+    #return render(request, 'prueba.html',{})
 
 """from django.views.decorators.csrf import csrf_exempt
 @csrf_exempt
@@ -486,3 +548,11 @@ def notificacion_pago(request):
         # Puedes usar el objeto 'payment' para obtener información sobre el pago
         
     return HttpResponse(status=200)"""
+
+def grabar_pago(payment_id,status,monto,reserva_id):
+    nuevo_pago = pagos()
+    nuevo_pago.payment_id = payment_id
+    nuevo_pago.status = status
+    nuevo_pago.monto = monto
+    nuevo_pago.reserva_id = reserva_id
+    nuevo_pago.save()

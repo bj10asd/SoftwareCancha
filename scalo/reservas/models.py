@@ -88,7 +88,8 @@ class Reservas(models.Model):
     
     def __str__(self) -> str:
         #return super().__str__()
-        return str(self.fecha_ini) + ' hasta ' + str(self.fecha_fin)
+        #return str(self.fecha_ini) + ' hasta ' + str(self.fecha_fin)
+        return str(self.pk)
 
 class Roles(models.Model):
     descripcion = models.CharField(db_column='Descripcion',max_length=40)

@@ -142,3 +142,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 #MEDIA_URL = 'reservas/static/'
 MEDIA_URL = 'media/'
 MEDIA_ROOT = BASE_DIR / MEDIA_URL
+
+CSRF_TRUSTED_ORIGINS = ['https://9084-2803-9800-b402-7ed6-ba3f-4184-fa5a-474e.ngrok-free.app']

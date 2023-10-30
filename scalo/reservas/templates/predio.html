@@ -330,8 +330,8 @@
 
                 <div id="wallet_container">
                     <!--{#<buttontype="submit" id="wallet" href="" class="btn btn-primary" >Confirmar Reserva</button>#}-->
-                    <a href="" id="goto">Pagar</a>
-                    <a href="" id="goto_m">Pagar minimo</a>
+                    <a href="" id="goto"  >Pagar</a>
+                    <a href="" id="goto_m" >Pagar minimo</a>
                 </div>
 
             </div>
@@ -574,13 +574,7 @@
                 sessionStorage.setItem('cancha_id',inpcancha_id.value);
                 sessionStorage.setItem('precio_base',data.precio) //Variable sesion
                 sessionStorage.setItem('hora_base',convertirFecha(hora)) //Variable sesion
-
-                //document.getElementById('goto').setAttribute("href",data.p.init_point);
-                //document.getElementById('goto_m').setAttribute("href",data.p_min.init_point);
-                //document.getElementById('wallet_container').appendChild(`<a href="${data.link}">ir a pagar</a>`)
-                //alert("primera vez cancha_id"+sessionStorage.getItem('cancha_id'));
-                //alert("primera vez dura selected "+60);
-                ResetearLinksPago(inpcancha_id.value,"60");
+                ResetearLinksPago(inpcancha_id.value,"60",inphorario_i.value,inphorario_f.value);
             },
             error: function (error) {
                 console.error(error);
@@ -616,13 +610,9 @@
         let fecha_fin = document.getElementById("Fecha_fin")
         
         fecha_fin.value =sumarHoras(hora_base,(selectedValue / 60))
-        //alert("el precio base es: "+precio_base);
-        //alert("el precio es: "+inprecio.value);
 
-        //alert(selectedValue);
-        //alert("cambio dura cancha_id"+sessionStorage.getItem('cancha_id'))
-        //alert("cambio dura selected "+selectedValue)
-        ResetearLinksPago(sessionStorage.getItem('cancha_id'),selectedValue)
+        ResetearLinksPago(sessionStorage.getItem('cancha_id'),selectedValue,
+                        document.getElementById("Fecha_ini").value,fecha_fin.value)
 
     }
     function sumarHoras(horaOriginal, n) {
@@ -668,25 +658,21 @@
     inicializarPopovers();
     });
 
-    function ResetearLinksPago(cancha_id,duracion){
-        //alert("antes de ajax id cancha: "+id_cancha);
-        //alert("antes de ajax duracion: "+duracion);
+    function ResetearLinksPago(cancha_id,duracion,fecha_ini,fecha_fin){
         $.ajax({
             url: '/obtener_links/',
             method: 'GET',
             data: {
                 cancha_id: cancha_id,
                 duracion : duracion,
+                fecha_ini: fecha_ini,
+                fecha_fin: fecha_fin
             },
             success: function (data) {
-                //document.getElementById('goto').setAttribute("href",data.p.init_point);
-                //document.getElementById('goto_m').setAttribute("href",data.p_min.init_point);
-                //document.getElementById('wallet_container').appendChild(`<a href="${data.link}">ir a pagar</a>`)
-                //alert(data.nombre);
-                //alert(data.p.init_point);
-                //alert(data.p_min.init_point);
-                document.getElementById('goto').setAttribute("href",data.p.init_point);
-                document.getElementById('goto_m').setAttribute("href",data.p_min.init_point);
+                btn_total =     document.getElementById('goto').setAttribute("href",data.p.init_point);
+                btn_pagar_min = document.getElementById('goto_m').setAttribute("href",data.p_min.init_point);
+                //btn_total.setAttribute('disabled','disabled');
+                //btn_pagar_min.disabled=false;
             },
             error: function (error) {
                 console.error(error);
