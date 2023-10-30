@@ -377,6 +377,8 @@ def editar_predio(request):
         p.link_mapa   = request.POST.get('mapa')        if request.POST.get('mapa') is not None else p.link_mapa
         p.descripcion = request.POST.get('descripcion') if request.POST.get('descripcion') is not None else p.descripcion
         p.email       = request.POST.get('email_contacto') if request.POST.get('email_contacto') is not None else p.email
+        p.hora_ini    = request.POST.get('hora_ini')    if request.POST.get('hora_ini') is not None else p.hora_ini
+        p.hora_fin    = request.POST.get('hora_fin')   if request.POST.get('hora_fin') is not None else p.hora_fin 
         p.save()
         return redirect('mi_predio')
     else:

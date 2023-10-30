@@ -99,6 +99,7 @@
                         <p>No esta cargado el mapa</p> 
                     {% endif %}
                 </p>
+                <br>
                 <p>
                     {% if predio.descripcion %}
                     {{ predio.descripcion }}
@@ -106,6 +107,9 @@
                     No esta cargada una descripcion
                     {% endif %}
                 </p>
+            </div>
+            <div class="disp">
+                <p>Abre sus puertas de: {{ predio.hora_ini }}:00 hs a {{ predio.hora_fin }}:00 hs</p>
             </div>
         </div>
     </div>
@@ -366,6 +370,26 @@
                     <!--<textarea type="textarea" class="form-control" id="descripcion" aria-describedby="descripHelp" value="{{ predio.descripcion|default_if_none:"" }}">-->
                         <textarea maxlength="50" name="descripcion" id="descripcion" cols="30" rows="4" class="form-control" aria-describedby="descripHelp">{{ predio.descripcion|default_if_none:"" }}</textarea>
                     <!--<small id="predioHelp" class="form-text text-muted">Predio donde vamos a reservar</small>-->
+                </div>
+
+                <div class="range-wrapper">
+                    <p>Disponibilidad horaria</p>
+                    <div class="values">
+                        <span id="range1">
+                            0
+                        </span>
+                        <span> &dash; </span>
+                        <span id="range2">
+                            100
+                        </span>
+                    </div>
+                    <div class="range-container">
+                        <div class="slider-track"></div>
+                        <input type="range" min="12" max="24" value="{{ predio.hora_ini }}" id="hora_ini" name="hora_ini"
+                            aria-describedby="horaIniHelp" oninput="slideOne()">
+                        <input type="range" min="12" max="24" value="{{ predio.hora_fin }}" id="hora_fin" name="hora_fin"
+                            aria-describedby="horaFinHelp" oninput="slideTwo()">
+                    </div>
                 </div>
     
             </div>
@@ -766,6 +790,42 @@
     document.addEventListener('DOMContentLoaded', function () {
     inicializarPopovers();
     });
+
+    // Range inputs
+
+    window.onload = function () {
+        slideOne();
+        slideTwo();
+    };
+
+    let sliderOne = document.getElementById("hora_ini");
+    let sliderTwo = document.getElementById("hora_fin");
+    let displayValOne = document.getElementById("range1");
+    let displayValTwo = document.getElementById("range2");
+    let minGap = 1;
+    let sliderTrack = document.querySelector(".slider-track");
+    let sliderMaxValue = document.getElementById("hora_ini").max;
+
+    function slideOne() {
+    if (parseInt(sliderTwo.value) - parseInt(sliderOne.value) <= minGap) {
+        sliderOne.value = parseInt(sliderTwo.value) - minGap;
+    }
+    displayValOne.textContent = sliderOne.value + ":00hs";
+    fillColor();
+    }
+    function slideTwo() {
+    if (parseInt(sliderTwo.value) - parseInt(sliderOne.value) <= minGap) {
+        sliderTwo.value = parseInt(sliderOne.value) + minGap;
+    }
+    displayValTwo.textContent = sliderTwo.value + ":00hs";
+    fillColor();
+    }
+    function fillColor() {
+        percent1 = ((sliderOne.value - 12) / (sliderMaxValue - 12)) * 100;
+        percent2 = ((sliderTwo.value - 12) / (sliderMaxValue - 12)) * 100;
+        sliderTrack.style.background = `linear-gradient(to right, #dadae5 ${percent1}% , #38CCCC ${percent1}% , #38CCCC ${percent2}%, #dadae5 ${percent2}%)`;
+    }
+
 
 </script>
 {% endblock %}
