@@ -122,3 +122,120 @@
     color: #042F2F;
     border-radius: 1.25rem;
   }
+
+/* Estilos RANGE INPUT*/
+
+.range-wrapper {
+  position: relative;
+  width: 100%;
+  background-color: #ffffff;
+  padding: 15px 40px 0px 40px;
+  border-radius: 10px;
+}
+.range-wrapper p {
+  text-align: center;
+  margin-bottom: .3125rem;
+}
+.range-container {
+  position: relative;
+  width: 100%;
+  height: 70px;
+  background-color: transparent !important;
+}
+input[type="range"] {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  width: 100%;
+  outline: none;
+  position: absolute;
+  margin: auto;
+  top: 0;
+  bottom: 0;
+  background-color: transparent !important;
+  pointer-events: none;
+}
+
+input[type="range"]:focus {
+  background-color: transparent !important;
+}
+
+.slider-track {
+  width: 100%;
+  height: 5px;
+  position: absolute;
+  margin: auto;
+  top: 0;
+  bottom: 0;
+  border-radius: 5px;
+}
+.range-container input[type="range"]::-webkit-slider-runnable-track {
+  -webkit-appearance: none;
+  height: 5px;
+}
+.range-container input[type="range"]::-moz-range-track {
+  -moz-appearance: none;
+  height: 5px;
+}
+.range-container input[type="range"]::-ms-track {
+  appearance: none;
+  height: 5px;
+}
+.range-container input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  height: 1.7em;
+  width: 1.7em;
+  background-color: #38CCCC;
+  cursor: pointer;
+  margin-top: -9px;
+  pointer-events: auto;
+  border-radius: 50%;
+}
+.range-container input[type="range"]::-moz-range-thumb {
+  -webkit-appearance: none;
+  height: 1.7em;
+  width: 1.7em;
+  cursor: pointer;
+  border-radius: 50%;
+  background-color: #38CCCC;
+  pointer-events: auto;
+  border: none;
+}
+.range-container input[type="range"]::-ms-thumb {
+  appearance: none;
+  height: 1.7em;
+  width: 1.7em;
+  cursor: pointer;
+  border-radius: 50%;
+  background-color: #38CCCC;
+  pointer-events: auto;
+}
+.range-container input[type="range"]:active::-webkit-slider-thumb {
+  background-color: #ffffff !important;
+  border: 1px solid #38CCCC !important;
+}
+.values {
+  background-color: #38CCCC;
+  width: 90%;
+  position: relative;
+  margin: auto;
+  padding: 5px 0;
+  border-radius: 5px;
+  text-align: center;
+  font-weight: 500;
+  font-size: 25px;
+  color: #ffffff;
+}
+.values:before {
+  content: "";
+  position: absolute;
+  height: 0;
+  width: 0;
+  border-top: 15px solid #38CCCC;
+  border-left: 15px solid transparent;
+  border-right: 15px solid transparent;
+  margin: auto;
+  bottom: -14px;
+  left: 0;
+  right: 0;
+}

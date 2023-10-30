@@ -2,7 +2,7 @@
 
 .datos {
     padding: 0;
-    height: 25rem;
+    height: 28rem;
     background-color: #ABF7F7;
     border-radius: 1.625rem;
     box-shadow: 3px 7px 15px 0px rgba(0, 0, 0, 0.25);
@@ -38,6 +38,19 @@
     min-height: 6.25rem;
     margin-top: .625rem;
     padding: 20px 20px 0 20px;
+    overflow: hidden;
+  }
+
+  .disp {
+    padding: 0px 20px 0 20px;
+  }
+
+  .disp p {
+    color: #042F2F;
+  
+    font-family: Khula;
+    font-size: 16px;
+    font-weight: bolder;
   }
   
   .desc p {

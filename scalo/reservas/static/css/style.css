@@ -7,8 +7,8 @@
 @import url("login.css");
 @import url("predios.css");
 @import url("mis-reservas.css");
-@import url("mi-predio.css");
 @import url("predio.css");
+@import url("mi-predio.css");
 
 .colored-toast.swal2-icon-success {
   background-color: #a5dc86 !important;

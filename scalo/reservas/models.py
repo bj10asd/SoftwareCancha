@@ -29,6 +29,8 @@ class Predios(models.Model):
     email       = models.EmailField(max_length=100, db_column='Email', blank=True, null=True)
     descripcion = models.CharField(max_length=100, db_column='Desripcion', blank=True, null=True)
     link_mapa   = models.CharField(max_length=1000, db_column='link_mapa', blank=True, null=True)
+    hora_ini    = models.CharField(max_length=20, db_column='hora_ini', blank=True, null=True)
+    hora_fin    = models.CharField(max_length=20, db_column='hora_fin', blank=True, null=True)
     class Meta:
         db_table            = 'predios'
         ordering            = ['nombre']

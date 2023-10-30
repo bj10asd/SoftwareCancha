@@ -171,6 +171,18 @@ def predios(request):
                                             'fil_select':   int(fil_select)})
 
 def predio(request,pk):#import datetime
+    predio = Predios.objects.get(id=pk)
+    p_hora_fin = ''
+    p_hora_inicio=''
+    if predio.hora_fin is None:
+         p_hora_fin = 24
+    else:
+        p_hora_fin = int(predio.hora_fin)
+    if predio.hora_ini is None:
+        p_hora_inicio= 12
+    else:
+        p_hora_inicio = int(predio.hora_ini)
+    #return HttpResponse(p_hora_inicio)
     if request.method == 'GET':
         dia_reserva=''
         dia = request.GET.get('dia_reserva')
@@ -200,14 +212,18 @@ def predio(request,pk):#import datetime
                 # Establece los minutos y  segundos en cero
                 hora_actual = hora_actual.replace(minute=0, second=0, microsecond=0)
 
-                # Crea una lista de horas desde la hora actual hasta la medianoche (24:00)
+                siguiente_hora = hora_actual + timedelta(hours=1)
+                while(siguiente_hora.hour < p_hora_inicio):
+                    siguiente_hora = siguiente_hora + timedelta(hours=1)
+                    
                 for i in range(1, 24):
-                    siguiente_hora = hora_actual + timedelta(hours=i)
-                    if siguiente_hora.hour <= 23 and siguiente_hora.hour > 11:
-                        print(siguiente_hora)
+                    if siguiente_hora.hour < p_hora_fin and siguiente_hora.hour >= p_hora_inicio:
                         horas.append(siguiente_hora)
+                        siguiente_hora = siguiente_hora + timedelta(hours=1)
+                    else:
+                        break
             else:                          
-                for i in range(12,24):#Revisar
+                for i in range(p_hora_inicio,p_hora_fin):#Revisar
                     siguiente_hora = datetime(nueva_fecha.year, nueva_fecha.month, nueva_fecha.day, i, 0)
                     horas.append(siguiente_hora)
                 
@@ -225,14 +241,20 @@ def predio(request,pk):#import datetime
             hora_actual = hora_actual.replace(minute=0, second=0, microsecond=0)
 
             # Crea una lista de horas desde la hora actual hasta la medianoche (24:00)
+            siguiente_hora = hora_actual + timedelta(hours=1)
+            while(siguiente_hora.hour < p_hora_inicio):
+                
+                siguiente_hora = siguiente_hora + timedelta(hours=1)
+                
             for i in range(1, 24):
-                siguiente_hora = hora_actual + timedelta(hours=i)
-                if siguiente_hora.hour <= 23 and siguiente_hora.hour > 11:
+                if siguiente_hora.hour < p_hora_fin and siguiente_hora.hour >= p_hora_inicio:
                     horas.append(siguiente_hora)
+                    siguiente_hora = siguiente_hora + timedelta(hours=1)
+                else:
+                    break
                     
                 
 
-        predio = Predios.objects.get(id=pk)
         canchas = Canchas.objects.filter(predio_id=predio)
         deportes = Deportes.objects.all()
         
@@ -377,6 +399,8 @@ def editar_predio(request):
         p.link_mapa   = request.POST.get('mapa')        if request.POST.get('mapa') is not None else p.link_mapa
         p.descripcion = request.POST.get('descripcion') if request.POST.get('descripcion') is not None else p.descripcion
         p.email       = request.POST.get('email_contacto') if request.POST.get('email_contacto') is not None else p.email
+        p.hora_ini    = request.POST.get('hora_ini')    if request.POST.get('hora_ini') is not None else p.hora_ini
+        p.hora_fin    = request.POST.get('hora_fin')   if request.POST.get('hora_fin') is not None else p.hora_fin 
         p.save()
         return redirect('mi_predio')
     else:
