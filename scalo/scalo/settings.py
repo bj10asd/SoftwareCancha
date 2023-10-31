@@ -11,6 +11,10 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
 from pathlib import Path
+from django.conf import settings
+
+NGROK_URL_S = "2321-190-193-23-165.ngrok-free.app"
+NGROK_URL = "https://"+ NGROK_URL_S
 
 # SDK de Mercado Pago
 #import mercadopago
@@ -32,8 +36,7 @@ SECRET_KEY = 'django-insecure-013b_+ub)1bho77vrq+7tkwmqnjct)=!8b!kw#^92lmaxrtu#x
 DEBUG = True
 
 ALLOWED_HOSTS = ['127.0.0.1',
-    '2321-190-193-23-165.ngrok-free.app', #esta es la direccion a cambiar por el ngrok, sin https
-    '0df3-181-171-83-171.ngrok-free.app', #esta es la direccion a cambiar por el ngrok, sin https
+    NGROK_URL_S, #esta es la direccion a cambiar por el ngrok, sin https
     '127.0.0.1:4040']
 
 
@@ -144,4 +147,4 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 MEDIA_URL = 'media/'
 MEDIA_ROOT = BASE_DIR / MEDIA_URL
 
-CSRF_TRUSTED_ORIGINS = ['https://2321-190-193-23-165.ngrok-free.app']
+CSRF_TRUSTED_ORIGINS = [NGROK_URL]

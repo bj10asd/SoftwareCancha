@@ -23,6 +23,7 @@ from django.urls import reverse
 
 #def hello(request):
 #    return render(request,'hello.html',{})
+ngrok_url = settings.NGROK_URL
 
 def index(request):
     #cancha = Cancha.objects.all()
@@ -435,8 +436,8 @@ def mercadopago_func(request):
                 # Agregar más campos según tus necesidades
             },
             "back_urls": {
-                "success": "https://0df3-181-171-83-171.ngrok-free.app/retorno-pago/",
-                "failure": "https://0df3-181-171-83-171.ngrok-free.app/retorno-pago/",
+                "success": settings.NGROK_URL + '/retorno-pago/',
+                "failure": settings.NGROK_URL + '/retorno-pago/',
             },
             "auto_return": "approved",
             #"notification_url":"https://9084-2803-9800-b402-7ed6-ba3f-4184-fa5a-474e.ngrok-free.app/notificacion-pago/",
@@ -462,7 +463,8 @@ def mercadopago_func(request):
                 # Agregar más campos según tus necesidades
             },
             "back_urls": {
-                "success": "https://9084-2803-9800-b402-7ed6-ba3f-4184-fa5a-474e.ngrok-free.app/retorno-pago/",
+                "success": settings.NGROK_URL + '/retorno-pago/',
+                "failure": settings.NGROK_URL + '/retorno-pago/',
             },
             "auto_return": "approved",
             #"notification_url":"https://9084-2803-9800-b402-7ed6-ba3f-4184-fa5a-474e.ngrok-free.app/notificacion-pago/",
