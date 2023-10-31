@@ -427,7 +427,8 @@ def mercadopago_func(request):
                 # Agregar más campos según tus necesidades
             },
             "back_urls": {
-                "success": "https://9084-2803-9800-b402-7ed6-ba3f-4184-fa5a-474e.ngrok-free.app/retorno-pago/",
+                "success": "https://0df3-181-171-83-171.ngrok-free.app/retorno-pago/",
+                "failure": "https://0df3-181-171-83-171.ngrok-free.app/retorno-pago/",
             },
             "auto_return": "approved",
             #"notification_url":"https://9084-2803-9800-b402-7ed6-ba3f-4184-fa5a-474e.ngrok-free.app/notificacion-pago/",
@@ -453,7 +454,8 @@ def mercadopago_func(request):
                 # Agregar más campos según tus necesidades
             },
             "back_urls": {
-                "success": "https://9084-2803-9800-b402-7ed6-ba3f-4184-fa5a-474e.ngrok-free.app/retorno-pago/",
+                "success": "https://0df3-181-171-83-171.ngrok-free.app/retorno-pago/",
+                "failure": "https://0df3-181-171-83-171.ngrok-free.app/retorno-pago/",
             },
             "auto_return": "approved",
             #"notification_url":"https://9084-2803-9800-b402-7ed6-ba3f-4184-fa5a-474e.ngrok-free.app/notificacion-pago/",
@@ -531,7 +533,7 @@ def retorno_pago(request):
                     # Agregar el mensaje de éxito
                     messages.success(request, mensaje)   
                 else:
-                    messages.error(request, "No pudimos registrar tu pago") 
+                    messages.error(request, "No pudimos procesar tu pago") 
                     #return redirect('predio',pk=predio_redirect.predio_id.pk)     
                 
 

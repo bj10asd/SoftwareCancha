@@ -32,7 +32,7 @@ SECRET_KEY = 'django-insecure-013b_+ub)1bho77vrq+7tkwmqnjct)=!8b!kw#^92lmaxrtu#x
 DEBUG = True
 
 ALLOWED_HOSTS = ['127.0.0.1',
-    '9084-2803-9800-b402-7ed6-ba3f-4184-fa5a-474e.ngrok-free.app', #esta es la direccion a cambiar por el ngrok, sin https
+    '0df3-181-171-83-171.ngrok-free.app', #esta es la direccion a cambiar por el ngrok, sin https
     '127.0.0.1:4040']
 
 
@@ -143,4 +143,4 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 MEDIA_URL = 'media/'
 MEDIA_ROOT = BASE_DIR / MEDIA_URL
 
-CSRF_TRUSTED_ORIGINS = ['https://9084-2803-9800-b402-7ed6-ba3f-4184-fa5a-474e.ngrok-free.app']
+CSRF_TRUSTED_ORIGINS = ['https://0df3-181-171-83-171.ngrok-free.app']

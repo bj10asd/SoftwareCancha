@@ -57,11 +57,34 @@
   .datos-reservas button:hover {
     transform: translateZ(50px);
     transform: scale(1.05);
-    background-color: #769999;
+    background-color: whitesmoke;
     color: #cc3838;
+    border: 1px solid #cc3838;
   }
   .datos-reservas button:active {
     transform: translateY(-1px);
     transform: rotate(2deg);
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  }
+
+  .cancel-res{
+    background-color: #cc3838 !important;
+  }
+
+  .volver-cancel:hover {
+    transform: translateZ(50px);
+    transform: scale(1.05);
+    background-color: #042F2F !important;
+    color: #ECFDFD;
+  }
+
+  .btn-cancel {
+    background-color: #cc3838 !important;
+    border-radius: .625rem !important;
+  }
+
+  .btn-cancel:hover {
+    background-color: whitesmoke !important;
+    color: #cc3838 !important;
+    border: 1px solid #cc3838 !important;
   }
