@@ -25,12 +25,6 @@ def cancelar_reserva(request):
             if request.user == reserva.user_id:
                 reserva.estado = 'Cancelado'
                 reserva.save()
-                fecha_ini= (reserva.fecha_ini - timedelta(hours=3)).strftime('%d-%m-%Y %H:%M')
-                fecha_fin= (reserva.fecha_fin - timedelta(hours=3)).strftime('%H:%M')
-                mensaje = f'Reserva desde {fecha_ini} hasta {fecha_fin} en {reserva.cancha_id.predio_id} cancelada con éxito.'
-
-                # Agregar el mensaje de éxito
-                messages.success(request, mensaje)
 
     return redirect('mis_reservas')
 
@@ -66,7 +60,6 @@ def mis_reservas(request):
     else: return redirect('index')
 
 def mi_predio(request):
-    
     if request.method == 'POST' :
         name= request.POST.get('nombre')
         precio= request.POST.get('precio')
@@ -131,7 +124,6 @@ def mi_predio(request):
     reservas = Reservas.objects.filter(cancha_id__in=canchas)
     #print("contando las reservas de este predio de diferentes canchas: "+ str(reservas.count()))
     # Obtén la fecha y hora actual
-    HttpResponse(dia)
     return render(request,'mi_predio.html',{'predio':      predio ,
                                         'canchas':      canchas ,
                                         'deportes':     deportes,
@@ -155,7 +147,7 @@ def crear_reserva(request):
             previous_url = request.META.get('HTTP_REFERER', '/')
             usuario = request.user
             
-            reservas = Reservas.objects.filter(cancha_id=cancha_id, fecha_fin__gt=fecha_ini, fecha_ini__lt=fecha_fin)
+            reservas = Reservas.objects.filter(cancha_id=cancha_id, fecha_fin__gt=fecha_ini, fecha_ini__lt=fecha_fin).exclude(estado='Cancelado')
             
             if reservas.count() > 0:
                 mensaje = f'El horario desde {fecha_ini} hasta {fecha_fin} ,esta ocupado.'
@@ -178,7 +170,6 @@ def crear_reserva(request):
                     precio=precio,
                     anticipo=anticipo
                 )
-
                 # Guarda la instancia de Reserva en la base de datos
                 nueva_reserva.save()
                 previous_url = request.META.get('HTTP_REFERER', '/')
@@ -197,6 +188,9 @@ def crear_reserva(request):
         previous_url = request.META.get('HTTP_REFERER', '/')
 
         return redirect(previous_url)
+    
+    
+    
 def get_reserva(request):
     if request.method == 'GET':
         cancha_id = request.GET.get('cancha_id')
@@ -205,8 +199,8 @@ def get_reserva(request):
         dia_hora_reserva = datetime.strptime(dia_hora_reserva, '%Y-%m-%d %H:%M')
 
         hora_fin = dia_hora_reserva + timedelta(hours=1)
-
-        reserva = Reservas.objects.filter(Q(cancha_id=cancha_id) & (Q(fecha_ini=dia_hora_reserva) | Q(fecha_fin=hora_fin))).first()
+        
+        reserva = Reservas.objects.filter(Q(cancha_id=cancha_id) & (Q(fecha_ini=dia_hora_reserva) | Q(fecha_fin=hora_fin))).exclude(estado='Cancelado').first()
         mensaje =' '
         if reserva:
             logged_in_user = request.user  # Usuario logeado

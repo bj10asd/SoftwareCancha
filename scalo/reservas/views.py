@@ -261,7 +261,7 @@ def predio(request,pk):#import datetime
         
         
         #msotrando reservas
-        reservas = Reservas.objects.filter(cancha_id__in=canchas)
+        reservas = Reservas.objects.filter(cancha_id__in=canchas).exclude(estado='Cancelado')
         #print("contando las reservas de este predio de diferentes canchas: "+ str(reservas.count()))
         # Obtén la fecha y hora actual
 

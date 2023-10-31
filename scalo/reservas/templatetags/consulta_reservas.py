@@ -11,7 +11,7 @@ register = template.Library()
 def get_reservas(cancha,hora):
     hora_fin = hora + timedelta(hours=1)
 
-    reserva = Reservas.objects.filter(Q(cancha_id=cancha) & (Q(fecha_ini=hora) | Q(fecha_fin=hora_fin)))
+    reserva = Reservas.objects.filter(Q(cancha_id=cancha) & (Q(fecha_ini=hora) | Q(fecha_fin=hora_fin))).exclude(estado='Cancelado')
     #print(reserva[0].user_id.first_name or '')
     if reserva.count() > 0:
         return reserva[0].user_id
