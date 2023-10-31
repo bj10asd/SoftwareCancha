@@ -112,7 +112,7 @@
                 {% if predio.hora_ini %}
                 <p>Abre sus puertas de: {{ predio.hora_ini }}:00 hs a {{ predio.hora_fin }}:00 hs</p>
                 {% else %}
-                No esta cargada un horario
+                No esta cargado un horario
                 {% endif %}
             </div>
         </div>
@@ -404,12 +404,12 @@
                     </div>
 
                 </div>
+                <div class="modal-footer">
+                    <a type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</a>
+                    <button type="submit" class="btn btn-primary">Confirmar cambios</button>
+                </div>
             </form>
 
-            <div class="modal-footer">
-                <a type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</a>
-                <button type="submit" class="btn btn-primary">Confirmar cambios</button>
-            </div>
         </div>
     </div>
 </div>
