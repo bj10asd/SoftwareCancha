@@ -354,11 +354,11 @@ def cancha(request):
             ],
             "back_urls": [
                 {
-                    "success": "https://dae3-2803-9800-b402-7ed6-7974-ed5a-7297-b4a8.ngrok-free.app/prueba",                        
+                    "success": "https://2321-190-193-23-165.ngrok-free.app/prueba",                        
                 },
             ],
             "auto_return": "approved",
-            "notification_url":"https://dae3-2803-9800-b402-7ed6-7974-ed5a-7297-b4a8.ngrok-free.app/prueba"
+            "notification_url":"https://2321-190-193-23-165.ngrok-free.app/prueba"
         }
 
         preference_response = sdk.preference().create(preference_data)
@@ -435,7 +435,7 @@ def mercadopago_func(request):
                 # Agregar más campos según tus necesidades
             },
             "back_urls": {
-                "success": "https://9084-2803-9800-b402-7ed6-ba3f-4184-fa5a-474e.ngrok-free.app/retorno-pago/",
+                "success": "https://2321-190-193-23-165.ngrok-free.app/retorno-pago/",
             },
             "auto_return": "approved",
             #"notification_url":"https://9084-2803-9800-b402-7ed6-ba3f-4184-fa5a-474e.ngrok-free.app/notificacion-pago/",
@@ -461,7 +461,7 @@ def mercadopago_func(request):
                 # Agregar más campos según tus necesidades
             },
             "back_urls": {
-                "success": "https://9084-2803-9800-b402-7ed6-ba3f-4184-fa5a-474e.ngrok-free.app/retorno-pago/",
+                "success": "https://2321-190-193-23-165.ngrok-free.app/retorno-pago/",
             },
             "auto_return": "approved",
             #"notification_url":"https://9084-2803-9800-b402-7ed6-ba3f-4184-fa5a-474e.ngrok-free.app/notificacion-pago/",
