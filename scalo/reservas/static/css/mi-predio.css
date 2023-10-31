@@ -239,3 +239,12 @@ input[type="range"]:focus {
   left: 0;
   right: 0;
 }
+
+.modal-dialog-scrollable .modal-content {
+  max-height: 100%;
+  overflow: auto !important;
+}
+
+.modal-dialog-scrollable .modal-content::-webkit-scrollbar {
+  display: none;
+}

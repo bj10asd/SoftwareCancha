@@ -33,6 +33,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['127.0.0.1',
     '2321-190-193-23-165.ngrok-free.app', #esta es la direccion a cambiar por el ngrok, sin https
+    '0df3-181-171-83-171.ngrok-free.app', #esta es la direccion a cambiar por el ngrok, sin https
     '127.0.0.1:4040']
 
 

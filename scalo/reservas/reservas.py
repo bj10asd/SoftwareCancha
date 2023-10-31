@@ -25,6 +25,12 @@ def cancelar_reserva(request):
             if request.user == reserva.user_id:
                 reserva.estado = 'Cancelado'
                 reserva.save()
+                fecha_ini= (reserva.fecha_ini - timedelta(hours=3)).strftime('%d-%m-%Y %H:%M')
+                fecha_fin= (reserva.fecha_fin - timedelta(hours=3)).strftime('%H:%M')
+                mensaje = f'Reserva desde {fecha_ini} hasta {fecha_fin} en {reserva.cancha_id.predio_id} cancelada con éxito.'
+
+                # Agregar el mensaje de éxito
+                messages.success(request, mensaje)
 
     return redirect('mis_reservas')
 
