@@ -319,10 +319,18 @@
                         <!-- Las primeras 6 columnas están vacías -->
                         <div class="col-6"></div>
                         <div class="form-group col">
+                            <label for="anticipo">Anticipo</label>
+                            <input type="number" class="form-control" id="anticipo" name="anticipo" readonly  >
+                            <input type="hidden" class="form-control" id="anticipo" name="anticipo_base">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <!-- Las primeras 6 columnas están vacías -->
+                        <div class="col-6"></div>
+                        <div class="form-group col">
                             <label for="precio">Precio</label>
                             <input type="number" class="form-control" id="precio" name="precio" readonly  >
                             <input type="hidden" class="form-control" id="precio_base" name="precio_base">
-
                         </div>
                     </div>
             
@@ -565,7 +573,8 @@
                 //Precio
                 let inprecio =document.getElementById("precio")
                 inprecio.value=parseInt(data.precio)
-
+                let anticipo =document.getElementById("anticipo")
+                anticipo.value=parseInt(data.anticipo)
                 var fecha_final = new Date(hora);
                 // Sumar una hora
                 fecha_final.setHours(fecha_final.getHours() + 1);
@@ -580,6 +589,7 @@
                 inphorario_i.value = convertirFecha(hora)
                 sessionStorage.setItem('cancha_id',inpcancha_id.value);
                 sessionStorage.setItem('precio_base',data.precio) //Variable sesion
+                sessionStorage.setItem('anticipo_base',data.anticipo) //Variable sesion
                 sessionStorage.setItem('hora_base',convertirFecha(hora)) //Variable sesion
                 ResetearLinksPago(inpcancha_id.value,"60",inphorario_i.value,inphorario_f.value);
             },
@@ -610,9 +620,12 @@
 
         let  hora_base = sessionStorage.getItem('hora_base');
         let  precio_base = sessionStorage.getItem('precio_base');
+        let  anticipo_base = sessionStorage.getItem('anticipo_base');
 
         let inprecio =document.getElementById("precio")
         inprecio.value = parseInt(precio_base) * (selectedValue / 60);
+        let anticipo =document.getElementById("anticipo")
+        anticipo.value = parseInt(anticipo_base) * (selectedValue / 60);
 
         let fecha_fin = document.getElementById("Fecha_fin")
         
