@@ -323,6 +323,24 @@
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
 }
 
+.pagar {
+  background-color: #38CCCC !important;
+}
+.ant {
+  background-color: #042F2F !important;
+}
+.pagar:hover {
+  transform: translateZ(50px);
+  transform: scale(1.05);
+  background-color: #009ee3 !important;
+  color: #ABF7F7 !important;
+}
+.pagar:active {
+  transform: translateY(-1px);
+  transform: rotate(2deg);
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+}
+
 .custom-popover {
   --bs-popover-border-color: var(--bd-violet-bg) !important;
   --bs-popover-header-bg: var(--bd-violet-bg);

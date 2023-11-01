@@ -148,7 +148,7 @@
             </form>
 
             {% reformat_date dia_reserva as dia_formateado %}
-            <p>Reserva para el dia : {{ dia_formateado }}</p>    
+            <p>Reserva para el día : {{ dia_formateado }}</p>    
             <form method="get" action="{% url 'mi_predio' %}">
                 <input type="hidden" name="dia_reserva" id="dia_reserva" value="{{ dia_reserva}}">
                 <input type="hidden" name="accion" id="accion_1" value="siguiente">
@@ -343,14 +343,14 @@
 
                     <div class="row">
                         <div class="form-group col">
-                            <label for="direccion">Direccion</label>
+                            <label for="direccion">Dirección</label>
                             <input type="text" class="form-control " id="direccion" name="direccion"
                                 value="{{predio.direccion|default_if_none:"" }}">
 
                         </div>
                         <div class="form-group col">
                             <div class="form-group">
-                                <label for="telef">Telefono:</label>
+                                <label for="telef">Teléfono:</label>
                                 <!--<select class="form-control" id="telef" name="telef" > onchange="cambio_duracion()"
                                 <option value="60" selected>60 min</option>
                                 <option value="120">120 min</option>

@@ -13,7 +13,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 from pathlib import Path
 from django.conf import settings
 
-NGROK_URL_S = "2321-190-193-23-165.ngrok-free.app"
+NGROK_URL_S = "3f62-181-171-83-171.ngrok-free.app"
 NGROK_URL = "https://"+ NGROK_URL_S
 
 # SDK de Mercado Pago

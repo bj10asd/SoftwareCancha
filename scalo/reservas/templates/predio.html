@@ -143,7 +143,7 @@
         </div>
     </div>
     <div>
-        <h2>Galeria de fotos</h2>
+        <h2>Galería de fotos</h2>
         <div id="carouselExampleFade" class="carousel slide carousel-fade" data-bs-ride="carousel" style="width: 100%; border-radius: 20px; overflow: hidden;height: 500px;" >
             <div class="carousel-inner" style="height: 100%;">
                 {% for cancha in canchas %}
@@ -177,7 +177,7 @@
             {% endif %}
 
             {% reformat_date dia_reserva as dia_formateado %}
-            <p>Reserva para el dia : {{ dia_formateado }}</p>    
+            <p>Reserva para el día : {{ dia_formateado }}</p>    
             <form method="get" action="{% url 'predio' predio.id %}">
                 <input type="hidden" name="dia_reserva" id="dia_reserva" value="{{ dia_reserva}}">
                 <input type="hidden" name="accion" id="accion_1" value="siguiente">
@@ -345,8 +345,8 @@
 
                 <div id="wallet_container">
                     <!--{#<buttontype="submit" id="wallet" href="" class="btn btn-primary" >Confirmar Reserva</button>#}-->
-                    <a href="" id="goto"  >Pagar</a>
-                    <a href="" id="goto_m" >Pagar minimo</a>
+                    <a class="pagar" href="" id="goto"  >Pagar</a>
+                    <a class="pagar ant" href="" id="goto_m" >Pagar minimo</a>
                 </div>
 
             </div>

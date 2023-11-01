@@ -150,7 +150,7 @@ def crear_reserva(request):
             reservas = Reservas.objects.filter(cancha_id=cancha_id, fecha_fin__gt=fecha_ini, fecha_ini__lt=fecha_fin).exclude(estado='Cancelado')
             
             if reservas.count() > 0:
-                mensaje = f'El horario desde {fecha_ini} hasta {fecha_fin} ,esta ocupado.'
+                mensaje = f'El horario desde {fecha_ini} hasta {fecha_fin},se encuentra ocupado.'
 
                 messages.error(request,mensaje)
             else:
@@ -183,7 +183,7 @@ def crear_reserva(request):
             return redirect(previous_url)
         
     else: 
-        mensaje = f'Necesita estar logeado para poder reservar'
+        mensaje = f'Necesita estar logueado para poder reservar'
         messages.error(request,mensaje)
         previous_url = request.META.get('HTTP_REFERER', '/')
 
