@@ -504,7 +504,7 @@ def retorno_pago(request):
             fecha_fin   = mp['response']['metadata']['fecha_fin']
             usuario = request.user
             
-            reservas = Reservas.objects.filter(cancha_id=cancha_id, fecha_fin__gt=fecha_ini, fecha_ini__lt=fecha_fin)
+            reservas = Reservas.objects.filter(cancha_id=cancha_id, fecha_fin__gt=fecha_ini, fecha_ini__lt=fecha_fin).exclude(estado='Cancelado')
             
             if reservas.count() > 0:
                 mensaje = f'El horario desde {fecha_ini} hasta {fecha_fin} ,esta ocupado.'
