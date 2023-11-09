@@ -39,3 +39,8 @@ def editar_cancha(request):
         messages.error(request, 'Error al modificar cancha.')
             
     return redirect('mi_predio')
+
+def stats(request):
+    if request.user.is_authenticated:
+        return render(request, 'estadisticas.html')
+    else: return redirect('index')

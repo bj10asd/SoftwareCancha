@@ -18,11 +18,12 @@ from django.urls import path,include
 
 from django.conf import settings
 from django.conf.urls.static import static
-
+from reservas import estadisticas
 
 urlpatterns = [
     path('', include('reservas.urls')),
     path('admin/', admin.site.urls),
+    path('django_plotly_dash/', include('django_plotly_dash.urls')),
 ]
 
 #if settings.DEBUG: SI ESTA EN DEBUG FALSE Y CON ESTE IF, NO RECUPERA LAS IMAGENES

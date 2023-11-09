@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load plotly_dash %}
+
+{% block content %}
+{% plotly_header %}
+<div class="container" style="height: fit-content; margin: 20px; width: 100%;justify-content: center;">
+    {%plotly_direct name='dash_example' %}
+</div>
+{% plotly_footer %}
+{% endblock %}
