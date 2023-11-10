@@ -5,36 +5,109 @@ from dash import dcc
 from dash import html
 import plotly.express as px
 import pandas as pd
+from datetime import datetime
+import locale
 from django_plotly_dash import DjangoDash
 from reservas.models import Predios,Deportes,Canchas,Reservas
 from django.db.models import Sum, Count
 
-deportes=list(Deportes.objects.values('descripcion'))
-deportes.append({'descripcion': 'Todos'})
-print(deportes)
+locale.setlocale(locale.LC_TIME, 'es_ES.utf-8')
 app = DjangoDash('dash_example')
 
 app.layout = html.Div([
-    html.H1("Ventas por categoría"),
+    html.H1("Ventas por categoría", style={
+            'padding-top': '1.125rem',
+            'padding-bottom': '1.125rem',
+            'font-size': '28px',
+            'font-family': '"Lexend", sans-serif',
+            'font-weight': 'bold',
+            'color': '#042F2F',
+        }),
     html.Div([
         dcc.Dropdown(
             id='category-dropdown',
-            options=[{'label': i['descripcion'], 'value': i['descripcion']} for i in deportes],
-            value='Todos'
+            value='Todos',
+            clearable=False,
+            style={
+            'border-radius': '28px',
+            'background-color': '#ABF7F7',
+            'border': 'none',
+            }
+        )
+    ],style={
+        'width': '30%',
+        'border-radius': '28px',
+        'padding': '10px 14px',
+        'background-color': '#ABF7F7',
+        'border': '1px solid #E0E0E0',
+        'box-shadow': '4px 4px 4px 0px rgba(0, 0, 0, 0.25)',
+        'font-family': '"Lexend", sans-serif',
+        'font-weight': 'bolder',
+        }),
+    html.Br(),
+    html.Div(
+        [
+        html.Div([
+            dcc.Graph(
+                id='category-bar-chart'
+            )
+            ],style={
+                'width': '45%',
+                'display': 'inline-block',
+                'padding': '0 10px',
+                'background-color': '#ECFDFD',
+                'box-shadow': '0px 2px 15px 0px rgba(56, 204, 204, 0.31), 0px 0px 4px 0px rgba(0, 0, 0, 0.4), 0px 4px 4px 0px rgba(0, 0, 0, 0.25)',
+                'margin': '1.25rem',
+                'border-radius': '24px',
+                'padding': '1.25rem',
+                'font-family': '"Lexend", sans-serif',
+                'font-weight': 'bolder',
+        }),
+        html.Div([
+            dcc.Graph(
+                id='category-pie-chart'
+            )
+            ],style={
+                'width': '45%',
+                'display': 'inline-block',
+                'padding': '0 10px',
+                'background-color': '#ECFDFD',
+                'box-shadow': '0px 2px 15px 0px rgba(56, 204, 204, 0.31), 0px 0px 4px 0px rgba(0, 0, 0, 0.4), 0px 4px 4px 0px rgba(0, 0, 0, 0.25)',
+                'margin': '1.25rem',
+                'border-radius': '24px',
+                'padding': '1.25rem',
+                'font-family': '"Lexend", sans-serif',
+                'font-weight': 'bolder',
+            })
+        ], style={
+            'width': '100%',
+            'display': 'flex',
+            'justify-content': 'center'
+            }),
+    html.Div([
+        dcc.Dropdown(
+            id='object-dropdown',
+            options=[{'label':'Canchas' , 'value': 'cancha' },{'label':'Deportes','value':'deporte' } ],
+            value='deporte',
+            clearable=False
+        ),
+        dcc.Dropdown(
+            id='year-dropdown',
+            clearable=False,
+            value=f'{datetime.now().year}'
         )
     ],style={'width': '30%'}),
     html.Br(),
     html.Div([
         dcc.Graph(
-            id='category-bar-chart'
-        )
-    ],style={'width': '45%', 'display': 'inline-block', 'padding': '0 20'}),
-    html.Div([
-        dcc.Graph(
-            id='category-pie-chart'
-        )
-    ],style={'width': '45%', 'display': 'inline-block', 'padding': '0 20'})
-])
+            id='object-line'
+        ),
+        dcc.RangeSlider(min=1, max=12, step=1, id='my-range-slider', value=[datetime.now().month-3,datetime.now().month],
+                        marks={i: datetime(2000, i, 1).strftime('%B') for i in range(1, 13)}),
+        ])   
+], style={
+    'width': '100%',
+})
 
 @app.callback(
     dash.dependencies.Output('category-pie-chart', 'figure'),
@@ -57,47 +130,101 @@ def update_category_pie_chart(selected_category, user):
         #category_df = filtered_df.groupby(['variety'])['sepal.length'].sum().reset_index()
 
         figure = px.pie(dfd, values='ganancia', names='deporte', title='Ganancia por categoría')
+        
+        figure.update_layout(
+            title='Ganancia por categoría',
+            plot_bgcolor='black',
+            paper_bgcolor='#ECFDFD', 
+            title_font=dict(family='Lexend, bold', size=28, color='#042F2F'),  # Establecer la fuente del título
+            font=dict(family='Lexend', size=14, color='#042F2F'),  # Establecer la fuente del texto general
+        )
+        
+        figure.update_traces(textfont=dict(family='Lexend', size=14, color='white'))
+        figure.update_traces(marker=dict(colors=['#042F2F', '#38CCCC', '#ABF7F7', '#133C55', '#235789', '#246EB9']))
+        figure.update_traces(hoverlabel=dict(font=dict(family='Lexend', size=14, color='white')))
+        figure.update_traces(pull=[0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1] )
     else:
         return None
     return figure
 
 
 @app.callback(
+    dash.dependencies.Output('category-dropdown', 'options'),
     dash.dependencies.Output('category-bar-chart', 'figure'),
-    [dash.dependencies.Input('category-dropdown', 'value')])
+    [dash.dependencies.Input('category-dropdown', 'value'),
+    ])
     
 def update_category_bar_chart(selected_category, user):
     
+    df = dfReservas(user)
+
+    filtered_df = df if selected_category == 'Todos' else df[df.deporte == selected_category]
+    category_df = filtered_df.groupby(['cancha']).size().reset_index(name='reservas')
+
+    figure = px.bar(category_df, x='cancha', y='reservas', title='Reservas por cancha', labels={'cancha': 'Canchas', 'reservas': 'Reservas'})
+    
+    figure.update_layout(
+        title='Ganancia por categoría',
+        plot_bgcolor='#ECFDFD',
+        paper_bgcolor='#ECFDFD', 
+        title_font=dict(family='Lexend, bold', size=28, color='#042F2F'),  # Establecer la fuente del título
+        font=dict(family='Lexend', size=14, color='#042F2F'),  # Establecer la fuente del texto general
+    )
+        
+    figure.update_traces(textfont=dict(family='Lexend', size=14, color='white'))
+    figure.update_traces(marker=dict(color=['#042F2F', '#38CCCC', '#ABF7F7', '#133C55', '#235789', '#246EB9']))
+    figure.update_traces(hoverlabel=dict(font=dict(family='Lexend', size=14, color='white')))
+
+    options= [{'label': 'Todos', 'value': 'Todos'}] + [{'label': deporte, 'value': deporte} for deporte in df['deporte'].drop_duplicates()]
+
+
+    return options, figure
+
+@app.callback(
+    dash.dependencies.Output('object-line', 'figure'),
+    dash.dependencies.Output('year-dropdown', 'options'),
+    [dash.dependencies.Input('object-dropdown', 'value'),
+     dash.dependencies.Input('my-range-slider', 'value'),
+     dash.dependencies.Input('year-dropdown', 'value'),])
+
+def update_object_line(selected_category, date_range, year, user):
+    df = dfReservas(user)
+    options=[{'label': anio, 'value': anio} for anio in df['fecha'].dt.year.unique().tolist()]
+    df=df[df['fecha'].dt.year == int(year)]
+    df['mes'] = df['fecha'].dt.month  # Agrega una columna 'mes'
+    if date_range is not None:
+        df = df[df['mes'].between(date_range[0], date_range[1])]
+    df = df.sort_values(by='fecha')
+
+
+    figure = px.line(
+        df,
+        x='fecha',
+        y='ganancia',
+        color=selected_category,
+        labels={'ganancia': 'Ganancias', 'fecha': 'Fecha'},
+        title='Ganancias por Cancha a lo largo de los Meses'
+    )
+
+    figure.update_traces(mode='lines+markers')
+
+
+    return figure, options
+
+def dfReservas(user):
     predio = Predios.objects.filter(user_id=user.id).first()
-    canchas= Canchas.objects.filter(predio_id=predio)
-
-    #reservas_por_cancha = Reservas.objects.filter(cancha_id__in=canchas).values('cancha_id__nombre', 'cancha_id__deporte_id__descripcion').annotate(
-    #cantidad_de_reservas=Count('id')
-    #)
-    #data = [{'cancha': item['cancha_id__nombre'], 'reservas': item['cantidad_de_reservas'], 'deporte':item['cancha_id__deporte_id__descripcion']} for item in reservas_por_cancha]
-    #filtered_df = df if selected_category == 'All Category' else df[df.variety == selected_category]
-    #df = pd.DataFrame(data)
-    #filtered_df = df if selected_category == 'All Category' else df[df.deporte == selected_category]
-    #category_df = filtered_df.groupby(['variety'])['sepal.length'].sum().reset_index()
-
+    canchas = Canchas.objects.filter(predio_id=predio)
 
     reservas_info = Reservas.objects.filter(cancha_id__in=canchas).select_related('cancha_id__deporte_id').values(
-    'cancha_id__nombre',
-    'fecha_ini__year',
-    'fecha_ini__month',
-    'precio',
-    'cancha_id__deporte_id__descripcion'
+        'cancha_id__nombre',
+        'fecha_ini',
+        'precio',
+        'cancha_id__deporte_id__descripcion'
     )
 
     # Convierte el resultado en un DataFrame
     df = pd.DataFrame(list(reservas_info))
 
     # Renombra las columnas para que coincidan con la estructura deseada
-    df.columns = ['cancha', 'año', 'mes', 'ganancia', 'deporte']
-
-    filtered_df = df if selected_category == 'Todos' else df[df.deporte == selected_category]
-    category_df = filtered_df.groupby(['cancha']).size().reset_index(name='reservas')
-
-    figure = px.bar(category_df, x='cancha', y='reservas', color='cancha', title='Reservas por cancha')
-
-    return figure
+    df.columns = ['cancha', 'fecha', 'ganancia', 'deporte']
+    return df
