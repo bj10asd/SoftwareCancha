@@ -13,7 +13,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 from pathlib import Path
 from django.conf import settings
 
-NGROK_URL_S = "0377-170-210-207-14.ngrok-free.app"
+NGROK_URL_S = "5753-190-193-23-165.ngrok-free.app"
 NGROK_URL = "https://"+ NGROK_URL_S
 
 # SDK de Mercado Pago
@@ -177,3 +177,11 @@ MEDIA_URL = 'media/'
 MEDIA_ROOT = BASE_DIR / MEDIA_URL
 
 CSRF_TRUSTED_ORIGINS = [NGROK_URL]
+
+
+#Mails
+EMAIL_HOST = 'smtp.googlemail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'reservatotalsa@gmail.com'
+EMAIL_HOST_PASSWORD = 'ahmw xfoz coiz zhvz'
+EMAIL_USE_TLS = True

@@ -11,6 +11,6 @@ para  cancelar una reserva si surgen circunstancias imprevistas.
 - En naranja "Recuerda que el monto de la reserva , no sera devuelto" , si se les ocurre algo mejor lo charlamos.
 - No se deben cancelar con una reserva que tiene fecha anterior a la actual.  
 - Agregar dos botones en la  parte inferior "Atras" y  "Confirmar"  
-- Al Confirmar muestra un alert con el mensaje "La reserva fue Cancelada".
+- Al Confirmar muestra un alert con el mensaje "La reserva fue Cancelada con exito".
 
 

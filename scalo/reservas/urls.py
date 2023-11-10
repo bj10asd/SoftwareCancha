@@ -1,5 +1,5 @@
 from django.urls import path
-from reservas import views, reservas, predio, estadisticas
+from reservas import views, reservas, predio, estadisticas,email
 
 
 urlpatterns = [
@@ -35,6 +35,9 @@ urlpatterns = [
     path('obtener_links/', views.mercadopago_func, name='mercadopago_func'),
     path('retorno-pago/', views.retorno_pago, name='retorno_pago'),
     #path('notificacion-pago/', views.notificacion_pago, name='notificacion_pago'),
+
+    path('envio/', email.send_mail_verificar, name='envio'),
+
 
 ]
 

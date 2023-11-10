@@ -9,7 +9,7 @@ from django.views.generic.detail import DetailView
 from django.core.paginator import Paginator #Paginacion.
 from django.views.generic import ListView
 from datetime import datetime, timedelta
-
+from reservas import email
 from django.http import JsonResponse  #JSon
 from django.http import HttpResponse
 from django.db.models import Q
@@ -177,6 +177,26 @@ def crear_reserva(request):
                     anticipo=anticipo
                 )
                 # Guarda la instancia de Reserva en la base de datos
+                datos_send_mail = {
+                    'user_name': usuario.first_name,
+                    'user_telefono': '4229300',
+                    'mail': usuario.email,
+                    'fecha_ini': fecha_ini,
+                    'fecha_fin': fecha_fin,
+                    'anticipo':anticipo,
+                    'precio':precio,
+                    'predio_nom':cancha.predio_id.nombre,
+                    'predio_tele':cancha.predio_id.telefono,
+                    'predio_ubicacion':cancha.predio_id.direccion,
+                    'predio_email':cancha.predio_id.email,
+                    'cancha_nombre':cancha.nombre,
+                    'rute': request.build_absolute_uri(),
+
+                }
+                email.send_cliente_email(datos_send_mail)
+                email.send_predio_email(datos_send_mail)
+
+                return HttpResponse ('jola')
                 nueva_reserva.save()
                 previous_url = request.META.get('HTTP_REFERER', '/')
                 

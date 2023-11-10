@@ -16,6 +16,8 @@ from django.db.models import Q
 import string
 import json
 from django.urls import reverse
+from reservas import email
+
 
 #at=APP_USR-5356790108164574-102419-d8674a362fdf8c1bedf821d8159c1d3e-1522412137
 
@@ -41,6 +43,7 @@ def login_view(request):
         user = request.POST.get('email').split("@")[0]
         pw   = request.POST.get('password')
         us = authenticate(username=user,password=pw)#authenticate solo si existe o no en la bd
+        #print(perfil_usuario)
         if us:
             login(request,us)
             messages.success(request, 'Bienvenido {}'.format(us.email))
@@ -433,6 +436,7 @@ def mercadopago_func(request):
                 "duracion": request.GET.get('duracion'),
                 "fecha_ini": request.GET.get('fecha_ini'),
                 "fecha_fin": request.GET.get('fecha_fin'),
+                "precio_cancha":cancha.precio if int(request.GET.get('duracion')) == 60 else cancha.precio*2
                 # Agregar más campos según tus necesidades
             },
             "back_urls": {
@@ -460,7 +464,7 @@ def mercadopago_func(request):
                 "duracion": request.GET.get('duracion'),
                 "fecha_ini": request.GET.get('fecha_ini'),
                 "fecha_fin": request.GET.get('fecha_fin'),
-                # Agregar más campos según tus necesidades
+                "precio_cancha":cancha.precio if int(request.GET.get('duracion')) == 60 else cancha.precio*2
             },
             "back_urls": {
                 "success": settings.NGROK_URL + '/retorno-pago/',
@@ -502,6 +506,7 @@ def retorno_pago(request):
             cancha_id   = mp['response']['metadata']['cancha_id']
             fecha_ini   = mp['response']['metadata']['fecha_ini']
             fecha_fin   = mp['response']['metadata']['fecha_fin']
+            precio_cancha   = mp['response']['metadata']['precio_cancha']
             usuario = request.user
             
             reservas = Reservas.objects.filter(cancha_id=cancha_id, fecha_fin__gt=fecha_ini, fecha_ini__lt=fecha_fin).exclude(estado='Cancelado')
@@ -513,7 +518,6 @@ def retorno_pago(request):
             else:
 
                 if request.GET.get('status') == 'approved':
-
                     try:
                         cancha = Canchas.objects.get(pk=cancha_id)
                     except Canchas.DoesNotExist:
@@ -536,7 +540,25 @@ def retorno_pago(request):
                     reserva_id=Reservas.objects.filter(user_id=usuario,cancha_id=cancha,fecha_fin=fecha_fin,fecha_ini=fecha_ini).last()
                     grabar_pago(request.GET.get('payment_id'),request.GET.get('status'),mp['response']['items'][0]['unit_price'],nueva_reserva)
                     
-                    
+                    datos_send_mail = {
+                        'user_name': usuario.first_name,
+                        'user_telefono': '4229300',
+                        'mail': usuario.email,
+                        'fecha_ini': fecha_ini,
+                        'fecha_fin': fecha_fin,
+                        'anticipo':mp['response']['items'][0]['unit_price'],
+                        'precio':mp['response']['items'][0]['unit_price'],
+                        'predio_nom':cancha.predio_id.nombre,
+                        'predio_tele':cancha.predio_id.telefono,
+                        'predio_ubicacion':cancha.predio_id.direccion,
+                        'predio_email':cancha.predio_id.email,
+                        'cancha_nombre':cancha.nombre,
+                        'precio_cancha':precio_cancha,
+                        'route':ngrok_url,
+                    }
+                    email.send_cliente_email(datos_send_mail)
+                    email.send_predio_email(datos_send_mail)
+
                     mensaje = f'Reserva creada desde {fecha_ini} hasta {fecha_fin} con éxito.'
 
                     # Agregar el mensaje de éxito
@@ -583,3 +605,5 @@ def grabar_pago(payment_id,status,monto,reserva_id):
     nuevo_pago.monto = monto
     nuevo_pago.reserva_id = reserva_id
     nuevo_pago.save()
+
+

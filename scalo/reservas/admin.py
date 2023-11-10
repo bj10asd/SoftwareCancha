@@ -1,5 +1,5 @@
 from django.contrib import admin
-from reservas.models import Deportes,Predios,Roles,Canchas,Reservas,UsuarioXRoles
+from reservas.models import Deportes,Predios,Roles,Canchas,Reservas,UsuarioXRoles,usuarios
 
 # Register your models here.
 #USER admin
@@ -50,4 +50,11 @@ class DeportesAdmin(admin.ModelAdmin):
     search_fields   = ['user_id','descripcion']
     actions         = None
 
-admin.site.register(Deportes,DeportesAdmin)
+
+
+
+class UsuariosAdmin(admin.ModelAdmin):
+    list_display = ('user_id', 'fec_nac', 'telef', 'fecha_verificacion')
+    search_fields = ('user_id__username', 'fec_nac', 'telef')
+    
+admin.site.register(usuarios,UsuariosAdmin)

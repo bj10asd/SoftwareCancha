@@ -124,6 +124,7 @@ class usuarios(models.Model):
     user_id = models.ForeignKey(User,models.PROTECT,db_column='user_id',verbose_name='User ID')
     fec_nac = models.DateField(db_column='fec_nac', verbose_name="Fecha de nacimiento")
     telef   = models.CharField(db_column='telefono',max_length=11,verbose_name="Teléfono")
+    fecha_verificacion = models.DateField(db_column='fecha_verificacion',null=True, blank=True, default=None, verbose_name="Fecha de verificación")
 
     class Meta:
         db_table            = 'usuarios'
