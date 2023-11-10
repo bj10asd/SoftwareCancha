@@ -14,7 +14,10 @@ from django.db.models import Sum, Count
 locale.setlocale(locale.LC_TIME, 'es_ES.utf-8')
 app = DjangoDash('dash_example')
 
-app.layout = html.Div([
+app.layout = html.Div([ dcc.Loading(
+            id="loading-1",
+            type="graph",
+            children=html.Div([
     html.H1("Ventas por categoría", style={
             'padding-top': '1.125rem',
             'padding-bottom': '1.125rem',
@@ -107,7 +110,10 @@ app.layout = html.Div([
         ])   
 ], style={
     'width': '100%',
-})
+}),
+            fullscreen=True
+        ),])
+    
 
 @app.callback(
     dash.dependencies.Output('category-pie-chart', 'figure'),
