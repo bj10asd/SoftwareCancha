@@ -54,3 +54,19 @@
 #category-bar-chart:hover {
   transform: scale(1.03);  /* Aumentar el scale al hacer hover */
 }
+
+#object-line:hover {
+  transform: scale(1.01);  /* Aumentar el scale al hacer hover */
+}
+
+#bar-id:hover {
+  transform: scale(1.03);  /* Aumentar el scale al hacer hover */
+}
+
+#pie-id:hover {
+  transform: scale(1.03);  /* Aumentar el scale al hacer hover */
+}
+
+#line-id:hover {
+  transform: scale(1.02);  /* Aumentar el scale al hacer hover */
+}

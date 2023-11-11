@@ -24,10 +24,11 @@ app.layout = html.Div([ dcc.Loading(
             children=html.Div([
     html.H1("Ventas por categoría", style={
             'padding-top': '1.125rem',
-            'padding-bottom': '1.125rem',
-            'font-size': '28px',
+            'padding-bottom': '1rem',
+            'padding-left': '2%',
+            'font-size': '40px',
             'font-family': '"Lexend", sans-serif',
-            'font-weight': 'bold',
+            'font-weight': 'bolder',
             'color': '#042F2F',
         }),
     html.Br(),
@@ -75,7 +76,7 @@ app.layout = html.Div([ dcc.Loading(
                 id='category-bar-chart',
                 style={'transition': 'all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94)',}
             )
-            ],style={
+            ],id='bar-id',style={
                 'width': '45%',
                 'display': 'inline-block',
                 'padding': '0 10px',
@@ -86,13 +87,14 @@ app.layout = html.Div([ dcc.Loading(
                 'padding': '1.25rem',
                 'font-family': '"Lexend", sans-serif',
                 'font-weight': 'bolder',
+                'transition': 'all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
         }),
         html.Div([
             dcc.Graph(
                 id='category-pie-chart',
                 style={'transition': 'all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94)',}
             )
-            ],style={
+            ],id='pie-id',style={
                 'width': '45%',
                 'display': 'inline-block',
                 'padding': '0 10px',
@@ -103,6 +105,7 @@ app.layout = html.Div([ dcc.Loading(
                 'padding': '1.25rem',
                 'font-family': '"Lexend", sans-serif',
                 'font-weight': 'bolder',
+                'transition': 'all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
             })
         ], style={
             'width': '100%',
@@ -110,26 +113,65 @@ app.layout = html.Div([ dcc.Loading(
             'justify-content': 'center'
             }),
     html.Div([
-        dcc.Dropdown(
-            id='object-dropdown',
-            options=[{'label':'Canchas' , 'value': 'cancha' },{'label':'Deportes','value':'deporte' } ],
-            value='deporte',
-            clearable=False
-        ),
-        dcc.Dropdown(
-            id='year-dropdown',
-            clearable=False,
-            value=f'{datetime.now().year}'
-        )
-    ],style={'width': '30%'}),
-    html.Br(),
-    html.Div([
+        html.Div([
+            html.H1("Ganancias por Cancha a lo largo de los Meses", style={
+                'padding-top': '0.725rem',
+                'padding-left': '1.125rem',
+                'font-size': '28px',
+                'font-family': '"Lexend", sans-serif',
+                'color': '#042F2F',
+            }),
+            dcc.Dropdown(
+                id='object-dropdown',
+                options=[{'label':'Canchas' , 'value': 'cancha' },{'label':'Deportes','value':'deporte' } ],
+                value='deporte',
+                clearable=False,
+                style={
+                    'border-radius': '28px',
+                    'background-color': '#ABF7F7',
+                    'border': 'none',
+                    'width': '150px',
+                }
+            ),
+            dcc.Dropdown(
+                id='year-dropdown',
+                clearable=False,
+                value=f'{datetime.now().year}',
+                style={
+                    'border-radius': '28px',
+                    'background-color': '#ABF7F7',
+                    'border': 'none',
+                    'width': '150px',
+                }
+            )
+        ],style={
+            'display': 'flex',
+            'justify-content': 'center',
+            'align-items': 'center',
+            'gap': '100px',
+            'font-family': '"Lexend", sans-serif',
+            'font-weight': 'bolder',
+        }),
+        html.Br(),
         dcc.Graph(
-            id='object-line'
+            id='object-line',
+            style={'transition': 'all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94)',}
         ),
         dcc.RangeSlider(min=1, max=12, step=1, id='my-range-slider', value=[datetime.now().month-3,datetime.now().month],
                         marks={i: datetime(2000, i, 1).strftime('%B') for i in range(1, 13)}),
-        ])   
+        ],id='line-id',style={
+                'display': 'block',
+                'justify-self': 'center',
+                'padding': '0 10px',
+                'background-color': '#ECFDFD',
+                'box-shadow': '0px 2px 15px 0px rgba(56, 204, 204, 0.31), 0px 0px 4px 0px rgba(0, 0, 0, 0.4), 0px 4px 4px 0px rgba(0, 0, 0, 0.25)',
+                'margin': '1.25rem',
+                'border-radius': '24px',
+                'padding': '1.25rem',
+                'font-family': '"Lexend", sans-serif',
+                'font-weight': 'bolder',
+                'transition': 'all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+        })   
 ], style={
     'width': '100%',
 }),
@@ -230,10 +272,19 @@ def update_object_line(selected_category, date_range, year, user):
         y='ganancia',
         color=selected_category,
         labels={'ganancia': 'Ganancias', 'fecha': 'Fecha'},
-        title='Ganancias por Cancha a lo largo de los Meses'
     )
 
     figure.update_traces(mode='lines+markers')
+    figure.update_layout(
+        plot_bgcolor='#ECFDFD',
+        paper_bgcolor='#ECFDFD', 
+        title_font=dict(family='Lexend, bold', size=28, color='#042F2F'),  # Establecer la fuente del título
+        font=dict(family='Lexend', size=14, color='#042F2F'),  # Establecer la fuente del texto general
+    )
+        
+    figure.update_traces(textfont=dict(family='Lexend', size=14, color='white'))
+    figure.update_traces(marker=dict(color=['#042F2F', '#38CCCC', '#ABF7F7', '#133C55', '#235789', '#246EB9']))
+    figure.update_traces(hoverlabel=dict(font=dict(family='Lexend', size=14, color='white')))
 
 
     return figure, options
