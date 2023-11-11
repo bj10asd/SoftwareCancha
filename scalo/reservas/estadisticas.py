@@ -14,6 +14,10 @@ from django.db.models import Sum, Count
 locale.setlocale(locale.LC_TIME, 'es_ES.utf-8')
 app = DjangoDash('dash_example')
 
+app.css.append_css({
+    "external_url": "scalo/reservas/static/css/style.css"  # Ajusta la ruta según sea necesario
+})
+
 app.layout = html.Div([ dcc.Loading(
             id="loading-1",
             type="graph",
@@ -26,33 +30,50 @@ app.layout = html.Div([ dcc.Loading(
             'font-weight': 'bold',
             'color': '#042F2F',
         }),
-    html.Div([
-        dcc.Dropdown(
-            id='category-dropdown',
-            value='Todos',
-            clearable=False,
-            style={
-            'border-radius': '28px',
-            'background-color': '#ABF7F7',
-            'border': 'none',
-            }
-        )
-    ],style={
-        'width': '30%',
-        'border-radius': '28px',
-        'padding': '10px 14px',
-        'background-color': '#ABF7F7',
-        'border': '1px solid #E0E0E0',
-        'box-shadow': '4px 4px 4px 0px rgba(0, 0, 0, 0.25)',
-        'font-family': '"Lexend", sans-serif',
-        'font-weight': 'bolder',
-        }),
     html.Br(),
     html.Div(
         [
         html.Div([
+            html.Div([
+                html.H1("Reservas por cancha", style={
+                    'padding-top': '1.125rem',
+                    'padding-bottom': '1.125rem',
+                    'font-size': '28px',
+                    'font-family': '"Lexend", sans-serif',
+                    'color': '#042F2F',
+                }), 
+                html.Div([
+                    dcc.Dropdown(
+                        id='category-dropdown',
+                        value='Todos',
+                        clearable=False,
+                        style={
+                        'border-radius': '28px',
+                        'background-color': '#ABF7F7',
+                        'border': 'none',
+                        }
+                    )
+                ],style={
+                    'width': '30%',
+                    'border-radius': '28px',
+                    'padding': '10px 14px',
+                    'background-color': '#ABF7F7',
+                    'border': '1px solid #E0E0E0',
+                    'box-shadow': '4px 4px 4px 0px rgba(0, 0, 0, 0.25)',
+                    'font-family': '"Lexend", sans-serif',
+                    'font-weight': 'bolder',
+                    'height': '57px',
+                    }),
+            ],style={
+                    'width': '100%',
+                    'display': 'flex',
+                    'justify-content': 'space-around',
+                    'align-items': 'center',
+                }),
+            html.Br(),
             dcc.Graph(
-                id='category-bar-chart'
+                id='category-bar-chart',
+                style={'transition': 'all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94)',}
             )
             ],style={
                 'width': '45%',
@@ -68,7 +89,8 @@ app.layout = html.Div([ dcc.Loading(
         }),
         html.Div([
             dcc.Graph(
-                id='category-pie-chart'
+                id='category-pie-chart',
+                style={'transition': 'all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94)',}
             )
             ],style={
                 'width': '45%',
@@ -167,10 +189,9 @@ def update_category_bar_chart(selected_category, user):
     filtered_df = df if selected_category == 'Todos' else df[df.deporte == selected_category]
     category_df = filtered_df.groupby(['cancha']).size().reset_index(name='reservas')
 
-    figure = px.bar(category_df, x='cancha', y='reservas', title='Reservas por cancha', labels={'cancha': 'Canchas', 'reservas': 'Reservas'})
+    figure = px.bar(category_df, x='cancha', y='reservas', labels={'cancha': 'Canchas', 'reservas': 'Reservas'})
     
     figure.update_layout(
-        title='Ganancia por categoría',
         plot_bgcolor='#ECFDFD',
         paper_bgcolor='#ECFDFD', 
         title_font=dict(family='Lexend, bold', size=28, color='#042F2F'),  # Establecer la fuente del título

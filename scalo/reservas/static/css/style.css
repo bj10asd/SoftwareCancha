@@ -47,3 +47,10 @@
       scroll-behavior: auto !important;
 }
 
+#category-pie-chart:hover {
+  transform: scale(1.03);  /* Aumentar el scale al hacer hover */
+}
+
+#category-bar-chart:hover {
+  transform: scale(1.03);  /* Aumentar el scale al hacer hover */
+}
