@@ -56,13 +56,14 @@
                 <div class="container-fluid">
                     <h1><a class="navbar-brand" href="{% url 'index' %}"><img
                                 src="{% static 'img/logo-no-background.png' %}" alt="Reserva Total"></a></h1>
+                    {% if user.is_authenticated %}
                     <div class="d-flex gap-4 px-1 align-items-center">
                         <div>
                             <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas"
                             data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar"
                             aria-label="Toggle navigation">
                             <h5 class="offcanvas-title" style="font-size: 1.25rem;" id="offcanvasNavbarLabel">
-                                Usuario</h5>
+                                {{user.first_name}}</h5>
                             </button>
                         </div>
                         <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor"
@@ -84,17 +85,15 @@
                                 </svg>
                                 <div>
                                     <h5 class="offcanvas-title" style="font-size: 1.25rem;" id="offcanvasNavbarLabel">
-                                        Usuario</h5>
-                                    <h4 class="" style="font-size: .875rem;" id="offcanvasNavbarLabel">usuario@gmail.com</h4>
+                                        {{user.first_name}}</h5>
+                                    <h4 class="" style="font-size: .875rem;" id="offcanvasNavbarLabel">{{user.email}}</h4>
                                 </div>
                             </div>
-                            <button type="button" class="btn-close" style="background-color: #ABF7F7;" data-bs-dismiss="offcanvas"
+                            <button type="button" class="btn-close"  data-bs-dismiss="offcanvas"
                                 aria-label="Close"></button>
                         </div>
                         <div class="offcanvas-body">
                             <ul class="navbar-nav">
-                                {% if user.is_authenticated %}
-                                <!-- <a href="{% url 'logout' %}">Salir</a> -->
                                 {% if perms.reservas.view_reservas %}
                                 <li class="nav-item">
                                     <a class="nav-link" href="{% url 'mis_reservas' %}">Mis reservas</a>
@@ -106,26 +105,26 @@
                                 </li>
                                 {% endif %}
                                 <li class="nav-item">
-                                    <a class="nav-link inises" href="{% url 'logout' %}">Salir</a>
+                                    <a class="nav-link lout" href="{% url 'logout' %}">Salir</a>
                                 </li>
-                                {% else %}
-                                <!-- <a href="{% url 'login' %}">Logeate</a>
-                                    <a href="{% url 'registro' %}">Registrate</a> -->
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{% url 'registro' %}">Registrarse</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link inises" href="{% url 'login' %}">Iniciar Sesión</a>
-                                </li>
-                                {% endif %}
                             </ul>
                         </div>
                     </div>
+                    {% else %}
+                    <div class="d-flex justify-content-end" id="navbarNav">
+                        <ul class="navbar-nav d-flex flex-row">
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'registro' %}">Registrarse</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link inises" href="{% url 'login' %}">Iniciar Sesión</a>
+                            </li>
+                        </ul>
+                    </div>
+                    {% endif %}
                 </div>
             </nav>
         </header>
-
-
 
         {% block content %}
         {% endblock %}
