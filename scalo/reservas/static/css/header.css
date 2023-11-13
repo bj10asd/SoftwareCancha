@@ -65,8 +65,8 @@ header {
     color: #38CCCC;
   }
   .navbar .inises {
-    background-color: #38CCCC;
-    color: #ECFDFD;
+    background-color: #ECFDFD;
+    color: #38CCCC;
     transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   }
   .navbar .inises:hover {

@@ -424,6 +424,7 @@ def editar_user(request):
     p.email   = request.POST.get('email_user')        if request.POST.get('email_user') is not None else p.email
     p.save()
     ptel.save()
+    messages.success(request, 'Datos modificados correctamente')
     return redirect(request.META.get('HTTP_REFERER', '/'))
 
 import mercadopago

@@ -15,6 +15,41 @@
 {% endblock %}
 
 <body>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    {% if messages %}
+    {% for message in messages %}
+    {% if message.tags == 'success' %}
+    <script>
+        const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-right',
+            iconColor: 'white',
+            width: 500,
+            customClass: {
+                popup: 'colored-toast'
+            },
+            showConfirmButton: false,
+            timer: 3500,
+            timerProgressBar: true
+        })
+        Toast.fire({
+            icon: 'success',
+            title: '{{ message|safe }}'
+        })
+    </script>
+    {% else %}
+    <script>
+        Toast.fire({
+            icon: 'error',
+            title: '{{ message|safe }}'
+        })
+    </script>
+    {% endif %}
+    {% endfor %}
+    {% endif %}
+
     {% if 'http://127.0.0.1:8000/' == request.build_absolute_uri %}
     <header>
         {% else %}
@@ -91,8 +126,8 @@
                                     </h4>
                                 </div>
                             </div>
-                            <button type="button" class="btn-close" style="background-color: #ABF7F7;" data-bs-dismiss="offcanvas"
-                                aria-label="Close"></button>
+                            <button type="button" class="btn-close" style="background-color: #ABF7F7;"
+                                data-bs-dismiss="offcanvas" aria-label="Close"></button>
                         </div>
                         <div class="offcanvas-body">
                             <ul class="navbar-nav">
@@ -115,6 +150,7 @@
                                         Modificar datos personales
                                     </a>
                                 </li>
+                                <hr>
                                 <li class="nav-item">
                                     <a class="nav-link lout" href="{% url 'logout' %}">Salir</a>
                                 </li>
