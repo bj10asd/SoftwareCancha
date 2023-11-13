@@ -264,14 +264,15 @@ def update_object_line(selected_category, date_range, year, user):
     if date_range is not None:
         df = df[df['mes'].between(date_range[0], date_range[1])]
     df = df.sort_values(by='fecha')
-
+    df['mes'] = df['fecha'].dt.strftime('%B')
+    df = df.groupby(['mes', selected_category])['ganancia'].sum().reset_index()
 
     figure = px.line(
         df,
-        x='fecha',
+        x='mes',
         y='ganancia',
         color=selected_category,
-        labels={'ganancia': 'Ganancias', 'fecha': 'Fecha'},
+        labels={'ganancia': 'Ganancias', 'mes': 'Mes'},
         line_shape='linear',  # Opción para establecer un estilo de línea específico
         line_dash_sequence=['solid', 'solid', 'solid'],  # Puedes personalizar las líneas sólidas o discontinuas
         color_discrete_sequence=['#235789', '#38CCCC', '#ABF7F7', '#042F2F', '#133C55', '#246EB9']  # Colores específicos para cada línea
