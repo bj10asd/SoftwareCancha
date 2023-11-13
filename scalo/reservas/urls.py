@@ -17,6 +17,7 @@ urlpatterns = [
     path('predios_deporte/', views.predios_deporte, name='predios_deporte'),
     path('predio/<int:pk>/', views.predio,  name='predio'),
     path('predio/edit/',     views.editar_predio,  name='editar_mipredio'),
+    path('index',            views.editar_user,  name='editar_user'),
     path('mi_predio/edit-cancha',    predio.editar_cancha,  name='editar_cancha'),
     path('mi_predio/estadisticas',    predio.stats,  name='estadisticas'),
 

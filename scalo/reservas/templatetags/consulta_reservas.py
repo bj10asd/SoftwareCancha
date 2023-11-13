@@ -1,6 +1,6 @@
 import datetime
 from django import template
-from reservas.models import UsuarioXRoles,Roles,Predios,Deportes,Canchas,Reservas
+from reservas.models import UsuarioXRoles,Roles,Predios,Deportes,Canchas,Reservas,usuarios
 from datetime import datetime,timedelta
 from django.utils import timezone
 from django.db.models import Q
@@ -39,3 +39,9 @@ def dia_actual(dia_reserva):
         return True
     else:
         return False
+    
+@register.simple_tag
+def get_telefono(user):
+    telefono = usuarios.objects.get(user_id = user).telef
+    return telefono
+

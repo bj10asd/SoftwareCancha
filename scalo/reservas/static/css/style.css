@@ -70,3 +70,7 @@
 #line-id:hover {
   transform: scale(1.02);  /* Aumentar el scale al hacer hover */
 }
+
+.modal.fade.show {
+  backdrop-filter: blur(5px);
+}
