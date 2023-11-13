@@ -286,7 +286,7 @@ def update_object_line(selected_category, date_range, year, user):
     )
         
     figure.update_traces(textfont=dict(family='Lexend', size=14, color='white'))
-    figure.update_traces(marker=dict(color=['#042F2F', '#38CCCC', '#ABF7F7', '#133C55', '#235789', '#246EB9']))
+    figure.update_traces(marker=dict(color=['#235789', '#38CCCC', '#ABF7F7', '#042F2F', '#133C55', '#246EB9']))
     figure.update_traces(hoverlabel=dict(font=dict(family='Lexend', size=14, color='white')), line=dict(width=4),)
 
 
