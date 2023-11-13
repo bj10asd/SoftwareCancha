@@ -10,6 +10,7 @@ import locale
 from django_plotly_dash import DjangoDash
 from reservas.models import Predios,Deportes,Canchas,Reservas
 from django.db.models import Sum, Count
+import calendar
 
 locale.setlocale(locale.LC_TIME, 'es_ES.utf-8')
 app = DjangoDash('dash_example')
@@ -264,15 +265,17 @@ def update_object_line(selected_category, date_range, year, user):
     if date_range is not None:
         df = df[df['mes'].between(date_range[0], date_range[1])]
     df = df.sort_values(by='fecha')
-    df['mes'] = df['fecha'].dt.strftime('%B')
+    
     df = df.groupby(['mes', selected_category])['ganancia'].sum().reset_index()
-
+    df = df.sort_values(by='mes')
+    df['mes']=df['mes'].apply(lambda x: calendar.month_name[x].capitalize())
+    #df['mes'] = df['fecha'].dt.strftime('%B')
     figure = px.line(
         df,
         x='mes',
         y='ganancia',
         color=selected_category,
-        labels={'ganancia': 'Ganancias', 'mes': 'Mes'},
+        labels={'ganancia': 'Ganancias', 'mes': 'Mes', 'deporte':'Deporte'},
         line_shape='linear',  # Opción para establecer un estilo de línea específico
         line_dash_sequence=['solid', 'solid', 'solid'],  # Puedes personalizar las líneas sólidas o discontinuas
         color_discrete_sequence=['#235789', '#38CCCC', '#ABF7F7', '#042F2F', '#133C55', '#246EB9']  # Colores específicos para cada línea
