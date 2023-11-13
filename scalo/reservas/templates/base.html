@@ -91,7 +91,7 @@
                                     </h4>
                                 </div>
                             </div>
-                            <button type="button" class="btn-close" data-bs-dismiss="offcanvas"
+                            <button type="button" class="btn-close" style="background-color: #ABF7F7;" data-bs-dismiss="offcanvas"
                                 aria-label="Close"></button>
                         </div>
                         <div class="offcanvas-body">
@@ -104,6 +104,9 @@
                                 {% if perms.reservas.change_predios %}
                                 <li class="nav-item">
                                     <a class="nav-link" href="{% url 'mi_predio' %}">Mi predio</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{% url 'estadisticas' %}">Estadisticas</a>
                                 </li>
                                 {% endif %}
                                 <li class="nav-item">

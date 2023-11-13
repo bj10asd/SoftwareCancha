@@ -37,8 +37,8 @@ header {
     gap: 1.875rem;
   }
   .navbar li a {
-    background-color: #ECFDFD;
-    color: #38CCCC;
+    background-color: #38CCCC;
+    color: #ECFDFD;
     font-size: 1rem;
     transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     border-radius: 0.625rem;
@@ -80,14 +80,15 @@ header {
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
   }
   .navbar .lout {
-    background-color: #042F2F;
-    color: #ECFDFD;
+    background-color: rgb(233, 58, 58);
+    color: #042F2F;
     transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   }
   .navbar .lout:hover {
     transform: translateZ(50px);
     transform: scale(1.05);
-    background-color: rgb(255, 162, 162);
+    background-color: red;
+    color: #ECFDFD !important;
   }
   .navbar .lout:active {
     transform: translateY(-1px);
@@ -99,11 +100,11 @@ header {
   }
   .offcanvas {
     border-radius: 1.25rem 0 0 1.25rem;
-    background-color: #38CCCC !important;
-    box-shadow: 0px 2px 15px 0px #042F2F, 0px 0px 4px 0px rgba(0, 0, 0, 0.4), 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+    background-color: #042F2F !important;
+    box-shadow: 0px 2px 15px 0px #38CCCC, 0px 0px 4px 0px rgba(0, 0, 0, 0.4), 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
   }
   .offcanvas-header {
-    color: #042F2F;
+    color: #ABF7F7;
     font-family: "Lexend", sans-serif;
     font-weight: bolder;
   }
