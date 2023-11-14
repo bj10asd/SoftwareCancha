@@ -410,6 +410,22 @@ def editar_predio(request):
     else:
         messages.error(request, 'La descripción es muy grande')
         return redirect('mi_predio')
+    
+def editar_user(request):
+    print(request.POST.get('user_id'))
+    print(request.POST.get('nombre'))
+    print(request.POST.get('apellido'))
+    print(request.POST.get('email_user'))
+    p = User.objects.get(id=request.POST.get('user_id'))
+    ptel = usuarios.objects.get(user_id = request.user)
+    p.first_name   = request.POST.get('nombre')   if request.POST.get('nombre') is not None else p.first_name
+    p.last_name      = request.POST.get('apellido')      if request.POST.get('apellido') is not None else p.last_name
+    ptel.telef   = request.POST.get('telefono_user')        if request.POST.get('telefono_user') is not None else ptel.telef
+    p.email   = request.POST.get('email_user')        if request.POST.get('email_user') is not None else p.email
+    p.save()
+    ptel.save()
+    messages.success(request, 'Datos modificados correctamente')
+    return redirect(request.META.get('HTTP_REFERER', '/'))
 
 import mercadopago
 def mercadopago_func(request):
