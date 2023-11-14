@@ -40,6 +40,7 @@ def mis_reservas(request):
         fil_select      = int(request.GET.get('fil_select') or 0)
         state_select      = int(request.GET.get('state_select') or 0)
         reservas_lista   = Reservas.objects.filter(user_id=request.user).order_by('-fecha_ini') 
+        print("MOSTRANDO TOTALIDAD DE RESERVAS: ",reservas_lista.count())
         if filtro_txt is not None:
             reservas_lista = reservas_lista.filter(cancha_id__predio_id__in=Predios.objects.filter( nombre__icontains=filtro_txt)).distinct()
 
@@ -260,5 +261,55 @@ def get_reserva(request):
             return JsonResponse(response_data)
 
             
+def pre_reservar(request):
+    if request.method == 'GET':
+        cancha_id = request.GET.get('cancha_id')
+        fecha_ini = request.GET.get('fecha_ini')
+        f_ini = datetime.strptime(fecha_ini+":00", '%Y-%m-%d %H:%M:%S')
+        reserva = Reservas.objects.filter(Q(cancha_id = int(cancha_id),fecha_ini=f_ini)).exclude(estado='Cancelado') 
+                                           # & Q(estado='Activo') | Q(estado='Pendiente'))
+        #print("mostrando filtro reserva ",reserva)
+        if reserva.count()>0:
 
+            response_data = {
+                'disp': 'nd',
+            }
+            return JsonResponse(response_data)
+        else:
+            c = Canchas.objects.get(pk = cancha_id)
+            #print(c)
+            nr = Reservas()
+            nr.user_id        = request.user
+            nr.cancha_id      = c
+            nr.fecha_ini      = f_ini
+            #nr.fecha_fin     = 
+            nr.precio         = c.precio
+            nr.anticipo       = c.anticipo
+            nr.fecha_creacion = datetime.today()
+            nr.save()
+            #print("pk de la nueva reserva ",nr.pk)
+            response_data = {
+                'disp': 'd',
+                'id_r':nr.pk
+            }
+            return JsonResponse(response_data)
+
+def esta_ocupado(request):
+    if request.method == 'GET':
+        cancha_id = request.GET.get('cancha_id')
+        fecha_ini = request.GET.get('fecha_ini')
+        f_ini = datetime.strptime(fecha_ini+":00", '%Y-%m-%d %H:%M:%S')
+        reserva = Reservas.objects.filter(Q(cancha_id = int(cancha_id),fecha_ini=f_ini)).exclude(estado='Cancelado') 
+                                           # & Q(estado='Activo') | Q(estado='Pendiente'))
+        print("mostrando filtro reserva ",reserva)
+        if reserva.count()>0:
+            response_data = {
+                'disp': 'nd',
+            }
+            #return JsonResponse(response_data)
+        else:
+            response_data = {
+                'disp': 'd',
+            }
+        return JsonResponse(response_data)
    

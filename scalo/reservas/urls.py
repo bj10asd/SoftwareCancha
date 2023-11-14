@@ -27,6 +27,8 @@ urlpatterns = [
     path('crear_reserva/',         reservas.crear_reserva,  name='crear_reserva'),
     path('get_reserva/',         reservas.get_reserva,  name='get_reserva'),
     
+    path('pre_reservar/',         reservas.pre_reservar,  name='pre_reservar'),
+    path('esta_ocupado/',         reservas.esta_ocupado,  name='esta_ocupado'),
 
     #Cancha
     path('cancha/', views.cancha, name='cancha'),

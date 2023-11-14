@@ -239,8 +239,13 @@
                                     </td>
                                 {% endif %}
                             {% else %}
-                            <td onclick="openModal('{{ cancha.id }}','{{ hora }}')" class="td-no-reservado" style="cursor: pointer; height: 9.1875rem; background-color: #ECFDFD; border: 1px solid #38CCCC;"></td>
-                             {% endif %}
+                                {% if user.is_authenticated %}
+                                    <!--<td onclick="esta_ocupado('{{ cancha.id }}','{{ hora }}');openModal('{{ cancha.id }}','{{ hora }}')" class="td-no-reservado" style="cursor: pointer; height: 9.1875rem; background-color: #ECFDFD; border: 1px solid #38CCCC;"></td>-->
+                                    <td onclick="esta_ocupado('{{ cancha.id }}','{{ hora }}');" class="td-no-reservado" style="cursor: pointer; height: 9.1875rem; background-color: #ECFDFD; border: 1px solid #38CCCC;"></td>
+                                {% else %}
+                                    <td onclick="debe_loguearase('Horario Disponible','Pero... para reservar, debe estar logueado.',1)" class="td-no-reservado" style="cursor: pointer; height: 9.1875rem; background-color: #ECFDFD; border: 1px solid #38CCCC;"></td>
+                                {% endif %}
+                            {% endif %}
                         {% endfor %}
                     </tr>
                     {% endfor %}
@@ -346,14 +351,41 @@
                 <a type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</a>
 
                 <div id="wallet_container">
-                    <a class="pagar" href="" id="goto"  >Pagar</a>
-                    <a class="pagar ant" href="" id="goto_m" >Pagar minimo</a>
+                    <button class="pagar"    id="goto"   onclick="pre_reserva(1)" >Pagar</button>
+                    <input type="text" name="url_pago" id="url_pago" style="display: none;">
+                    <button class="pagar ant" id="goto_m" onclick="pre_reserva(2)" >Pagar minimo</button>
+                    <input type="text" name="url_pago_min" id="url_pago_min" style="display: none;">
                 </div>
 
             </div>
         
 
         </div>
+    </div>
+</div>
+
+
+<!-- MODAL DEBE ESTAR LOGEADO -->
+<div class="modal" tabindex="-1" id="debe_loguearse">
+    <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+        <div class="modal-header cancel-res">
+            <h5 class="modal-title" id="titulo_modal"><!--Horario Disponible--></h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            
+            <div style="width: 100%;border-radius: 5px;background-color:rgb(252, 164, 33); justify-content: center; display: flex;margin-bottom: 1rem; align-items: center; padding: 0px;">
+                <p style="margin: 1rem;" id="cuerpo_modal">
+                    <!--Pero... para reservar, debe estar logueado.-->
+                </p>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button id="btn_cancel" class="btn-cancel" data-bs-dismiss="modal">Cancelar</button>
+            <a id="btn_login" type="button" class="btn btn-secondary volver-cancel" href="{% url 'login' %}">Iniciar sesion</a>
+        </div>
+    </div>
     </div>
 </div>
 
@@ -550,7 +582,9 @@
     }
     
     function openModal(cancha_id,hora) {
-
+        //Disableo botones de pagar, hasta que los links se encuentren disponibles
+        document.getElementById('goto').  disabled = true;
+        document.getElementById('goto_m').disabled = true;
         //Hora
         //formateo para que siempre sea 60 a la hora de abrir el modal
         $('#duracion').val('60');
@@ -690,10 +724,13 @@
                 fecha_fin: fecha_fin
             },
             success: function (data) {
-                btn_total =     document.getElementById('goto').setAttribute("href",data.p.init_point);
-                btn_pagar_min = document.getElementById('goto_m').setAttribute("href",data.p_min.init_point);
-                //btn_total.setAttribute('disabled','disabled');
-                //btn_pagar_min.disabled=false;
+                //btn_total =     document.getElementById('goto').setAttribute("href",data.p.init_point);
+                //btn_pagar_min = document.getElementById('goto_m').setAttribute("href",data.p_min.init_point);
+                document.getElementById('url_pago').value     = data.p.init_point;
+                document.getElementById('url_pago_min').value = data.p_min.init_point;
+                //alert("termino el link");
+                document.getElementById('goto').disabled = false;
+                document.getElementById('goto_m').disabled = false;
             },
             error: function (error) {
                 console.error(error);
@@ -701,5 +738,81 @@
         });
     }
 
+    function pre_reserva(c){
+        //alert(cancha_id,fecha_ini);
+        var a = document.getElementById("cancha_id").value;
+        var b = document.getElementById('Fecha_ini').value;
+        $.ajax({
+            url: '/pre_reservar/',
+            method: 'GET',
+            data: {
+                //cancha_id: document.getElementById("cancha_id").value,
+                //fecha_ini: document.getElementById('Fecha_ini').value,
+                cancha_id: a,
+                fecha_ini: b,
+            },
+            success: function (data) {
+                if(data.disp == 'd'){
+                    if(c == 1)
+                        window.location = document.getElementById('url_pago').value;
+                    else
+                        window.location = document.getElementById('url_pago_min').value;
+                }
+                else{
+                    //alert("No hay disponibilidad");
+                    debe_loguearase('Ups.. ocurrió un error','Parece que alguien ya está reservando en este horario',2)
+                }
+                
+            },
+            error: function (error) {
+                alert("No pude pre reservar");
+                console.error(error);
+            }
+        });
+
+    }
+
+    function esta_ocupado(a,b){
+        $.ajax({
+            url: '/esta_ocupado/',
+            method: 'GET',
+            data: {
+                cancha_id: a,
+                fecha_ini: convertirFecha(b),
+            },
+            success: function (data) {
+                if(data.disp == 'd'){
+                    //alert(data.disp);
+                    openModal(a,b);
+                }
+                else{
+                    //alert("Este turno no está disponible.");
+                    debe_loguearase('Ups.. ocurrió un error','Este turno no está disponible.',2)
+                    //location.reload();
+                }
+            },
+            error: function (error) {
+                //alert("No pude pre reservar");
+                console.error(error);
+            }
+        });
+    }
+
+    function debe_loguearase(titulo,cuerpo,btn){
+        document.getElementById('titulo_modal').innerHTML = titulo;
+        document.getElementById('cuerpo_modal').innerHTML = cuerpo;
+        if(btn==1)
+            document.getElementById('btn_login').style.display = "block";
+        else{
+            document.getElementById('btn_login').style.display = "none";
+            document.getElementById('btn_cancel').addEventListener("click",function(){location.reload();})
+        }
+
+        $('#debe_loguearse').modal('show')
+    }
+    function disableando_btn(){
+        document.getElementById('goto').disabled = true;
+        document.getElementById('goto_m').disabled = true;
+    }
 </script>
 {% endblock %}

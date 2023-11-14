@@ -91,7 +91,7 @@
                     </div>
                     
                     <div>
-                        <p>{{ reserva.cancha_id.nombre }}</p>
+                        <p>{{ reserva.cancha_id.nombre }} - {{reserva.pk}}</p>
                         <p><i class="bi bi-clock" style="color: #38CCCC;"></i>  {{ reserva.fecha_ini|date:"H:i"}} - {{ reserva.fecha_fin|date:"H:i" }}</p>
                         <p><i class="bi bi-currency-dollar" style="color: #38CCCC;"></i>{{ reserva.precio }}</p>
                         <p style="color: #38CCCC;"><strong>{{ reserva.cancha_id.deporte_id }}</strong></p>

@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from datetime import datetime
 
 # Create your models here.
 
@@ -47,7 +48,7 @@ class Canchas(models.Model):
     deporte_id  = models.ForeignKey(Deportes, models.PROTECT, db_column='deporte_id',verbose_name='Deporte ID')
     nombre      = models.CharField (db_column='Nombre',max_length=50,null=False)
     foto        = models.ImageField(upload_to='upload/',db_column='Foto')#, null=True)#(db_column='Foto',max_length=250)
-    precio      = models.FloatField (db_column='Precio')#,null=True,blank=True)
+    precio      = models.FloatField (db_column='Precio',default=0)#,null=True,blank=True)
     anticipo    = models.FloatField(db_column='Anticipo')#,blank=True,null=True)
     
 
@@ -67,6 +68,7 @@ class Reservas(models.Model):
         ('Cancelado', 'Cancelado'),
         ('Pendiente', 'Pendiente'),
         ('Activo', 'Activo'),
+        #('No_Pago', 'No_Pago'),
         ('Si_jugo', 'Si_jugo'),
         ('No_jugo', 'No_jugo'),
     )
@@ -75,10 +77,11 @@ class Reservas(models.Model):
     user_id   = models.ForeignKey   (User, models.PROTECT, db_column='user_id',verbose_name='User ID')
     cancha_id = models.ForeignKey   (Canchas,models.PROTECT,db_column='cancha_id')
     fecha_ini = models.DateTimeField(db_column='Fecha_Ini',null=False,blank=False)
-    fecha_fin = models.DateTimeField(db_column='Fecha_Fin',null=False,blank=False)
-    precio    = models.FloatField (db_column='Precio')#,null=True,blank=True)
-    anticipo  = models.FloatField(db_column='Anticipo')#,blank=True,null=True)
-    estado  = models.CharField(db_column='estado',max_length=20,choices=ESTADO_RESERVA, default='Pendiente')
+    fecha_fin = models.DateTimeField(db_column='Fecha_Fin',null=True,blank=True)
+    precio    = models.FloatField (db_column='Precio')#,null=True,blank=True)#,blank=True,null=True)
+    anticipo  = models.FloatField(db_column='Anticipo')#,blank=True,null=True)#,blank=True,null=True)
+    estado    = models.CharField(db_column='estado',max_length=20,choices=ESTADO_RESERVA, default='Pendiente')
+    fecha_creacion = models.DateTimeField(db_column='fecha_creacion',verbose_name="Fecha Creacion de Reserva",default=datetime.today())
     #idpago
 
 

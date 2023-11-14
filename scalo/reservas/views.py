@@ -526,19 +526,26 @@ def retorno_pago(request):
                         messages.error(request, 'Cancha no existente')
 
                         return redirect('predio',pk=predio_redirect.predio_id.pk)        # Crea una instancia de Reserva con los datos
-                    nueva_reserva = Reservas.objects.create(
+                    """nueva_reserva = Reservas.objects.create(
                         user_id=usuario,
                         cancha_id=cancha,
                         fecha_ini=fecha_ini,
                         fecha_fin=fecha_fin,
                         precio=mp['response']['items'][0]['unit_price'],
                         anticipo=mp['response']['items'][0]['unit_price']
-                    )
+                    )"""
+                    reserva_activa = Reservas.objects.filter(user_id = usuario,cancha_id=cancha).last()
+                    reserva_activa.fecha_fin = fecha_fin
+                    reserva_activa.precio=mp['response']['items'][0]['unit_price']
+                    reserva_activa.anticipo=mp['response']['items'][0]['unit_price']
+                    reserva_activa.estado = 'Activo'
+                    reserva_activa.save()
 
                     # Guarda la instancia de Reserva en la base de datos
                     #p = nueva_reserva.save()
-                    reserva_id=Reservas.objects.filter(user_id=usuario,cancha_id=cancha,fecha_fin=fecha_fin,fecha_ini=fecha_ini).last()
-                    grabar_pago(request.GET.get('payment_id'),request.GET.get('status'),mp['response']['items'][0]['unit_price'],nueva_reserva)
+                    #reserva_id=Reservas.objects.filter(user_id=usuario,cancha_id=cancha,fecha_fin=fecha_fin,fecha_ini=fecha_ini).last()
+                    #grabar_pago(request.GET.get('payment_id'),request.GET.get('status'),mp['response']['items'][0]['unit_price'],nueva_reserva)
+                    grabar_pago(request.GET.get('payment_id'),request.GET.get('status'),mp['response']['items'][0]['unit_price'],reserva_activa)
                     
                     datos_send_mail = {
                         'user_name': usuario.first_name,
@@ -564,8 +571,11 @@ def retorno_pago(request):
                     # Agregar el mensaje de éxito
                     messages.success(request, mensaje)   
                 else:
-                    messages.error(request, "No pudimos procesar tu pago") 
-                    #return redirect('predio',pk=predio_redirect.predio_id.pk)     
+                    messages.error(request, "No pudimos procesar tu pago.") 
+                    reserva_a_eliminar = Reservas.objects.filter(user_id = usuario,cancha_id=Canchas.objects.get(pk=cancha_id)).last()
+                    print("ELIMINANDO PRE RESERVA: ",reserva_a_eliminar.pk)
+                    reserva_a_eliminar.delete()
+                    #return redirect('predio',pk=predio_redirect.predio_id.pk)
                 
 
             #return redirect(previous_url)
@@ -605,5 +615,3 @@ def grabar_pago(payment_id,status,monto,reserva_id):
     nuevo_pago.monto = monto
     nuevo_pago.reserva_id = reserva_id
     nuevo_pago.save()
-
-
