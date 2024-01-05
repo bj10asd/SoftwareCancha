@@ -12,7 +12,8 @@ from reservas.models import Predios,Deportes,Canchas,Reservas
 from django.db.models import Sum, Count
 import calendar
 
-locale.setlocale(locale.LC_TIME, 'es_ES.utf-8')
+#locale.setlocale(locale.LC_TIME, 'es_ES.utf-8')
+locale.setlocale(locale.LC_TIME, 'es_ES')
 app = DjangoDash('dash_example')
 
 app.css.append_css({
