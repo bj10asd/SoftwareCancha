@@ -11,7 +11,7 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'scalo.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'scalo.scalo.settings')
 #os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'scalo.settings.local')
 #os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'scalo.settings.production')
 
