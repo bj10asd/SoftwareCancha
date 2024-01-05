@@ -3,3 +3,5 @@ scalo/reservas/__pycache__/
 scalo/reservas/migrations/__pycache__/
 scalo/scalo/__pycache__/
 scalo/reservas/templatetags/__pycache__/
+__pycache__
+scalo/scalo/settings/__pycache__
