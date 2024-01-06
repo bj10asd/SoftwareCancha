@@ -773,13 +773,14 @@
     }
 
     function esta_ocupado(a,b){
-        alert("fecha despues de formatear: "+fech);
+        var fech = format_fechas(b);
+        //alert("fecha despues de formatear: "+fech);
         $.ajax({
             url: '/esta_ocupado/',
             method: 'GET',
             data: {
                 cancha_id: a,
-                fecha_ini: format_fechas(b), //este nuevo format es de JoseT
+                fecha_ini: fech, //este nuevo format es de JoseT
             },
             success: function (data) {
                 if(data.disp == 'd'){
