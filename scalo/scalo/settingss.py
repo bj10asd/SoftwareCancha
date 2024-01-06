@@ -38,7 +38,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY', default='your secret key')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = 'RENDER' not in os.environ
 #DEBUG = True
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1',]
 """
 ALLOWED_HOSTS = ['127.0.0.1',
     NGROK_URL_S, #esta es la direccion a cambiar por el ngrok, sin https
@@ -102,14 +102,14 @@ if RENDER_EXTERNAL_HOSTNAME:    ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-DATABASES = {
+"""DATABASES = {
     'default': dj_database_url.config(
         default='postresql://postgres:postgres@localhost/postgres',
         conn_max_age=600
     )
-}
+}"""
 
-"""
+
 DATABASES = {
     'default': {
         'ENGINE'    : 'django.db.backends.postgresql',
@@ -121,7 +121,7 @@ DATABASES = {
         'PASSWORD'  : '1234'
     }
 }
-"""
+
 """
 CHANNEL_LAYERS = {
     'default': {
