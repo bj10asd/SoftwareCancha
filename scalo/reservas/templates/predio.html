@@ -773,12 +773,13 @@
     }
 
     function esta_ocupado(a,b){
+        alert("fecha despues de formatear: "+fech);
         $.ajax({
             url: '/esta_ocupado/',
             method: 'GET',
             data: {
                 cancha_id: a,
-                fecha_ini: convertirFecha(b),
+                fecha_ini: format_fechas(b), //este nuevo format es de JoseT
             },
             success: function (data) {
                 if(data.disp == 'd'){
@@ -814,5 +815,55 @@
         document.getElementById('goto').disabled = true;
         document.getElementById('goto_m').disabled = true;
     }
+
+    function format_fechas(a){
+        var nueva_fecha;
+        nueva_fecha = a.split(" ");
+        var anio = nueva_fecha[2];
+        var mes;
+        switch(nueva_fecha[1]){
+            case "Enero":
+                mes = "01";
+                break;
+            case "Febrero":
+                mes = "02";
+                break;
+            case "Marzo":
+                mes = "03";
+                break;
+            case "Abril":
+                mes = "04";
+                break;
+            case "Mayo":
+                mes = "05";
+                break;
+            case "Junio":
+                mes = "06";
+                break;
+            case "Julio":
+                mes = "07";
+                break;
+            case "Agosto":
+                mes = "08";
+                break;
+            case "Septiembre":
+                mes = "09";
+                break;
+            case "Octubre":
+                mes = "10";
+                break;
+            case "Noviembre":
+                mes = "11";
+                break;
+            case "Diciembre":
+                mes = "12";
+                break;
+            
+        }
+        var dia  = nueva_fecha[0].length == 1 ? "0"+nueva_fecha[0] : nueva_fecha[0];
+        var hora =""+ nueva_fecha[3];
+        return anio+"-"+mes+"-"+dia+" "+hora;
+    }
+
 </script>
 {% endblock %}
