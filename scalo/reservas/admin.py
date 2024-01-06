@@ -50,8 +50,7 @@ class DeportesAdmin(admin.ModelAdmin):
     search_fields   = ['user_id','descripcion']
     actions         = None
 
-
-
+admin.site.register(Deportes,DeportesAdmin)
 
 class UsuariosAdmin(admin.ModelAdmin):
     list_display = ('user_id', 'fec_nac', 'telef', 'fecha_verificacion')
