@@ -50,12 +50,8 @@
     {% endfor %}
     {% endif %}
 
-    {% if 'f19e-2803-9800-b402-7ed6-b465-647-3310-e878.ngrok-free.app' == request.build_absolute_uri %}
-    <header>
-        {% else %}
-        <header class="absolute">
-            {% endif %}
-
+    
+            <header  class="{% if 'https://softwarecancha.onrender.com' == request.build_absolute_uri %} absolute {% endif %}">
             <!-- <a href="{% url 'predios' %}">Predios</a> -->
 
             <!-- <nav class="navbar navbar-expand-lg px-4">
