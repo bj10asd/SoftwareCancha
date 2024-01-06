@@ -50,8 +50,12 @@
     {% endfor %}
     {% endif %}
 
-    
-            <header  class="{% if 'https://softwarecancha.onrender.com' == request.build_absolute_uri %} absolute {% endif %}">
+    {% if 'https://softwarecancha.onrender.com' == request.build_absolute_uri %}
+    <header>
+        {% else %}
+        <header class="absolute">
+            {% endif %}
+
             <!-- <a href="{% url 'predios' %}">Predios</a> -->
 
             <!-- <nav class="navbar navbar-expand-lg px-4">

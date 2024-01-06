@@ -42,6 +42,10 @@ def dia_actual(dia_reserva):
     
 @register.simple_tag
 def get_telefono(user):
-    telefono = usuarios.objects.get(user_id = user).telef
-    return telefono
+    try:#metemos try por si no existe el usuario
+        telefono = usuarios.objects.get(user_id = user).telef
+    except:
+        print("Hubo un error consultando datos del usuario.")
+        telefono = 0
+    return telefono 
 
