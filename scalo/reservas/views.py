@@ -17,6 +17,7 @@ import string
 import json
 from django.urls import reverse
 from reservas import email
+import os
 
 
 #at=APP_USR-5356790108164574-102419-d8674a362fdf8c1bedf821d8159c1d3e-1522412137
@@ -418,10 +419,10 @@ def editar_user(request):
     print(request.POST.get('email_user'))
     p = User.objects.get(id=request.POST.get('user_id'))
     ptel = usuarios.objects.get(user_id = request.user)
-    p.first_name   = request.POST.get('nombre')   if request.POST.get('nombre') is not None else p.first_name
-    p.last_name      = request.POST.get('apellido')      if request.POST.get('apellido') is not None else p.last_name
-    ptel.telef   = request.POST.get('telefono_user')        if request.POST.get('telefono_user') is not None else ptel.telef
-    p.email   = request.POST.get('email_user')        if request.POST.get('email_user') is not None else p.email
+    p.first_name = request.POST.get('nombre')        if request.POST.get('nombre')        is not None else p.first_name
+    p.last_name  = request.POST.get('apellido')      if request.POST.get('apellido')      is not None else p.last_name
+    ptel.telef   = request.POST.get('telefono_user') if request.POST.get('telefono_user') is not None else ptel.telef
+    p.email      = request.POST.get('email_user')    if request.POST.get('email_user')    is not None else p.email
     p.save()
     ptel.save()
     messages.success(request, 'Datos modificados correctamente')
@@ -433,9 +434,16 @@ def mercadopago_func(request):
         cancha_id = request.GET.get('cancha_id')
         cancha = Canchas.objects.filter(id=cancha_id).first()
 
+        url = ""
+
         # Agrega credenciales
         sdk = mercadopago.SDK("APP_USR-5356790108164574-102419-d8674a362fdf8c1bedf821d8159c1d3e-1522412137")
         
+        #obteniendo la url:
+        RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
+        if RENDER_EXTERNAL_HOSTNAME:
+            url = RENDER_EXTERNAL_HOSTNAME
+
         # Crea un ítem en la preferencia
         preference_data = {
             "items": [
@@ -456,8 +464,10 @@ def mercadopago_func(request):
                 # Agregar más campos según tus necesidades
             },
             "back_urls": {
-                "success": settings.NGROK_URL + '/retorno-pago/',
-                "failure": settings.NGROK_URL + '/retorno-pago/',
+                #"success": settings.NGROK_URL + '/retorno-pago/',
+                #"failure": settings.NGROK_URL + '/retorno-pago/',
+                "success": url + '/retorno-pago/',
+                "failure": url + '/retorno-pago/',
             },
             "auto_return": "approved",
             #"notification_url":"https://9084-2803-9800-b402-7ed6-ba3f-4184-fa5a-474e.ngrok-free.app/notificacion-pago/",
@@ -483,8 +493,10 @@ def mercadopago_func(request):
                 "precio_cancha":cancha.precio if int(request.GET.get('duracion')) == 60 else cancha.precio*2
             },
             "back_urls": {
-                "success": settings.NGROK_URL + '/retorno-pago/',
-                "failure": settings.NGROK_URL + '/retorno-pago/',
+                #"success": settings.NGROK_URL + '/retorno-pago/',
+                #"failure": settings.NGROK_URL + '/retorno-pago/',
+                "success": url + '/retorno-pago/',
+                "failure": url + '/retorno-pago/',
             },
             "auto_return": "approved",
             #"notification_url":"https://9084-2803-9800-b402-7ed6-ba3f-4184-fa5a-474e.ngrok-free.app/notificacion-pago/",

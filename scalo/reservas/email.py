@@ -7,13 +7,13 @@ from django.shortcuts import render
 def send_cliente_email(datos_send_mail):
 
 
-    template = get_template('mails/cliente.html')
+    #template = get_template('mails/cliente.html')
 
-    content = template.render(datos_send_mail)
+    #content = template.render(datos_send_mail)
 
     email = EmailMessage(
         'Asunto del correo',
-        content,
+        #content,
         settings.EMAIL_HOST_USER, #Remitente
         [datos_send_mail['mail']]) #Destinatario
     email.content_subtype = 'html'
@@ -24,13 +24,13 @@ def send_cliente_email(datos_send_mail):
 def send_predio_email(datos_send_mail):
 
 
-    template = get_template('mails/predio.html')
+    #template = get_template('mails/predio.html')
 
-    content = template.render(datos_send_mail)
+    #content = template.render(datos_send_mail)
 
     email = EmailMessage(
         'Asunto del correo',
-        content,
+        #content,
         settings.EMAIL_HOST_USER, #Remitente
         [datos_send_mail['predio_email']]) #Destinatario
     email.content_subtype = 'html'
