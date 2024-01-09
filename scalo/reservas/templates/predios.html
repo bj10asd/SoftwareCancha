@@ -77,23 +77,26 @@
             </div>
         </div>
     </div> -->
-
+        
         <ul>
-            <li>
-                <img src="{% if predio.logo.url %}{{ predio.logo.url }}{% else %}ruta/a/imagen-por-defecto.jpg{% endif %}" alt="{% if predio.logo.url %}{{ predio.logo.url }}{% else %}Texto alternativo por defecto{% endif %}">
-                <div class="datos-predio">
-                    <a href="{% url 'predio' pk=predio.id %}"><h3>{{ predio.nombre }}</h3></a>
-                    <div>
-                        {% if predio.link_mapa %}
-                            <a href="{{predio.link_mapa}}" target="_blank" rel="noopener noreferrer"><img src="{% static 'img/Address.png' %}" alt=""> </a>
-                        {% else %}    
-                            <img src="{% static 'img/Address.png' %}" alt="">
-                        {% endif %}
-                        <p>{{ predio.direccion }}</p>
+            <li onclick="redireccionar('{% url 'predio' pk=predio.id %}')">
+                
+                    <img src="{% if predio.logo.url %}{{ predio.logo.url }}{% else %}ruta/a/imagen-por-defecto.jpg{% endif %}" alt="{% if predio.logo.url %}{{ predio.logo.url }}{% else %}Texto alternativo por defecto{% endif %}">
+                    <div class="datos-predio">
+                        <a href="{% url 'predio' pk=predio.id %}"><h3>{{ predio.nombre }}</h3></a>
+                        <div>
+                            {% if predio.link_mapa %}
+                                <a href="{{predio.link_mapa}}" target="_blank" rel="noopener noreferrer"><img src="{% static 'img/Address.png' %}" alt=""> </a>
+                            {% else %}    
+                                <img src="{% static 'img/Address.png' %}" alt="">
+                            {% endif %}
+                            <p>{{ predio.direccion }}</p>
+                        </div>
                     </div>
-                </div>
+                
             </li>
         </ul>
+    
     {% endfor %}
 {% else %}
     <p>No existen predios disponibles en este momento.</p>
@@ -122,4 +125,9 @@
 </div>
 
 </ul>
+<script>
+    function redireccionar(a){
+        location.href = a;
+    }
+</script>
 {% endblock %}
