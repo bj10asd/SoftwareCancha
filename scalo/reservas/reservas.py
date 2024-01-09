@@ -15,6 +15,7 @@ from django.http import HttpResponse
 from django.db.models import Q
 import string
 import json
+from django.conf import settings
 
 
 def cancelar_reserva(request):
@@ -35,6 +36,7 @@ def cancelar_reserva(request):
     return redirect('mis_reservas')
 
 def mis_reservas(request):
+    print("URL SERVER: ",settings.ALLOWED_HOST)
     if request.user.is_authenticated:
         filtro_txt      = request.GET.get('filtro_txt')
         fil_select      = int(request.GET.get('fil_select') or 0)
