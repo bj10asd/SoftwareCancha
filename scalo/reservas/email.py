@@ -3,6 +3,7 @@ from django.core.mail import send_mail
 from django.template.loader import get_template
 from django.core.mail import EmailMessage
 from django.shortcuts import render
+from scalo.settings import base
 #Envia mail al cliente
 def send_cliente_email(datos_send_mail):
 
@@ -14,7 +15,8 @@ def send_cliente_email(datos_send_mail):
     email = EmailMessage(
         'Asunto del correo',
         #content,
-        settings.EMAIL_HOST_USER, #Remitente
+        #settings.EMAIL_HOST_USER, #Remitente
+        base.EMAIL_HOST_USER, #Remitente
         [datos_send_mail['mail']]) #Destinatario
     email.content_subtype = 'html'
     email.send()
@@ -31,7 +33,8 @@ def send_predio_email(datos_send_mail):
     email = EmailMessage(
         'Asunto del correo',
         #content,
-        settings.EMAIL_HOST_USER, #Remitente
+        #settings.EMAIL_HOST_USER, #Remitente
+        base.EMAIL_HOST_USER, #Remitente
         [datos_send_mail['predio_email']]) #Destinatario
     email.content_subtype = 'html'
     email.send()
