@@ -6,7 +6,7 @@ set -o errexit
 pip install -r requirements.txt
 #cd scalo/
 python manage.py collectstatic --no-input
- manage.py makemigrations
+python manage.py makemigrations
 python manage.py migrate
 
 # Crear superusuario (reemplaza 'tunombredeusuario', 'tuemail' y 'tupassword' con los valores deseados)
