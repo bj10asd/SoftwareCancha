@@ -24,4 +24,5 @@ DATABASES = {
     )
 }
 
+STATICFILES_DIR = (BASE_DIR,'static')
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
