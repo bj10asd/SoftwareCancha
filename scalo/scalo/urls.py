@@ -19,6 +19,7 @@ from django.urls import path,include
 from django.conf import settings
 from django.conf.urls.static import static
 from reservas import estadisticas
+from scalo.settings import base
 
 urlpatterns = [
     path('', include('reservas.urls')),
@@ -27,7 +28,8 @@ urlpatterns = [
 ]
 
 #if settings.DEBUG: SI ESTA EN DEBUG FALSE Y CON ESTE IF, NO RECUPERA LAS IMAGENES
-urlpatterns +=static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+#urlpatterns +=static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+urlpatterns +=static(base.MEDIA_URL, document_root=base.MEDIA_ROOT)
 
 admin.site.site_title = 'Messirve'
 admin.site.site_header = 'Panel de Administración de Messirve'

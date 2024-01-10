@@ -578,7 +578,8 @@ def retorno_pago(request):
                     datos_send_mail = {
                         'user_name': usuario.first_name,
                         'user_telefono': '4229300',
-                        'mail': usuario.email,
+                        #'mail': usuario.email,
+                        'mail': 'josemaria.terrazas@gmail.com',
                         'fecha_ini': fecha_ini,
                         'fecha_fin': fecha_fin,
                         'anticipo':mp['response']['items'][0]['unit_price'],
