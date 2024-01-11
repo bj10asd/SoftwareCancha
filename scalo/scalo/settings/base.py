@@ -36,7 +36,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get('SECRET_KEY', default='your secret key')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+#DEBUG = True
 #DEBUG = 'RENDER' not in os.environ
 
 
@@ -159,15 +159,16 @@ PLOTLY_COMPONENTS = [
 #STATIC_ROOT = ''
 #STATIC_URL = '/static/'
 
+STATIC_ROOT = ''
+STATIC_URL = '/static/'
+
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 # This setting tells Django at which URL static files are going to be served to the user.
 # Here, they well be accessible at your-domain.onrender.com/static/...
-#STATIC_ROOT = BASE_DIR / STATIC_URL
-STATIC_ROOT = os.path.join(BASE_DIR,'staticfiles')
-STATIC_URL = '/static/'
-###Nueva config para prod
+
 # Following settings only make sense on production and may break development environments.
 #if not DEBUG:    # Tell Django to copy statics to the `staticfiles` directory
     # in your application directory on Render.
@@ -182,8 +183,8 @@ STATIC_URL = '/static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 #MEDIA_URL = 'reservas/static/'
-#MEDIA_URL = 'media/'
-#MEDIA_ROOT = BASE_DIR / MEDIA_URL
+MEDIA_URL = 'media/'
+MEDIA_ROOT = BASE_DIR / MEDIA_URL
 
 CSRF_TRUSTED_ORIGINS = [NGROK_URL]
 
