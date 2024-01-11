@@ -24,5 +24,5 @@ DATABASES = {
     )
 }
 
-STATICFILES_DIR = (BASE_DIR,'media/')
-STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+#STATICFILES_DIR = (BASE_DIR,'media/')
+#STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
