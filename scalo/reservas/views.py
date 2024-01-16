@@ -152,6 +152,35 @@ def extra_fields(user,fec_nac,telef):
 def recuperar_pw(request):
     return render(request,'auth/recuperacion_pw.html',{})
 
+import requests
+import json
+def consulta_api(klave):
+    url = "https://5jt.000webhostapp.com/get_photos.php"
+
+    # Datos que deseas enviar en la solicitud POST
+    data_to_send = {
+        #'klave': 'estelaevelia.herrera@gmail.com'
+        'klave': klave
+    }
+
+    try:
+        # Realizar la solicitud POST
+        #headers = {'Content-Type': 'application/json'}
+        response = requests.post(url, data=json.dumps(data_to_send))#,headers=headers)
+        if response.status_code == 200:
+            json_data = response.json()
+            print("mostrando dict: ",json_data.get('resultado'))
+            return json_data.get('resultado')
+
+        else:
+            # Manejar el caso en el que la solicitud no fue exitosa
+            #return JsonResponse({'error': 'Error en la solicitud'}, status=500)
+            return "Hubo un error1"
+
+    except requests.RequestException as e:
+        # Manejar excepciones de la biblioteca requests
+        #return JsonResponse({'error': f'Error en la solicitud: {str(e)}'}, status=500)
+        return "Hubo un error2"
 
 def predios(request):
     filtro_txt      = request.GET.get('filtro_txt')
@@ -166,7 +195,23 @@ def predios(request):
         if fil_select is not None:
             predios_lista = predios_lista.filter(id__in=Canchas.objects.filter(deporte_id=fil_select).values('predio_id')).distinct()
             
-    paginator = Paginator(predios_lista, 10)
+    rta = []
+    for e in predios_lista:
+        #Nueva forma de obtener imagenes:
+        #print("pidiendo los datos del predio: ",e.user_id.username+"_p")
+        klave = e.user_id.username+"_p"
+        rta.append({
+            'id': Predios.objects.get(user_id = e.user_id).pk,#e.user_id.pk,
+            'logo':consulta_api(klave),
+            'link_mapa' : e.link_mapa,
+            'direccion' : e.direccion,
+            'nombre' : e.nombre,
+        })
+
+    #print("mostrando rta: ",rta)
+
+    #paginator = Paginator(predios_lista, 10)
+    paginator = Paginator(rta, 10)
     # Obtiene el número de página de la URL o utiliza la página 1 como predeterminada
     pagina  = request.GET.get('page') or 1
     predios = paginator.get_page(pagina)
@@ -280,6 +325,8 @@ def predio(request,pk):#import datetime
         
 
 def predios_deporte(request):
+
+
     if request.method == 'GET':
 
         deporte_id = request.GET.get('deporte_id')

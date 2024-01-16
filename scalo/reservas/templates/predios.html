@@ -81,7 +81,8 @@
         <ul>
             <li onclick="redireccionar('{% url 'predio' pk=predio.id %}')">
                 
-                    <img src="{% if predio.logo.url %}{{ predio.logo.url }}{% else %}ruta/a/imagen-por-defecto.jpg{% endif %}" alt="{% if predio.logo.url %}{{ predio.logo.url }}{% else %}Texto alternativo por defecto{% endif %}">
+                    {#<img src="{% if predio.logo.url %}{{ predio.logo.url }}{% else %}ruta/a/imagen-por-defecto.jpg{% endif %}" alt="{% if predio.logo.url %}{{ predio.logo.url }}{% else %}Texto alternativo por defecto{% endif %}">#}
+                    <img src="{% if predio.logo %}{{ predio.logo }}{% else %}ruta/a/imagen-por-defecto.jpg{% endif %}" alt="{% if predio.logo %}{{ predio.logo }}{% else %}Texto alternativo por defecto{% endif %}">
                     <div class="datos-predio">
                         <a href="{% url 'predio' pk=predio.id %}"><h3>{{ predio.nombre }}</h3></a>
                         <div>
