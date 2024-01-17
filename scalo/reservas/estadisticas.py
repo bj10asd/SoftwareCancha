@@ -11,6 +11,8 @@ from django_plotly_dash import DjangoDash
 from reservas.models import Predios,Deportes,Canchas,Reservas
 from django.db.models import Sum, Count
 import calendar
+from django.conf import settings
+from scalo.settings import base
 
 #locale.setlocale(locale.LC_TIME, 'es_ES.utf-8')
 #locale.setlocale(locale.LC_TIME, 'es_ES')

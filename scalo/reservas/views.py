@@ -169,7 +169,7 @@ def consulta_api(klave):
         response = requests.post(url, data=json.dumps(data_to_send))#,headers=headers)
         if response.status_code == 200:
             json_data = response.json()
-            print("mostrando dict: ",json_data.get('resultado'))
+            #print("mostrando dict: ",json_data.get('resultado'))
             return json_data.get('resultado')
 
         else:
@@ -201,11 +201,11 @@ def predios(request):
         #print("pidiendo los datos del predio: ",e.user_id.username+"_p")
         klave = e.user_id.username+"_p"
         rta.append({
-            'id': Predios.objects.get(user_id = e.user_id).pk,#e.user_id.pk,
-            'logo':consulta_api(klave),
+            'id'        : Predios.objects.get(user_id = e.user_id).pk,#e.user_id.pk,
+            'logo'      : consulta_api(klave),
             'link_mapa' : e.link_mapa,
             'direccion' : e.direccion,
-            'nombre' : e.nombre,
+            'nombre'    : e.nombre,
         })
 
     #print("mostrando rta: ",rta)
@@ -306,16 +306,30 @@ def predio(request,pk):#import datetime
                 
 
         canchas = Canchas.objects.filter(predio_id=predio)
+
+        #Nuevo metodo de mostrar imagenes
+        c = []
+        for e in canchas:
+            klave = e.predio_id.user_id.username+"_c_"+str(e.pk)
+            c.append({
+                'id'         : e.id,
+                'predio_id'  : e.predio_id,
+                'deporte_id' : e.deporte_id,
+                'nombre'     : e.nombre,
+                'foto'       : consulta_api(klave),
+                'precio'     : e.precio,
+                'anticipo'   : e.anticipo,
+            })
+
         deportes = Deportes.objects.all()
-        
-        
         #msotrando reservas
         reservas = Reservas.objects.filter(cancha_id__in=canchas).exclude(estado='Cancelado')
         #print("contando las reservas de este predio de diferentes canchas: "+ str(reservas.count()))
         # Obtén la fecha y hora actual
 
         return render(request,'predio.html',{'predio':      predio ,
-                                            'canchas':      canchas ,
+                                            #'canchas':      canchas ,
+                                            'canchas':      c ,
                                             'deportes':     deportes,
                                             'horas':        horas,
                                             'dia_reserva':  dia_reserva,

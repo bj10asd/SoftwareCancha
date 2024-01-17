@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 {% load consulta_reservas %}
+{% load consulta_api %}
 {% block content %}
 
 
@@ -76,9 +77,12 @@
     <div cl id="contenedor_perfil" class="row mb-3">
         <h4>Perfil del predio</h4>
         <div class="col-6 d-flex justify-content-center align-items-center">
-            {% if predio.logo %}
-            <img style="height: 400px; width: 400px; border-radius: 26px;" src="{{ predio.logo.url }}"
-                alt="{{ predio.logo.url }}">
+            {#{% if predio.logo %}#}
+            {% get_perfil_predio predio.user_id.username as logo %}
+            {% if logo %}
+            {#<img style="height: 400px; width: 400px; border-radius: 26px;" src="{{ predio.logo.url }}"#}
+            <img style="height: 400px; width: 400px; border-radius: 26px;" src="{{ logo }}"
+                alt="{{ logo }}">
             {% else %}
             <img style="height: 400px; width: 400px; border-radius: 26px;" src="media/upload/predio.png"
                 alt="Imagen Predeterminada">
@@ -148,7 +152,8 @@
             <div class="carousel-inner" style="height: 100%;">
                 {% for cancha in canchas %}
               <div class="carousel-item {% if forloop.first %}active{% endif %}" style="height: 100%;">
-                <img src="{{ cancha.foto.url }}" class="d-block w-100" style="height: 100%; object-fit: cover;"alt="...">
+                {#<img src="{{ cancha.foto.url }}" class="d-block w-100" style="height: 100%; object-fit: cover;"alt="...">#}
+                <img src="{{ cancha.foto }}" class="d-block w-100" style="height: 100%; object-fit: cover;"alt="...">
               </div>
               {% endfor %}
             </div>
@@ -213,7 +218,8 @@
                                 <div class="row">
                                     <div class="col-md-6 d-flex align-items-center ">
                                         <img style="border-radius: .75rem; width: 114px; height: 114px; margin-left: .625rem;"
-                                            src="{{ cancha.foto.url }}" alt="{{ cancha.foto }}">
+                                            {#src="{{ cancha.foto.url }}" alt="{{ cancha.foto }}">#}
+                                            src="{{ cancha.foto }}" alt="{{ cancha.foto }}">
                                     </div>
                                     <div class="col-md-6 card-datos">
                                         <div class="card-block px-6">
@@ -225,8 +231,8 @@
                             </div>
                         </th>
                         {% for hora in horas %}
-                        
-                            {% get_reservas cancha hora as r %}
+                            {# 17 ene 2023 00:30 se cambio el cancha por cancha.id para la construccion de imagenes #}
+                            {% get_reservas cancha.id hora as r %}
 
                             {% if r %}
                                 {% if user != r %}

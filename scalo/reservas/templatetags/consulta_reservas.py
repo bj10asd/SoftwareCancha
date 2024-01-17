@@ -9,8 +9,12 @@ register = template.Library()
 
 @register.simple_tag
 def get_reservas(cancha,hora):
+    #print("*********************************** ENTRE A CONSULTA RESERVAS")
+    #print("MOSTRANDO HORA",hora)
     hora_fin = hora + timedelta(hours=1)
 
+    #reserva = Reservas.objects.filter(Q(cancha_id=cancha) & (Q(fecha_ini=hora) | Q(fecha_fin=hora_fin))).exclude(estado='Cancelado')
+    #print("mostrando cancha id: ",cancha)
     reserva = Reservas.objects.filter(Q(cancha_id=cancha) & (Q(fecha_ini=hora) | Q(fecha_fin=hora_fin))).exclude(estado='Cancelado')
     #print(reserva[0].user_id.first_name or '')
     if reserva.count() > 0:
