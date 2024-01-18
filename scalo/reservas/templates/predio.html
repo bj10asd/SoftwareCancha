@@ -2,7 +2,22 @@
 {% load static %}
 {% load consulta_reservas %}
 {% load consulta_api %}
+{% load humanize %}
 {% block content %}
+<style>
+    .carousel-caption {
+    position: absolute; 
+    right: 15%;
+    bottom: 10px; /* Cambiar bottom por top y los píxeles que necesites */
+    left: 15%;
+    z-index: 10;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    color: #fff;
+    text-align: center;
+    /*background-color: rgba(0, 0, 0, 0.5);  Añadir para conseguir el fondo con opacidad */
+}
+</style>
 
 
     
@@ -154,6 +169,10 @@
               <div class="carousel-item {% if forloop.first %}active{% endif %}" style="height: 100%;">
                 {#<img src="{{ cancha.foto.url }}" class="d-block w-100" style="height: 100%; object-fit: cover;"alt="...">#}
                 <img src="{{ cancha.foto }}" class="d-block w-100" style="height: 100%; object-fit: cover;"alt="..." onclick="fil_CanchaGaleria('{{cancha.id}}')">
+                <div class="carousel-caption d-none d-md-block">
+                    <h5>{{cancha.nombre}}</h5>
+                    <p>Anticipo: ARS {{cancha.anticipo|floatformat:2|intcomma }}</p>
+                </div>
               </div>
               {% endfor %}
             </div>
@@ -872,7 +891,7 @@
         return anio+"-"+mes+"-"+dia+" "+hora;
     }
     function fil_CanchaGaleria(id){
-        alert(id);
+        //alert(id);
         //let selectedDeporte = $(this).val() // Obtiene el valor seleccionado en el primer select.
         // Busca el elemento <option> correspondiente al valor seleccionado
         //let selectedOption = $(this).find('option[value="' + selectedDeporte + '"]')
