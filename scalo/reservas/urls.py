@@ -15,6 +15,7 @@ urlpatterns = [
     #Predios
     path('predios/',                views.predios,          name = 'predios'),
     path('predios_deporte/',        views.predios_deporte,  name = 'predios_deporte'),
+    path('filtrar_CanchaGaleria/',  views.filtrar_fotoslider,  name = 'filtrar_CanchaGaleria'),
     path('predio/<int:pk>/',        views.predio,           name = 'predio'),
     path('predio/edit/',            views.editar_predio,    name = 'editar_mipredio'),
     path('index',                   views.editar_user,      name = 'editar_user'),

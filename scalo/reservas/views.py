@@ -352,30 +352,81 @@ def predios_deporte(request):
             deporte = Deportes.objects.filter(id=deporte_id).first()
 
             canchas = Canchas.objects.filter(Q(predio_id=predio_id) & Q(deporte_id=deporte_id))
-
             for cancha in canchas:
+                klave = cancha.predio_id.user_id.username+"_c_"+str(cancha.pk)
                 canchas_data.append({
                     'cancha_id':cancha.id,
                     'predio_id': cancha.predio_id.nombre,
                     'deporte': cancha.deporte_id.descripcion,
                     'nombre': cancha.nombre,
-                    'foto': cancha.foto.url,  # URL de la imagen
+                    #'foto': cancha.foto.url,  # URL de la imagen
+                    'foto': consulta_api(klave),
                     'precio': cancha.precio,
                     'anticipo': cancha.anticipo,
                 })
         else:
             canchas = Canchas.objects.filter(predio_id=predio_id)
+
             for cancha in canchas:
+                klave = cancha.predio_id.user_id.username+"_c_"+str(cancha.pk)
                 canchas_data.append({
                     'cancha_id':cancha.id,
                     'predio_id': cancha.predio_id.nombre,
                     'deporte': cancha.deporte_id.descripcion,
                     'nombre': cancha.nombre,
-                    'foto': cancha.foto.url,  # URL de la imagen
+                    #'foto': cancha.foto.url,  # URL de la imagen
+                    'foto': consulta_api(klave),
                     'precio': cancha.precio,
                     'anticipo': cancha.anticipo,
                 })
 
+        return JsonResponse(canchas_data, safe=False)
+
+def filtrar_fotoslider(request):
+
+
+    if request.method == 'GET':
+
+        #deporte_id = request.GET.get('deporte_id')
+        #predio_id = request.GET.get('predio_id')
+        cancha_id = int(request.GET.get('cancha_id')) if request.GET.get('cancha_id') else 0
+        #print
+        #return HttpResponse(deporte_id, content_type='text/plain')
+        canchas_data=[]
+        #if(deporte_id!='all'):
+            #deporte = Deportes.objects.filter(id=deporte_id).first()
+
+        #canchas = Canchas.objects.filter(Q(predio_id=predio_id) & Q(deporte_id=deporte_id))
+        canchas = Canchas.objects.filter(pk=cancha_id)
+        for cancha in canchas:
+            klave = cancha.predio_id.user_id.username+"_c_"+str(cancha.pk)
+            canchas_data.append({
+                'cancha_id':cancha.id,
+                'predio_id': cancha.predio_id.nombre,
+                'deporte': cancha.deporte_id.descripcion,
+                'nombre': cancha.nombre,
+                #'foto': cancha.foto.url,  # URL de la imagen
+                'foto': consulta_api(klave),
+                'precio': cancha.precio,
+                'anticipo': cancha.anticipo,
+            })
+        """else:
+            canchas = Canchas.objects.filter(predio_id=predio_id)
+
+            for cancha in canchas:
+                klave = cancha.predio_id.user_id.username+"_c_"+str(cancha.pk)
+                canchas_data.append({
+                    'cancha_id':cancha.id,
+                    'predio_id': cancha.predio_id.nombre,
+                    'deporte': cancha.deporte_id.descripcion,
+                    'nombre': cancha.nombre,
+                    #'foto': cancha.foto.url,  # URL de la imagen
+                    'foto': consulta_api(klave),
+                    'precio': cancha.precio,
+                    'anticipo': cancha.anticipo,
+                })
+        """
+        print("canchas devuelta: ",canchas_data)
         return JsonResponse(canchas_data, safe=False)
     
 import mercadopago    

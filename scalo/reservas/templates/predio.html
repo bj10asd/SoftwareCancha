@@ -153,7 +153,7 @@
                 {% for cancha in canchas %}
               <div class="carousel-item {% if forloop.first %}active{% endif %}" style="height: 100%;">
                 {#<img src="{{ cancha.foto.url }}" class="d-block w-100" style="height: 100%; object-fit: cover;"alt="...">#}
-                <img src="{{ cancha.foto }}" class="d-block w-100" style="height: 100%; object-fit: cover;"alt="...">
+                <img src="{{ cancha.foto }}" class="d-block w-100" style="height: 100%; object-fit: cover;"alt="..." onclick="fil_CanchaGaleria('{{cancha.id}}')">
               </div>
               {% endfor %}
             </div>
@@ -871,6 +871,101 @@
         var hora =""+ nueva_fecha[3];
         return anio+"-"+mes+"-"+dia+" "+hora;
     }
+    function fil_CanchaGaleria(id){
+        alert(id);
+        //let selectedDeporte = $(this).val() // Obtiene el valor seleccionado en el primer select.
+        // Busca el elemento <option> correspondiente al valor seleccionado
+        //let selectedOption = $(this).find('option[value="' + selectedDeporte + '"]')
+        //let predio_id = document.getElementById("predio_id").value;
+        //let descripcion = selectedOption.text()
 
+        $.ajax({
+            url: '/filtrar_CanchaGaleria/', //Ojooo con " /  / "
+            method: 'GET',
+            data: {
+                cancha_id: id,
+            },
+            success: function (data) {
+                let list_canchas = document.getElementById("list_canchas")
+
+                // Obtén la fila de encabezados (la primera fila de la tabla)
+
+                //vaciar tabla.
+                list_canchas.innerHTML = ""
+                horas = obtenerHoras()
+
+                //lenar tabla.
+                if (data.length === 0) {
+                    // Si no hay registros, agregar una fila con un mensaje.
+                    let row = list_canchas.insertRow(0)
+                    let cell = row.insertCell(0)
+                    cell.colSpan = 8// Colspan para que ocupe toda la tabla.
+                    cell.innerHTML = "No existen canchas con estas características."
+                } else {
+                    data.forEach(function (cancha, index) {
+                        let fila = document.createElement("tr")
+                        var celdaNombre = document.createElement("th")
+                        var divCard = document.createElement("div")
+                        divCard.className = "card"
+                        divCard.innerHTML = `
+                            <div class="card d-flex justify-content-center" style="height: 147px; background-color: #38CCCC; border-radius: .6875rem;">
+                                <div class="row">
+                                    <div class="col-md-6 d-flex align-items-center ">
+                                        <img style="border-radius: .75rem; width: 114px; height: 114px; margin-left: .625rem;" src="${cancha.foto}" alt="${cancha.foto}">
+                                    </div>
+                                    <div class="col-md-6 px-3">
+                                        <div class="card-block px-6">
+                                            <h4 class="card-title">${cancha.nombre}</h4>
+                                            <p class="card-text">${cancha.deporte}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                        celdaNombre.appendChild(divCard);
+                        fila.appendChild(celdaNombre)
+                        let dia_reserva = document.getElementById("dia_reserva").value
+                        let reservas = []
+                        let solicitudesCompletadas = 0;
+                        let totalSolicitudes = horas.length;
+                        horas.forEach(function(hora,index){
+                            let dia_hora_reserva = dia_reserva + " " + hora;
+
+                            $.ajax({
+                                url: "{% url 'get_reserva' %}", 
+                                method: 'GET',
+                                data: {
+                                    cancha_id: cancha.cancha_id,
+                                    dia_hora_reserva: dia_hora_reserva,
+                                },
+                                success: function (data) {
+                                    reservas.push(data)
+                                    solicitudesCompletadas++;
+
+
+                                    if (solicitudesCompletadas === totalSolicitudes) {
+
+                                        llenartablas(ordenarPorFecha(reservas,'dia_hora_reserva'),fila)
+                                        list_canchas.appendChild(fila);
+                                        inicializarPopovers();
+                                        //console.log(ordenarPorFecha(reservas,'dia_hora_reserva'))
+
+                                    }
+                                },
+                                error: function (error) {
+                                    console.error(error);
+                                }
+                            });
+                        });
+
+                    });
+
+                }
+            },
+            error: function (error) {
+                console.error(error);
+            }
+        });
+    }
 </script>
 {% endblock %}
