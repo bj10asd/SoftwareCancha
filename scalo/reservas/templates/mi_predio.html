@@ -44,7 +44,9 @@
         <h4>Perfil del predio</h4>
         <div class="col-6 d-flex justify-content-center align-items-center">
             {% if predio.logo %}
-            <img style="height: 340px; width: 340px; border-radius: 26px;" src="{{ predio.logo.url }}" alt="{{ predio.logo.url }}">
+            {% consulta_api2 predio.user_id as logo %}
+            {#<img style="height: 340px; width: 340px; border-radius: 26px;" src="{{ predio.logo.url }}" alt="{{ predio.logo.url }}">#}
+            <img style="height: 340px; width: 340px; border-radius: 26px;" src="{{ logo }}" alt="{{ predio.logo.url }}">
             {% else %}
             <img style="height: 340px; width: 340px; border-radius: 26px;" src="media/upload/predio.png" alt="Imagen Predeterminada">
             {% endif %}

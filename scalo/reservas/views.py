@@ -701,10 +701,12 @@ def retorno_pago(request):
                         'predio_email':cancha.predio_id.email,
                         'cancha_nombre':cancha.nombre,
                         'precio_cancha':precio_cancha,
-                        'route':ngrok_url,
+                        #'route':ngrok_url,
+                        'route': "https://softwarecancha.onrender.com/",
                     }
                     email.send_cliente_email(datos_send_mail)
-                    email.send_predio_email(datos_send_mail)
+                    email.send_predio_email(datos_send_mail,usuario.first_name,cancha.nombre)
+
 
                     mensaje = f'Reserva creada desde {fecha_ini} hasta {fecha_fin} con éxito.'
 
