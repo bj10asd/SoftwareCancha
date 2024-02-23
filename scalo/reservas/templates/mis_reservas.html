@@ -103,7 +103,8 @@
                             <img src="{% static 'img/Address.png' %}" alt="">
                             <p>{{ reserva.cancha_id.predio_id.direccion }}</p>
                         </div>
-                        {% if not reserva.fecha_fin|is_past and reserva.estado == "Pendiente"  %}
+                        {#{% if not reserva.fecha_fin|is_past and reserva.estado == "Pendiente"  %}#}
+                        {% if not reserva.fecha_fin|is_past and reserva.estado == "Activo"  %}
                         <button type="button" onclick="ModalCancelarReserva({{reserva.id}})" style="margin: 8px;">
                             Cancelar
                         </button>
