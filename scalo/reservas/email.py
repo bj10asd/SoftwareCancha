@@ -8,8 +8,8 @@ from scalo.settings import base
 def send_cliente_email(datos_send_mail):
 
 
-    #template = get_template('mails/cliente.html')
-    template = get_template('mails/cliente_nuevo.html')
+    template = get_template('mails/cliente.html')
+    #template = get_template('mails/cliente_nuevo.html')
 
     content = template.render(datos_send_mail)
 
@@ -27,13 +27,13 @@ def send_cliente_email(datos_send_mail):
 def send_predio_email(datos_send_mail):
 
 
-    #template = get_template('mails/predio.html')
+    template = get_template('mails/predio.html')
 
-    #content = template.render(datos_send_mail)
+    content = template.render(datos_send_mail)
 
     email = EmailMessage(
         'Asunto del correo',
-        #content,
+        content,
         #settings.EMAIL_HOST_USER, #Remitente
         base.EMAIL_HOST_USER, #Remitente
         [datos_send_mail['predio_email']]) #Destinatario
