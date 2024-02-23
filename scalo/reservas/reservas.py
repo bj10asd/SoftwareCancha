@@ -60,12 +60,15 @@ def mis_reservas(request):
         # Obtiene el número de página de la URL o utiliza la página 1 como predeterminada
         pagina  = request.GET.get('page') or 1
         reservas = paginator.get_page(pagina)
-        return render(request, 'mis_reservas.html', {'reservas':      reservas,
-                                                'deportes':     Deportes.objects.all(),
-                                                'filtro_txt':   filtro_txt if filtro_txt is not None else '',
-                                                'fil_select':   int(fil_select),
-                                                'state_select': int(state_select),
-                                                })
+        return render(request,
+                      'mis_reservas.html',
+                      {'reservas':      reservas,
+                        'deportes':     Deportes.objects.all(),
+                        'filtro_txt':   filtro_txt if filtro_txt is not None else '',
+                        'fil_select':   int(fil_select),
+                        'state_select': int(state_select),
+                      }
+                     )
     else: return redirect('index')
 
 def mi_predio(request):

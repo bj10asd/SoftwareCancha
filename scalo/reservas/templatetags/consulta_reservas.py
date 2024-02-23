@@ -53,3 +53,37 @@ def get_telefono(user):
         telefono = 0
     return telefono 
 
+import requests
+import json
+@register.simple_tag
+def consulta_api(klave):
+
+    #print("Mostrando consulta api desde template tags: ",klave.cancha_id.predio_id.user_id)
+    klave = str(klave.cancha_id.predio_id.user_id)+"_p"
+
+    url = "https://5jt.000webhostapp.com/get_photos.php"
+
+    # Datos que deseas enviar en la solicitud POST
+    data_to_send = {
+        #'klave': 'estelaevelia.herrera@gmail.com'
+        'klave': klave
+    }
+
+    try:
+        # Realizar la solicitud POST
+        #headers = {'Content-Type': 'application/json'}
+        response = requests.post(url, data=json.dumps(data_to_send))#,headers=headers)
+        if response.status_code == 200:
+            json_data = response.json()
+            #print("mostrando dict: ",json_data.get('resultado'))
+            return json_data.get('resultado')
+
+        else:
+            # Manejar el caso en el que la solicitud no fue exitosa
+            #return JsonResponse({'error': 'Error en la solicitud'}, status=500)
+            return "Hubo un error1"
+
+    except requests.RequestException as e:
+        # Manejar excepciones de la biblioteca requests
+        #return JsonResponse({'error': f'Error en la solicitud: {str(e)}'}, status=500)
+        return "Hubo un error2"

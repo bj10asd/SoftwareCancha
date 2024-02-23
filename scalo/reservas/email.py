@@ -9,12 +9,13 @@ def send_cliente_email(datos_send_mail):
 
 
     #template = get_template('mails/cliente.html')
+    template = get_template('mails/cliente_nuevo.html')
 
-    #content = template.render(datos_send_mail)
+    content = template.render(datos_send_mail)
 
     email = EmailMessage(
         'Asunto del correo',
-        #content,
+        content,
         #settings.EMAIL_HOST_USER, #Remitente
         base.EMAIL_HOST_USER, #Remitente
         [datos_send_mail['mail']]) #Destinatario

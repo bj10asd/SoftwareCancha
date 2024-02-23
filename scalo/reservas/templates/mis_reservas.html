@@ -83,7 +83,9 @@
             <li {% if not reserva.fecha_fin|is_past and reserva.estado == "Pendiente" %} style=" border-left: solid green 8px;" {% endif %}
                 {% if reserva.estado == "Cancelado" %} style=" border-left: solid red 8px;" {% endif %}
             >
-                <img src="{% if reserva.cancha_id.foto.url %}{{ reserva.cancha_id.foto.url }}{% else %}ruta/a/imagen-por-defecto.jpg{% endif %}" alt="{% if predio.logo.url %}{{ predio.logo.url }}{% else %}Texto alternativo por defecto{% endif %}">
+                {#<img src="{% if reserva.cancha_id.foto.url %}{{ reserva.cancha_id.foto.url }}{% else %}ruta/a/imagen-por-defecto.jpg{% endif %}" alt="{% if predio.logo.url %}{{ predio.logo.url }}{% else %}Texto alternativo por defecto{% endif %}">#}
+                {% consulta_api reserva as logo %}
+                <img src="{% if reserva.cancha_id.foto %}{{ logo }}{% else %}ruta/a/imagen-por-defecto.jpg{% endif %}" alt="{% if predio.logo %}{{ predio.logo }}{% else %}Texto alternativo por defecto{% endif %}">
                 <div class="datos-reservas w-100" >
                     <div class="title-reserva" style="padding: 0; margin: 0;justify-content: space-between;">
                         <a href="{% url 'predio' pk=reserva.cancha_id.predio_id.id %}"><h3>{{ reserva.cancha_id.predio_id.nombre }}</h3></a>

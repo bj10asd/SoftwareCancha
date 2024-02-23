@@ -382,7 +382,7 @@ def predios_deporte(request):
 
         return JsonResponse(canchas_data, safe=False)
 
-def filtrar_fotoslider(request):
+def filtrar_fotoslider(request):#Fotos Slider
 
 
     if request.method == 'GET':

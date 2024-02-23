@@ -13,7 +13,7 @@ class CanchasAdmin(admin.ModelAdmin):
 admin.site.register(Canchas,CanchasAdmin)
 
 class ReservasAdmin(admin.ModelAdmin):
-    list_display    = ['id','user_id','cancha_id','fecha_ini','fecha_fin']
+    list_display    = ['id','user_id','cancha_id','fecha_ini','fecha_fin','estado','fecha_creacion']
     readonly_fields = ['id']
     search_fields   = ['user_id']
     actions         = None
