@@ -580,7 +580,7 @@ def mercadopago_func(request):
                 "failure": url + '/retorno-pago/',
             },
             "auto_return": "approved",
-            "statement_descriptor":"Reserva total.",
+            #"statement_descriptor":"Reserva total.",
             #"notification_url":"https://9084-2803-9800-b402-7ed6-ba3f-4184-fa5a-474e.ngrok-free.app/notificacion-pago/",
         }
         preference_response = sdk.preference().create(preference_data)
@@ -610,7 +610,7 @@ def mercadopago_func(request):
                 "failure": url + '/retorno-pago/',
             },
             "auto_return": "approved",
-            "statement_descriptor":"Reserva total.",
+            #"statement_descriptor":"Reserva total.",
         }
 
         preference_response_min = sdk.preference().create(preference_data_min)
