@@ -14,7 +14,7 @@ def send_cliente_email(datos_send_mail):
     content = template.render(datos_send_mail)
 
     email = EmailMessage(
-        'Asunto del correo',
+        '¡Tu Reserva es Total!',
         content,
         #settings.EMAIL_HOST_USER, #Remitente
         base.EMAIL_HOST_USER, #Remitente
@@ -24,7 +24,7 @@ def send_cliente_email(datos_send_mail):
 
 
 #Evnia mail al propitario
-def send_predio_email(datos_send_mail):
+def send_predio_email(datos_send_mail,nombre,cancha):
 
 
     template = get_template('mails/predio.html')
@@ -32,7 +32,7 @@ def send_predio_email(datos_send_mail):
     content = template.render(datos_send_mail)
 
     email = EmailMessage(
-        'Asunto del correo',
+        'Nueva reserva, '+nombre+" en "+cancha,
         content,
         #settings.EMAIL_HOST_USER, #Remitente
         base.EMAIL_HOST_USER, #Remitente
