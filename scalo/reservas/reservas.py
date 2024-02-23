@@ -196,11 +196,12 @@ def crear_reserva(request):
                     'predio_ubicacion':cancha.predio_id.direccion,
                     'predio_email':cancha.predio_id.email,
                     'cancha_nombre':cancha.nombre,
-                    'rute': request.build_absolute_uri(),
+                    #'rute': request.build_absolute_uri(),
+                    'rute': "https://softwarecancha.onrender.com/",
 
                 }
                 email.send_cliente_email(datos_send_mail)
-                email.send_predio_email(datos_send_mail)
+                email.send_predio_email(datos_send_mail,usuario.first_name,cancha.nombre)
 
                 return HttpResponse ('jola')
                 nueva_reserva.save()
