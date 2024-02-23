@@ -79,7 +79,7 @@
     </div> -->
         
         <ul>
-            <li onclick="redireccionar('{% url 'predio' pk=predio.id %}')">
+            <li onclick="redireccionar('{% url 'predio' pk=predio.id %}')" type="button">
                 
                     {#<img src="{% if predio.logo.url %}{{ predio.logo.url }}{% else %}ruta/a/imagen-por-defecto.jpg{% endif %}" alt="{% if predio.logo.url %}{{ predio.logo.url }}{% else %}Texto alternativo por defecto{% endif %}">#}
                     <img src="{% if predio.logo %}{{ predio.logo }}{% else %}ruta/a/imagen-por-defecto.jpg{% endif %}" alt="{% if predio.logo %}{{ predio.logo }}{% else %}Texto alternativo por defecto{% endif %}">

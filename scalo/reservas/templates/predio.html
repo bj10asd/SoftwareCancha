@@ -166,7 +166,7 @@
         <div id="carouselExampleFade" class="carousel slide carousel-fade" data-bs-ride="carousel" style="width: 100%; border-radius: 20px; overflow: hidden;height: 500px;" >
             <div class="carousel-inner" style="height: 100%;">
                 {% for cancha in canchas %}
-              <div class="carousel-item {% if forloop.first %}active{% endif %}" style="height: 100%;">
+              <div class="carousel-item {% if forloop.first %}active{% endif %}" style="height: 100%;" type="button">
                 {#<img src="{{ cancha.foto.url }}" class="d-block w-100" style="height: 100%; object-fit: cover;"alt="...">#}
                 <img src="{{ cancha.foto }}" class="d-block w-100" style="height: 100%; object-fit: cover;"alt="..." onclick="fil_CanchaGaleria('{{cancha.id}}')">
                 <div class="carousel-caption d-none d-md-block">
@@ -264,9 +264,9 @@
                                     </td>
                                 {% endif %}
                             {% else %}
-                                {% if user.is_authenticated %}
+                                {% if user.is_authenticated %}<!--24 Feb. 2024 19:00-->
                                     <!--<td onclick="esta_ocupado('{{ cancha.id }}','{{ hora }}');openModal('{{ cancha.id }}','{{ hora }}')" class="td-no-reservado" style="cursor: pointer; height: 9.1875rem; background-color: #ECFDFD; border: 1px solid #38CCCC;"></td>-->
-                                    <td onclick="esta_ocupado('{{ cancha.id }}','{{ hora }}');" class="td-no-reservado" style="cursor: pointer; height: 9.1875rem; background-color: #ECFDFD; border: 1px solid #38CCCC;"></td>
+                                    <td onclick="esta_ocupado('{{ cancha.id }}','{{ hora }}',0);" class="td-no-reservado" style="cursor: pointer; height: 9.1875rem; background-color: #ECFDFD; border: 1px solid #38CCCC;"></td>
                                 {% else %}
                                     <td onclick="debe_loguearase('Horario Disponible','Pero... para reservar, debe estar logueado.',1)" class="td-no-reservado" style="cursor: pointer; height: 9.1875rem; background-color: #ECFDFD; border: 1px solid #38CCCC;"></td>
                                 {% endif %}
@@ -380,6 +380,7 @@
                     <input type="text" name="url_pago" id="url_pago" style="display: none;">
                     <button class="pagar ant" id="goto_m" onclick="pre_reserva(2)" >Pagar minimo</button>
                     <input type="text" name="url_pago_min" id="url_pago_min" style="display: none;">
+                    
                 </div>
 
             </div>
@@ -435,6 +436,8 @@
         let selectedOption = $(this).find('option[value="' + selectedDeporte + '"]')
         let predio_id = document.getElementById("predio_id").value;
         let descripcion = selectedOption.text()
+        //alert("opt selec: "+selectedOption.val())
+        
 
         $.ajax({
             url: '/predios_deporte/', //Ojooo con " /  / "
@@ -504,7 +507,7 @@
 
                                     if (solicitudesCompletadas === totalSolicitudes) {
 
-                                        llenartablas(ordenarPorFecha(reservas,'dia_hora_reserva'),fila)
+                                        llenartablas(ordenarPorFecha(reservas,'dia_hora_reserva'),fila,cancha.cancha_id)
                                         list_canchas.appendChild(fila);
                                         inicializarPopovers();
                                         //console.log(ordenarPorFecha(reservas,'dia_hora_reserva'))
@@ -548,7 +551,7 @@
             }
         });
     });
-    function llenartablas(lista,fila){
+    function llenartablas(lista,fila,cancha_id){
         lista.forEach(function(elemento,index){
             let celda = document.createElement('td');
             celda.style.height = '9.1875rem';
@@ -557,12 +560,20 @@
                 celda.style.backgroundColor = '#ECFDFD';
                 celda.style.cursor = "pointer";
                 celda.onclick = function() {
-                    openModal(elemento.cancha_id, elemento.dia_hora_reserva);
+                    //openModal(elemento.cancha_id, elemento.dia_hora_reserva);
+                    let usuario_logeado = '{{user.is_authenticated}}' == 'True' ? true : false;
+                    if(usuario_logeado){
+                        let array_horas = obtenerHoras();
+                        
+                        esta_ocupado(cancha_id,'{{dia_reserva}}'+" "+array_horas[index],1);
+                    }
+                    else debe_loguearase('Horario Disponible','Pero... para reservar, debe estar logueado.',1)
+                    
                 };
             }
             else{
                 console.log(elemento.mi_reserva)
-                if(elemento.mi_reserva==null){
+                if(elemento.mi_reserva==null){ //
                     celda.style.backgroundColor = '#577373';
                     //celda.textContent = elemento.user.username;
                     celda.style.color = '#ABF7F7';
@@ -578,7 +589,6 @@
                     celda.textContent = elemento.user.username;
                     celda.style.backgroundColor = '#38CCCC';
                     celda.style.color = '#ECFDFD';
-
                 }
                 celda.style.textAlign = 'center';
                 celda.style.fontFamily = 'Lexend';
@@ -797,8 +807,19 @@
 
     }
 
-    function esta_ocupado(a,b){
-        var fech = format_fechas(b);
+    //flag sera una variable que distinguirá la procedencia de la llamada de la funcion
+    //la funcion llamada desde el template sera 0 
+    //mientras que la func llamada desde ajax sera 1
+    //esto por el hecho de que vienen de formatos distintos
+    function esta_ocupado(a,b,flag){
+        //alert("fecha en esta ocu: "+b)
+        //alert(b.split(" ")[1]) 
+        //alert(b)
+        
+        //var fech = flag == 0 ? format_fechas(b.split(" ")[1]) : b;
+        //var fech = flag == 0 ? b.split(" ")[1] : b;
+        var fech = flag == 0 ? format_fechas(b) : b;
+        
         //alert("fecha despues de formatear: "+fech);
         $.ajax({
             url: '/esta_ocupado/',
@@ -843,15 +864,17 @@
     }
 
     function format_fechas(a){
+        //alert("entre ff")
         var nueva_fecha;
         nueva_fecha = a.split(" ");
         var anio = nueva_fecha[2];
         var mes;
+        //alert(nueva_fecha[1]+" "+nueva_fecha[1].length)
         switch(nueva_fecha[1]){
             case "Enero":
                 mes = "01";
                 break;
-            case "Febrero":
+            case "Feb."://"Febrero" tenia problemas
                 mes = "02";
                 break;
             case "Marzo":
@@ -897,7 +920,7 @@
         //let selectedOption = $(this).find('option[value="' + selectedDeporte + '"]')
         //let predio_id = document.getElementById("predio_id").value;
         //let descripcion = selectedOption.text()
-
+        
         $.ajax({
             url: '/filtrar_CanchaGaleria/', //Ojooo con " /  / "
             method: 'GET',
@@ -949,7 +972,6 @@
                         let totalSolicitudes = horas.length;
                         horas.forEach(function(hora,index){
                             let dia_hora_reserva = dia_reserva + " " + hora;
-
                             $.ajax({
                                 url: "{% url 'get_reserva' %}", 
                                 method: 'GET',
@@ -960,15 +982,11 @@
                                 success: function (data) {
                                     reservas.push(data)
                                     solicitudesCompletadas++;
-
-
-                                    if (solicitudesCompletadas === totalSolicitudes) {
-
-                                        llenartablas(ordenarPorFecha(reservas,'dia_hora_reserva'),fila)
+                                    if (solicitudesCompletadas === totalSolicitudes) 
+                                    {
+                                        llenartablas(ordenarPorFecha(reservas,'dia_hora_reserva'),fila,cancha.cancha_id)
                                         list_canchas.appendChild(fila);
                                         inicializarPopovers();
-                                        //console.log(ordenarPorFecha(reservas,'dia_hora_reserva'))
-
                                     }
                                 },
                                 error: function (error) {
@@ -976,7 +994,8 @@
                                 }
                             });
                         });
-
+                        alert("total sol: "+totalSolicitudes);
+                        alert("solis comple: "+solicitudesCompletadas);
                     });
 
                 }
